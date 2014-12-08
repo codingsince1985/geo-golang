@@ -1,3 +1,4 @@
+// Package google has the implementation of using MapRequest geocode and reverse geocode, in ~50 LoC.
 package mapquest
 
 import (
