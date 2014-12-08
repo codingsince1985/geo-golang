@@ -1,4 +1,5 @@
-// Package geo has all the types and interfaces needed to implement a geocode service
+// Package geo has all the types and interfaces needed to wrap a geocode/reverse geocode service.
+// Google and MapRequest implementations are based on it in ~50 lines of code each.
 package geo
 
 // Location is the output of Geocode and also the input of ReverseGeocode
