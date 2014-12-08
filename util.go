@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// ResponseData gets response from url
 func ResponseData(url string) []byte {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
