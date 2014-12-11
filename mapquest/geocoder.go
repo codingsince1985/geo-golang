@@ -24,11 +24,10 @@ func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
 	return e.BaseUrl + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
+func (r GeocodeResponse) Location(data []byte) geo.Location {
 	res := []GeocodeResponse{}
 	json.Unmarshal(data, &res)
-	location = geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
-	return
+	return geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
 }
 
 func parseFloat(value interface{}) float64 {
@@ -36,7 +35,7 @@ func parseFloat(value interface{}) float64 {
 	return f
 }
 
-func (r GeocodeResponse) Address(data []byte) (address string) {
+func (r GeocodeResponse) Address(data []byte) string {
 	json.Unmarshal(data, &r)
 	return r["display_name"].(string)
 }

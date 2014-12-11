@@ -18,7 +18,7 @@ type GeocodeEndpointBuilder interface {
 	ReverseGeocodeUrl(Location) string
 }
 
-// GeocodeResponseParser defines functions that parse response of geocode and reverse geocode, and return Location or Address
+// GeocodeResponseParser defines functions that parse response of geocode and reverse geocode
 type GeocodeResponseParser interface {
 	Location([]byte) Location
 	Address([]byte) string
