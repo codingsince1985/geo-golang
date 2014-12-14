@@ -33,8 +33,7 @@ func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
 }
 
 func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
-	json.Unmarshal(data, &r)
-	if len(r.Results) > 0 {
+	if json.Unmarshal(data, &r); len(r.Results) > 0 {
 		l := r.Results[0].Geometry.Location
 		location = geo.Location{l.Lat, l.Lng}
 	}
@@ -42,8 +41,7 @@ func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
 }
 
 func (r GeocodeResponse) Address(data []byte) (address string) {
-	json.Unmarshal(data, &r)
-	if len(r.Results) > 0 {
+	if json.Unmarshal(data, &r); len(r.Results) > 0 {
 		address = r.Results[0].FormattedAddress
 	}
 	return
