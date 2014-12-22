@@ -18,8 +18,10 @@ import (
 )
 
 func main() {
-	var geocoder geo.Geocoder = google.Geocoder
-	fmt.Println("Geoogle's Melbourne location is", geocoder.Geocode("Melbourne VIC"))
+	var geocoder geo.Geocoder
+
+	geocoder = google.Geocoder
+	fmt.Println("Google's Melbourne location is", geocoder.Geocode("Melbourne VIC"))
 
 	geocoder = mapquest.Geocoder
 	fmt.Println("MapQuest's Melbourne location is", geocoder.Geocode("Melbourne VIC"))
