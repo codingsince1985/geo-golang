@@ -2,6 +2,11 @@
 // Google and MapRequest implementations are based on it in ~50 lines of code each.
 package geo
 
+import (
+	"io/ioutil"
+	"net/http"
+)
+
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
 	Lat, Lng float64
@@ -32,10 +37,31 @@ type Geocoder struct {
 
 // Geocode returns Location for address
 func (g Geocoder) Geocode(address string) Location {
-	return g.Location(ResponseData(g.GeocodeUrl(address)))
+	return g.Location(responseData(g.GeocodeUrl(address)))
 }
 
 // ReverseGeocode returns address for location
 func (g Geocoder) ReverseGeocode(l Location) string {
-	return g.Address(ResponseData(g.ReverseGeocodeUrl(l)))
+	return g.Address(responseData(g.ReverseGeocodeUrl(l)))
+}
+
+// ResponseData gets response from url
+func responseData(url string) []byte {
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil
+	}
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		return nil
+	}
+
+	data, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil
+	}
+
+	return data
 }
