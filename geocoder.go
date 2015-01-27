@@ -3,9 +3,13 @@
 package geo
 
 import (
+	"errors"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
+
+var timeoutError = errors.New("TIMEOUT")
 
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
@@ -36,13 +40,27 @@ type Geocoder struct {
 }
 
 // Geocode returns Location for address
-func (g Geocoder) Geocode(address string) Location {
-	return g.Location(responseData(g.GeocodeUrl(address)))
+func (g Geocoder) Geocode(address string) (Location, error) {
+	ch := make(chan Location)
+	go func() {
+		ch <- g.Location(responseData(g.GeocodeUrl(address)))
+	}()
+
+	select {
+	case location := <-ch:
+		return location, nil
+	case <-time.After(time.Millisecond * 1000):
+		return Location{}, timeoutError
+	}
 }
 
 // ReverseGeocode returns address for location
 func (g Geocoder) ReverseGeocode(l Location) string {
-	return g.Address(responseData(g.ReverseGeocodeUrl(l)))
+	ch := make(chan string)
+	go func() {
+		ch <- g.Address(responseData(g.ReverseGeocodeUrl(l)))
+	}()
+	return <-ch
 }
 
 // ResponseData gets response from url

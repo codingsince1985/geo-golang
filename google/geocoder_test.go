@@ -7,8 +7,8 @@ import (
 )
 
 func TestLocation(t *testing.T) {
-	location := google.Geocoder.Geocode("Melbourne VIC")
-	if location.Lat != -37.814107 || location.Lng != 144.96328 {
+	location, err := google.Geocoder.Geocode("Melbourne VIC")
+	if err != nil || location.Lat != -37.814107 || location.Lng != 144.96328 {
 		t.Error("Geocode() failed", location)
 	}
 }
