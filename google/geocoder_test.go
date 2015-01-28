@@ -14,8 +14,8 @@ func TestLocation(t *testing.T) {
 }
 
 func TestAddress(t *testing.T) {
-	address := google.Geocoder.ReverseGeocode(geo.Location{-37.814107, 144.96328})
-	if address != "338 Bourke Street, Melbourne VIC 3000, Australia" {
+	address, err := google.Geocoder.ReverseGeocode(geo.Location{-37.814107, 144.96328})
+	if err != nil || address != "338 Bourke Street, Melbourne VIC 3000, Australia" {
 		t.Error("ReverseGeocode() failed", address)
 	}
 }

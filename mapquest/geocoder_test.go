@@ -14,8 +14,8 @@ func TestLocation(t *testing.T) {
 }
 
 func TestAddress(t *testing.T) {
-	address := mapquest.Geocoder.ReverseGeocode(geo.Location{-37.8142176, 144.9631608})
-	if address != "Melbourne's GPO, Postal Lane, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia" {
+	address, err := mapquest.Geocoder.ReverseGeocode(geo.Location{-37.8142176, 144.9631608})
+	if err != nil || address != "Melbourne's GPO, Postal Lane, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia" {
 		t.Error("ReverseGeocode() failed", address)
 	}
 }

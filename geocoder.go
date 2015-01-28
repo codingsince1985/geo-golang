@@ -10,6 +10,7 @@ import (
 )
 
 var timeoutError = errors.New("TIMEOUT")
+var timeoutInMillisecond = time.Millisecond * 1000
 
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
@@ -49,18 +50,24 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 	select {
 	case location := <-ch:
 		return location, nil
-	case <-time.After(time.Millisecond * 1000):
+	case <-time.After(timeoutInMillisecond):
 		return Location{}, timeoutError
 	}
 }
 
 // ReverseGeocode returns address for location
-func (g Geocoder) ReverseGeocode(l Location) string {
+func (g Geocoder) ReverseGeocode(l Location) (string, error) {
 	ch := make(chan string)
 	go func() {
 		ch <- g.Address(responseData(g.ReverseGeocodeUrl(l)))
 	}()
-	return <-ch
+
+	select {
+	case address := <-ch:
+		return address, nil
+	case <-time.After(timeoutInMillisecond):
+		return "", timeoutError
+	}
 }
 
 // ResponseData gets response from url
