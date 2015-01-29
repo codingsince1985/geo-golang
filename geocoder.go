@@ -9,7 +9,9 @@ import (
 	"time"
 )
 
-var timeoutError = errors.New("TIMEOUT")
+var TimeoutError = errors.New("TIMEOUT")
+var NoResultError = errors.New("NO_RESULT")
+
 var timeoutInMillisecond = time.Millisecond * 1000
 
 // Location is the output of Geocode and also the input of ReverseGeocode
@@ -51,7 +53,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 	case location := <-ch:
 		return location, nil
 	case <-time.After(timeoutInMillisecond):
-		return Location{}, timeoutError
+		return Location{}, TimeoutError
 	}
 }
 
@@ -64,9 +66,12 @@ func (g Geocoder) ReverseGeocode(l Location) (string, error) {
 
 	select {
 	case address := <-ch:
+		if address == "" {
+			return "", NoResultError
+		}
 		return address, nil
 	case <-time.After(timeoutInMillisecond):
-		return "", timeoutError
+		return "", TimeoutError
 	}
 }
 
