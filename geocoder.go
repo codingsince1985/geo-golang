@@ -12,7 +12,7 @@ import (
 var TimeoutError = errors.New("TIMEOUT")
 var NoResultError = errors.New("NO_RESULT")
 
-var timeoutInMillisecond = time.Millisecond * 1000
+var timeoutInMillisecond = time.Millisecond * 2000
 
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
@@ -77,21 +77,12 @@ func (g Geocoder) ReverseGeocode(l Location) (string, error) {
 
 // ResponseData gets response from url
 func responseData(url string) []byte {
-	request, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil
+	if request, err := http.NewRequest("GET", url, nil); err == nil {
+		if response, err := (&http.Client{}).Do(request); err == nil {
+			if data, err := ioutil.ReadAll(response.Body); err == nil {
+				return data
+			}
+		}
 	}
-
-	client := &http.Client{}
-	response, err := client.Do(request)
-	if err != nil {
-		return nil
-	}
-
-	data, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil
-	}
-
-	return data
+	return nil
 }

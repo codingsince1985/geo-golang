@@ -35,10 +35,10 @@ func parseFloat(value interface{}) float64 {
 	return f
 }
 
-func (r GeocodeResponse) Address(data []byte) string {
+func (r GeocodeResponse) Address(data []byte) (address string) {
 	json.Unmarshal(data, &r)
-	if r["error"] != nil {
-		return ""
+	if r["error"] == nil {
+		address = r["display_name"].(string)
 	}
-	return r["display_name"].(string)
+	return
 }

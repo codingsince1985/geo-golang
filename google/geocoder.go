@@ -40,9 +40,9 @@ func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
 	return
 }
 
-func (r GeocodeResponse) Address(data []byte) string {
+func (r GeocodeResponse) Address(data []byte) (address string) {
 	if json.Unmarshal(data, &r); len(r.Results) > 0 {
-		return r.Results[0].FormattedAddress
+		address = r.Results[0].FormattedAddress
 	}
-	return ""
+	return
 }
