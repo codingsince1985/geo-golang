@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func TestLocation(t *testing.T) {
+func TestGeocode(t *testing.T) {
 	location, err := google.Geocoder.Geocode("Melbourne VIC")
 	if err != nil || location.Lat != -37.814107 || location.Lng != 144.96328 {
-		t.Error("TestLocation() failed", location)
+		t.Error("TestGeocode() failed", location)
 	}
 }
 

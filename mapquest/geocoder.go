@@ -1,4 +1,4 @@
-// Package mapquest has the implementation of using MapRequest geocode and reverse geocode, in ~50 LoC.
+// Package mapquest has the implementation of MapRequest geocode and reverse geocode
 package mapquest
 
 import (
@@ -24,21 +24,22 @@ func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
 	return e.BaseUrl + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) geo.Location {
+func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
 	res := []GeocodeResponse{}
-	json.Unmarshal(data, &res)
-	return geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
+	if json.Unmarshal(data, &res); len(res) > 0 && res[0]["lat"] != nil && res[0]["lon"] != nil {
+		return geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
+	}
+	return
+}
+
+func (r GeocodeResponse) Address(data []byte) (address string) {
+	if json.Unmarshal(data, &r); r["error"] == nil {
+		address = r["display_name"].(string)
+	}
+	return
 }
 
 func parseFloat(value interface{}) float64 {
 	f, _ := strconv.ParseFloat(value.(string), 64)
 	return f
-}
-
-func (r GeocodeResponse) Address(data []byte) (address string) {
-	json.Unmarshal(data, &r)
-	if r["error"] == nil {
-		address = r["display_name"].(string)
-	}
-	return
 }

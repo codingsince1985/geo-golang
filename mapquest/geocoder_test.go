@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func TestLocation(t *testing.T) {
+func TestGeocode(t *testing.T) {
 	location, err := mapquest.Geocoder.Geocode("Melbourne VIC")
 	if err != nil || location.Lat != -37.8142176 || location.Lng != 144.9631608 {
-		t.Error("TestLocation() failed", location)
+		t.Error("TestGeocode() failed", location)
 	}
 }
 

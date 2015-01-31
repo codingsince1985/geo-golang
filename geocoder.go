@@ -1,5 +1,5 @@
 // Package geo has all the types and interfaces needed to wrap a geocode/reverse geocode service.
-// Google and MapRequest implementations are based on it in ~50 lines of code each.
+// Google and MapRequest implementations are based on it in ~50 LoC each.
 package geo
 
 import (
@@ -19,7 +19,7 @@ type Location struct {
 	Lat, Lng float64
 }
 
-// Endpoint contains BaseUrl, on which geocode and reverse geocode urls is built
+// Endpoint contains BaseUrl, on which geocode and reverse geocode urls are built
 type Endpoint struct {
 	BaseUrl string
 }
@@ -42,7 +42,7 @@ type Geocoder struct {
 	GeocodeResponseParser
 }
 
-// Geocode returns Location for address
+// Geocode returns location for address
 func (g Geocoder) Geocode(address string) (Location, error) {
 	ch := make(chan Location)
 	go func() {
@@ -51,6 +51,9 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 
 	select {
 	case location := <-ch:
+		if location.Lat == 0 && location.Lng == 0 {
+			return location, NoResultError
+		}
 		return location, nil
 	case <-time.After(timeoutInMillisecond):
 		return Location{}, TimeoutError

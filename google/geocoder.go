@@ -1,4 +1,4 @@
-// Package google has the implementation of using Google geocode and reverse geocode, in ~50 LoC.
+// Package google has the implementation of Google geocode and reverse geocode
 package google
 
 import (
