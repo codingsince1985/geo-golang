@@ -9,7 +9,10 @@ import (
 	"time"
 )
 
+// TimeoutError occurs when no response returned within timeoutInMillisecond
 var TimeoutError = errors.New("TIMEOUT")
+
+// NoResultError occurs when no result returned
 var NoResultError = errors.New("NO_RESULT")
 
 var timeoutInMillisecond = time.Millisecond * 2000
@@ -51,10 +54,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 
 	select {
 	case location := <-ch:
-		if location.Lat == 0 && location.Lng == 0 {
-			return location, NoResultError
-		}
-		return location, nil
+		return location, anyError(location)
 	case <-time.After(timeoutInMillisecond):
 		return Location{}, TimeoutError
 	}
@@ -69,10 +69,7 @@ func (g Geocoder) ReverseGeocode(l Location) (string, error) {
 
 	select {
 	case address := <-ch:
-		if address == "" {
-			return "", NoResultError
-		}
-		return address, nil
+		return address, anyError(address)
 	case <-time.After(timeoutInMillisecond):
 		return "", TimeoutError
 	}
@@ -88,4 +85,18 @@ func responseData(url string) []byte {
 		}
 	}
 	return nil
+}
+
+func anyError(v interface{}) (err error) {
+	switch v := v.(type) {
+	case Location:
+		if v.Lat == 0 && v.Lng == 0 {
+			return NoResultError
+		}
+	case string:
+		if v == "" {
+			return NoResultError
+		}
+	}
+	return
 }
