@@ -9,14 +9,14 @@ import (
 func TestGeocode(t *testing.T) {
 	location, err := google.Geocoder.Geocode("Melbourne VIC")
 	if err != nil || location.Lat != -37.814107 || location.Lng != 144.96328 {
-		t.Error("TestGeocode() failed", location)
+		t.Error("TestGeocode() failed", err, location)
 	}
 }
 
 func TestReverseGeocode(t *testing.T) {
 	address, err := google.Geocoder.ReverseGeocode(geo.Location{-37.814107, 144.96328})
 	if err != nil || address != "338 Bourke Street, Melbourne VIC 3000, Australia" {
-		t.Error("TestReverseGeocode() failed", address)
+		t.Error("TestReverseGeocode() failed", err, address)
 	}
 }
 

@@ -15,7 +15,7 @@ var TimeoutError = errors.New("TIMEOUT")
 // NoResultError occurs when no result returned
 var NoResultError = errors.New("NO_RESULT")
 
-var timeoutInMillisecond = time.Millisecond * 2000
+var timeoutInMillisecond = time.Millisecond * 4000
 
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
