@@ -1,7 +1,6 @@
 package geo
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -10,5 +9,4 @@ func TestGetResponseData(t *testing.T) {
 	if data == nil {
 		t.Error("responseData() failed")
 	}
-	fmt.Println(string(data))
 }

@@ -1,4 +1,4 @@
-// Package opencage has the implementation of OpenCage Data geocode and reverse geocode
+// Package opencage is a geo-golang based OpenCage geocode/reverse geocode client
 package opencage
 
 import (
@@ -8,20 +8,23 @@ import (
 	"net/url"
 )
 
-const GEOCODE_BASE_URL = "https://api.opencagedata.com/geocode/v1/json?key=YOURKEY&q="
-
 type Endpoint geo.Endpoint
+
 type GeocodeResponse struct {
 	Results []struct {
 		Formatted string
 		Geometry  struct {
-			Lat float64
-			Lng float64
+			Lat, Lng float64
 		}
 	}
 }
 
-var Geocoder = geo.Geocoder{Endpoint{GEOCODE_BASE_URL}, GeocodeResponse{}}
+func NewGeocoder(key string) geo.Geocoder {
+	return geo.Geocoder{
+		Endpoint{"http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="},
+		GeocodeResponse{},
+	}
+}
 
 func (e Endpoint) GeocodeUrl(address string) string {
 	return e.BaseUrl + url.QueryEscape(address)

@@ -1,4 +1,4 @@
-// Package mapquest has the implementation of MapRequest geocode and reverse geocode
+// Package mapquest is a geo-golang based MapRequest geocode/reverse geocode client
 package mapquest
 
 import (
@@ -9,12 +9,16 @@ import (
 	"strconv"
 )
 
-const GEOCODE_BASE_URL = "http://open.mapquestapi.com/nominatim/v1/"
-
 type Endpoint geo.Endpoint
+
 type GeocodeResponse map[string]interface{}
 
-var Geocoder = geo.Geocoder{Endpoint{GEOCODE_BASE_URL}, GeocodeResponse{}}
+func NewGeocoder() geo.Geocoder {
+	return geo.Geocoder{
+		Endpoint{"http://open.mapquestapi.com/nominatim/v1/"},
+		GeocodeResponse{},
+	}
+}
 
 func (e Endpoint) GeocodeUrl(address string) string {
 	return e.BaseUrl + "search.php?format=json&q=" + url.QueryEscape(address)

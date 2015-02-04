@@ -3,7 +3,7 @@ GeoService in Go
 
 Why another one? Short answer, I want one developed in Go way, not just in golang.
 
-This project is designed to open to any Geocoding service. All you need to do is following Google, MapQuest, or OpenCage implementation provided to write yours in 50 LoC.
+This project is designed to open to any Geocoding service. All you need to do is following Google, MapQuest and OpenCage implementations provided to write yours in 50 LoC.
 
 Here is how to use it.
 
@@ -21,15 +21,15 @@ import (
 func main() {
 	var geocoder geo.Geocoder
 
-	geocoder = google.Geocoder
+	geocoder = google.NewGeocoder()
 	location, _ := geocoder.Geocode("Melbourne VIC")
 	fmt.Println("Google's Melbourne location is", location)
 
-	geocoder = mapquest.Geocoder
+	geocoder = mapquest.NewGeocoder()
 	location, _ = geocoder.Geocode("Melbourne VIC")
 	fmt.Println("MapQuest's Melbourne location is", location)
 
-	geocoder = opencage.Geocoder
+	geocoder = opencage.NewGeocoder("YOUR_KEY")
 	location, _ = geocoder.Geocode("Melbourne VIC")
 	fmt.Println("OpenCage's Melbourne location is", location)
 }

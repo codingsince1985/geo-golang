@@ -1,5 +1,4 @@
-// Package geo has all the types and interfaces needed to wrap a geocode/reverse geocode service.
-// Google and MapRequest implementations are based on it in ~50 LoC each.
+// Package geo is a generic framework to develop geocode/reverse geocode clients
 package geo
 
 import (
@@ -9,13 +8,13 @@ import (
 	"time"
 )
 
-// TimeoutError occurs when no response returned within timeoutInMillisecond
+// TimeoutError occurs when no response returned within timeoutInSeconds
 var TimeoutError = errors.New("TIMEOUT")
 
 // NoResultError occurs when no result returned
 var NoResultError = errors.New("NO_RESULT")
 
-var timeoutInMillisecond = time.Millisecond * 4000
+var timeoutInSeconds = time.Second * 4
 
 // Location is the output of Geocode and also the input of ReverseGeocode
 type Location struct {
@@ -55,7 +54,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 	select {
 	case location := <-ch:
 		return location, anyError(location)
-	case <-time.After(timeoutInMillisecond):
+	case <-time.After(timeoutInSeconds):
 		return Location{}, TimeoutError
 	}
 }
@@ -70,7 +69,7 @@ func (g Geocoder) ReverseGeocode(l Location) (string, error) {
 	select {
 	case address := <-ch:
 		return address, anyError(address)
-	case <-time.After(timeoutInMillisecond):
+	case <-time.After(timeoutInSeconds):
 		return "", TimeoutError
 	}
 }
