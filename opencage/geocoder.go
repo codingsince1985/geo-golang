@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
-	"net/url"
 )
 
 type Endpoint geo.Endpoint
@@ -21,23 +20,23 @@ type GeocodeResponse struct {
 
 func NewGeocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
-		Endpoint{"http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="},
+		Endpoint("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
 		GeocodeResponse{},
 	}
 }
 
 func (e Endpoint) GeocodeUrl(address string) string {
-	return e.BaseUrl + url.QueryEscape(address)
+	return string(e) + address
 }
 
 func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
-	return e.BaseUrl + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
+	return string(e) + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
+func (r GeocodeResponse) Location(data []byte) (l geo.Location) {
 	if json.Unmarshal(data, &r); len(r.Results) > 0 {
 		g := r.Results[0].Geometry
-		location = geo.Location{g.Lat, g.Lng}
+		l = geo.Location{g.Lat, g.Lng}
 	}
 	return
 }

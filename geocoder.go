@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -16,23 +17,21 @@ var NoResultError = errors.New("NO_RESULT")
 
 var timeoutInSeconds = time.Second * 4
 
-// Location is the output of Geocode and also the input of ReverseGeocode
+// Location is the output of Geocode
 type Location struct {
 	Lat, Lng float64
 }
 
-// Endpoint contains BaseUrl, on which geocode and reverse geocode urls are built
-type Endpoint struct {
-	BaseUrl string
-}
+// Endpoint contains base url, on which geocode/reverse geocode urls are built
+type Endpoint string
 
-// GeocodeEndpointBuilder defines functions that build urls for geocode and reverse geocode
+// GeocodeEndpointBuilder defines functions that build urls for geocode/reverse geocode
 type GeocodeEndpointBuilder interface {
 	GeocodeUrl(string) string
 	ReverseGeocodeUrl(Location) string
 }
 
-// GeocodeResponseParser defines functions that parse response of geocode and reverse geocode
+// GeocodeResponseParser defines functions that parse response of geocode/reverse geocode
 type GeocodeResponseParser interface {
 	Location([]byte) Location
 	Address([]byte) string
@@ -48,7 +47,7 @@ type Geocoder struct {
 func (g Geocoder) Geocode(address string) (Location, error) {
 	ch := make(chan Location)
 	go func() {
-		ch <- g.Location(responseData(g.GeocodeUrl(address)))
+		ch <- g.Location(responseData(g.GeocodeUrl(url.QueryEscape(address))))
 	}()
 
 	select {
@@ -60,10 +59,10 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 }
 
 // ReverseGeocode returns address for location
-func (g Geocoder) ReverseGeocode(l Location) (string, error) {
+func (g Geocoder) ReverseGeocode(lat, lng float64) (string, error) {
 	ch := make(chan string)
 	go func() {
-		ch <- g.Address(responseData(g.ReverseGeocodeUrl(l)))
+		ch <- g.Address(responseData(g.ReverseGeocodeUrl(Location{lat, lng})))
 	}()
 
 	select {

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
-	"net/url"
 	"strconv"
 )
 
@@ -15,20 +14,20 @@ type GeocodeResponse map[string]interface{}
 
 func NewGeocoder() geo.Geocoder {
 	return geo.Geocoder{
-		Endpoint{"http://open.mapquestapi.com/nominatim/v1/"},
+		Endpoint("http://open.mapquestapi.com/nominatim/v1/"),
 		GeocodeResponse{},
 	}
 }
 
 func (e Endpoint) GeocodeUrl(address string) string {
-	return e.BaseUrl + "search.php?format=json&q=" + url.QueryEscape(address)
+	return string(e) + "search.php?format=json&q=" + address
 }
 
 func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
-	return e.BaseUrl + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
+	return string(e) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) (location geo.Location) {
+func (r GeocodeResponse) Location(data []byte) (l geo.Location) {
 	res := []GeocodeResponse{}
 	if json.Unmarshal(data, &res); len(res) > 0 && res[0]["lat"] != nil && res[0]["lon"] != nil {
 		return geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
