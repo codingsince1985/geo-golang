@@ -1,9 +1,9 @@
 GeoService in Go
 =
 
-Why another one? Short answer, I want one developed in Go's way, not just in golang.
+A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
-This project is designed to open to any Geocoding service. I've implemented Google, MapQuest and OpenCage clients in ~50 LoC each.
+This project is designed to open to any Geocoding service. Based on it, I've also implemented [Google Maps](https://developers.google.com/maps/documentation/geocoding/), [MapQuest](http://www.mapquestapi.com/geocoding/) and [OpenCage](http://geocoder.opencagedata.com/api.html) client in ~50 LoC each.
 
 Here is how to use it.
 
@@ -18,19 +18,24 @@ import (
 	"github.com/codingsince1985/geo-golang/opencage"
 )
 
+const addr = "Melbourne VIC"
+const lat, lng = -37.8167416, 144.964463
+
 func main() {
-	var geocoder geo.Geocoder
+	// Goole Maps
+	try(google.NewGeocoder())
 
-	geocoder = google.NewGeocoder()
-	location, _ := geocoder.Geocode("Melbourne VIC")
-	fmt.Println("Google's Melbourne location is", location)
+	// MapQuest
+	try(mapquest.NewGeocoder())
 
-	geocoder = mapquest.NewGeocoder()
-	location, _ = geocoder.Geocode("Melbourne VIC")
-	fmt.Println("MapQuest's Melbourne location is", location)
+	// OpenCage Data
+	try(opencage.NewGeocoder("OPENCAGE_KEY"))
+}
 
-	geocoder = opencage.NewGeocoder("YOUR_KEY")
-	location, _ = geocoder.Geocode("Melbourne VIC")
-	fmt.Println("OpenCage's Melbourne location is", location)
+func try(geocoder geo.Geocoder) {
+	location, _ := geocoder.Geocode(addr)
+	fmt.Printf("%s location is %v\n", addr, location)
+	address, _ := geocoder.ReverseGeocode(lat, lng)
+	fmt.Printf("Address of (%f,%f) is %s\n\n", lat, lng, address)
 }
 ```

@@ -13,7 +13,7 @@ import (
 
 // TimeoutError occurs when no response returned within timeoutInSeconds
 var TimeoutError = errors.New("TIMEOUT")
-var timeoutInSeconds = time.Second * 4
+var timeoutInSeconds = time.Second * 8
 
 // NoResultError occurs when no result returned
 var NoResultError = errors.New("NO_RESULT")
