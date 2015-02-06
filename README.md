@@ -1,9 +1,9 @@
 GeoService in Go
 =
 
-Why another one? Short answer, I want one developed in Go way, not just in golang.
+Why another one? Short answer, I want one developed in Go's way, not just in golang.
 
-This project is designed to open to any Geocoding service. All you need to do is following Google, MapQuest and OpenCage implementations provided to write yours in 50 LoC.
+This project is designed to open to any Geocoding service. I've implemented Google, MapQuest and OpenCage clients in ~50 LoC each.
 
 Here is how to use it.
 

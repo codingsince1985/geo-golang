@@ -2,44 +2,46 @@
 package mapquest
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
 	"strconv"
 )
 
-type Endpoint geo.Endpoint
+type baseUrl string
 
-type GeocodeResponse map[string]interface{}
+type geocodeResponse map[string]interface{}
 
 func NewGeocoder() geo.Geocoder {
 	return geo.Geocoder{
-		Endpoint("http://open.mapquestapi.com/nominatim/v1/"),
-		GeocodeResponse{},
+		baseUrl("http://open.mapquestapi.com/nominatim/v1/"),
+		&geocodeResponse{},
 	}
 }
 
-func (e Endpoint) GeocodeUrl(address string) string {
-	return string(e) + "search.php?format=json&q=" + address
+func (e baseUrl) GeocodeUrl(address string) string {
+	return string(e) + "search.php?format=json&limit=1&q=" + address
 }
 
-func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
+func (e baseUrl) ReverseGeocodeUrl(l geo.Location) string {
 	return string(e) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) (l geo.Location) {
-	res := []GeocodeResponse{}
-	if json.Unmarshal(data, &res); len(res) > 0 && res[0]["lat"] != nil && res[0]["lon"] != nil {
-		return geo.Location{parseFloat(res[0]["lat"]), parseFloat(res[0]["lon"])}
+func (r *geocodeResponse) Location() (l geo.Location) {
+	if (*r)["lat"] != nil && (*r)["lon"] != nil {
+		return geo.Location{parseFloat((*r)["lat"]), parseFloat((*r)["lon"])}
 	}
 	return
 }
 
-func (r GeocodeResponse) Address(data []byte) (address string) {
-	if json.Unmarshal(data, &r); r["error"] == nil {
-		address = r["display_name"].(string)
+func (r *geocodeResponse) Address() (address string) {
+	if (*r)["error"] == nil {
+		address = (*r)["display_name"].(string)
 	}
 	return
+}
+
+func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
+	return r
 }
 
 func parseFloat(value interface{}) float64 {

@@ -2,14 +2,13 @@
 package opencage
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
 )
 
-type Endpoint geo.Endpoint
+type baseUrl string
 
-type GeocodeResponse struct {
+type geocodeResponse struct {
 	Results []struct {
 		Formatted string
 		Geometry  struct {
@@ -20,30 +19,34 @@ type GeocodeResponse struct {
 
 func NewGeocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
-		Endpoint("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
-		GeocodeResponse{},
+		baseUrl("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
+		&geocodeResponse{},
 	}
 }
 
-func (e Endpoint) GeocodeUrl(address string) string {
+func (e baseUrl) GeocodeUrl(address string) string {
 	return string(e) + address
 }
 
-func (e Endpoint) ReverseGeocodeUrl(l geo.Location) string {
+func (e baseUrl) ReverseGeocodeUrl(l geo.Location) string {
 	return string(e) + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
 }
 
-func (r GeocodeResponse) Location(data []byte) (l geo.Location) {
-	if json.Unmarshal(data, &r); len(r.Results) > 0 {
+func (r *geocodeResponse) Location() (l geo.Location) {
+	if len(r.Results) > 0 {
 		g := r.Results[0].Geometry
 		l = geo.Location{g.Lat, g.Lng}
 	}
 	return
 }
 
-func (r GeocodeResponse) Address(data []byte) (address string) {
-	if json.Unmarshal(data, &r); len(r.Results) > 0 {
+func (r *geocodeResponse) Address() (address string) {
+	if len(r.Results) > 0 {
 		address = r.Results[0].Formatted
 	}
 	return
+}
+
+func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
+	return r
 }
