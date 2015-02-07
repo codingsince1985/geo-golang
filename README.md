@@ -3,9 +3,14 @@ GeoService in Go
 
 A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
-This project is designed to open to any Geocoding service. Based on it, I've also implemented [Google Maps](https://developers.google.com/maps/documentation/geocoding/), [MapQuest](http://www.mapquestapi.com/geocoding/) and [OpenCage](http://geocoder.opencagedata.com/api.html) client in ~50 LoC each.
+This product is designed to open to any Geocoding service. Based on it
+* [Google Maps](https://developers.google.com/maps/documentation/geocoding/)
+* [MapQuest](http://www.mapquestapi.com/geocoding/)
+* [OpenCage](http://geocoder.opencagedata.com/api.html)
 
-Here is how to use it.
+clients are implemented in ~50 LoC each.
+
+It allows you to switch from one service to another by changing only **one** line. Just like this!
 
 ```go
 package main
