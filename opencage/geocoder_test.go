@@ -9,7 +9,7 @@ import (
 
 const key = "YOUR_KEY"
 
-var geocoder = opencage.NewGeocoder(key)
+var geocoder = opencage.Geocoder(key)
 
 func TestGeocode(t *testing.T) {
 	location, err := geocoder.Geocode("Melbourne VIC")

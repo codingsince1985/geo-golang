@@ -11,7 +11,7 @@ type baseUrl string
 
 type geocodeResponse map[string]interface{}
 
-func NewGeocoder() geo.Geocoder {
+func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
 		baseUrl("http://open.mapquestapi.com/nominatim/v1/"),
 		&geocodeResponse{},

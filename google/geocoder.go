@@ -19,7 +19,7 @@ type geocodeResponse struct {
 	}
 }
 
-func NewGeocoder() geo.Geocoder {
+func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
 		baseUrl("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&"),
 		&geocodeResponse{},

@@ -3,14 +3,14 @@ GeoService in Go
 
 A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
-This product is designed to open to any Geocoding service. Based on it
+This product is designed to open to any Geocoding service. Based on it,
 * [Google Maps](https://developers.google.com/maps/documentation/geocoding/)
 * [MapQuest](http://www.mapquestapi.com/geocoding/)
 * [OpenCage](http://geocoder.opencagedata.com/api.html)
 
 clients are implemented in ~50 LoC each.
 
-It allows you to switch from one service to another by changing only **one** line. Just like this!
+It allows you to switch from one service to another by changing only 1 line. Just like this.
 
 ```go
 package main
@@ -28,13 +28,13 @@ const lat, lng = -37.8167416, 144.964463
 
 func main() {
 	// Goole Maps
-	try(google.NewGeocoder())
+	try(google.Geocoder())
 
 	// MapQuest
-	try(mapquest.NewGeocoder())
+	try(mapquest.Geocoder())
 
 	// OpenCage Data
-	try(opencage.NewGeocoder("OPENCAGE_KEY"))
+	try(opencage.Geocoder("OPENCAGE_KEY"))
 }
 
 func try(geocoder geo.Geocoder) {

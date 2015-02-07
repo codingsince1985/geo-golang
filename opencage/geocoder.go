@@ -17,7 +17,7 @@ type geocodeResponse struct {
 	}
 }
 
-func NewGeocoder(key string) geo.Geocoder {
+func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
 		baseUrl("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
 		&geocodeResponse{},

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var geocoder = google.NewGeocoder()
+var geocoder = google.Geocoder()
 
 func TestGeocode(t *testing.T) {
 	location, err := geocoder.Geocode("Melbourne VIC")

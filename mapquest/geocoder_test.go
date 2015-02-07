@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var geocoder = mapquest.NewGeocoder()
+var geocoder = mapquest.Geocoder()
 
 func TestGeocode(t *testing.T) {
 	location, err := geocoder.Geocode("Melbourne VIC")
