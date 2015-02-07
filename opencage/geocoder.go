@@ -24,12 +24,12 @@ func NewGeocoder(key string) geo.Geocoder {
 	}
 }
 
-func (e baseUrl) GeocodeUrl(address string) string {
-	return string(e) + address
+func (b baseUrl) GeocodeUrl(address string) string {
+	return string(b) + address
 }
 
-func (e baseUrl) ReverseGeocodeUrl(l geo.Location) string {
-	return string(e) + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
+func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+	return string(b) + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
 }
 
 func (r *geocodeResponse) Location() (l geo.Location) {

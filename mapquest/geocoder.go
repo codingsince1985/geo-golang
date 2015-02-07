@@ -18,12 +18,12 @@ func NewGeocoder() geo.Geocoder {
 	}
 }
 
-func (e baseUrl) GeocodeUrl(address string) string {
-	return string(e) + "search.php?format=json&limit=1&q=" + address
+func (b baseUrl) GeocodeUrl(address string) string {
+	return string(b) + "search.php?format=json&limit=1&q=" + address
 }
 
-func (e baseUrl) ReverseGeocodeUrl(l geo.Location) string {
-	return string(e) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
+func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+	return string(b) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
 func (r *geocodeResponse) Location() (l geo.Location) {
