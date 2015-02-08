@@ -1,5 +1,5 @@
-// Package mapquest is a geo-golang based MapRequest geocode/reverse geocode client
-package mapquest
+// Package nominatim is a geo-golang based MapRequest Nominatim geocode/reverse geocode client
+package nominatim
 
 import (
 	"fmt"
