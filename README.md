@@ -7,6 +7,7 @@ This product is designed to open to any Geocoding service. Based on it,
 + [Google Maps](https://developers.google.com/maps/documentation/geocoding/)
 + MapQuest
  - [Nominatim](http://open.mapquestapi.com/nominatim/)
+ - [Open](http://open.mapquestapi.com/geocoding/)
 + [OpenCage](http://geocoder.opencagedata.com/api.html)
 + [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
 
@@ -23,6 +24,7 @@ import (
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
+	"github.com/codingsince1985/geo-golang/mapquest/open"
 	"github.com/codingsince1985/geo-golang/opencage"
 )
 
@@ -35,6 +37,9 @@ func main() {
 
 	// MapQuest Nominatim
 	try(nominatim.Geocoder())
+
+	// MapQuest Open
+	try(open.Geocoder("MAPQUEST_KEY"))
 
 	// OpenCage Data
 	try(opencage.Geocoder("OPENCAGE_KEY"))
