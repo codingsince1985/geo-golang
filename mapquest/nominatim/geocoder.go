@@ -9,7 +9,9 @@ import (
 
 type baseUrl string
 
-type geocodeResponse map[string]interface{}
+type geocodeResponse struct {
+	Display_Name, Lat, Lon, Error string
+}
 
 func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
@@ -27,15 +29,15 @@ func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
 }
 
 func (r *geocodeResponse) Location() (l geo.Location) {
-	if (*r)["lat"] != nil && (*r)["lon"] != nil {
-		return geo.Location{parseFloat((*r)["lat"]), parseFloat((*r)["lon"])}
+	if r.Error == "" {
+		l = geo.Location{parseFloat(r.Lat), parseFloat(r.Lon)}
 	}
 	return
 }
 
 func (r *geocodeResponse) Address() (address string) {
-	if (*r)["error"] == nil {
-		address = (*r)["display_name"].(string)
+	if r.Error == "" {
+		address = r.Display_Name
 	}
 	return
 }
