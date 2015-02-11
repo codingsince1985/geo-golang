@@ -76,9 +76,10 @@ func (g Geocoder) ReverseGeocode(lat, lng float64) (string, error) {
 
 // Response gets response from url
 func response(url string, obj ResponseParser) {
-	if request, err := http.NewRequest("GET", url, nil); err == nil {
-		if response, err := (&http.Client{}).Do(request); err == nil {
-			if data, err := ioutil.ReadAll(response.Body); err == nil {
+	if req, err := http.NewRequest("GET", url, nil); err == nil {
+		if resp, err := (&http.Client{}).Do(req); err == nil {
+			defer resp.Body.Close()
+			if data, err := ioutil.ReadAll(resp.Body); err == nil {
 				json.Unmarshal([]byte(strings.Trim(string(data), " []")), obj)
 			}
 		}
