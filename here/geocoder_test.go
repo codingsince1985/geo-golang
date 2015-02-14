@@ -20,14 +20,14 @@ func TestGeocode(t *testing.T) {
 }
 
 func TestReverseGeocode(t *testing.T) {
-	address, err := geocoder.ReverseGeocode(-37.81753, 144.96715)
+	address, err := geocoder.ReverseGeocode(-37.816742, 144.964463)
 	if err != nil || !strings.HasSuffix(address, "VIC 3000, Australia") {
 		t.Error("TestReverseGeocode() failed", err, address)
 	}
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
-	_, err := geocoder.ReverseGeocode(-37.81753, 164.96715)
+	_, err := geocoder.ReverseGeocode(-37.816742, 164.964463)
 	if err != geo.NoResultError {
 		t.Error("TestReverseGeocodeWithNoResult() failed", err)
 	}
