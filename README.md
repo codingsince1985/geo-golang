@@ -6,14 +6,15 @@ A geocoding service developed in Go's way, idiomatic and elegant, not just in go
 This product is designed to open to any Geocoding service. Based on it,
 + [Google Maps](https://developers.google.com/maps/documentation/geocoding/)
 + MapQuest
- - [Nominatim](http://open.mapquestapi.com/nominatim/)
- - [Open](http://open.mapquestapi.com/geocoding/)
+ - [Nominatim Search](http://open.mapquestapi.com/nominatim/)
+ - [Open Geocoding](http://open.mapquestapi.com/geocoding/)
 + [OpenCage](http://geocoder.opencagedata.com/api.html)
 + [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
++ [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
 
 clients are implemented in ~50 LoC each.
 
-It allows you to switch from one service to another by changing only 1 line. Just like this.
+It allows you to switch from one service to another by changing only 1 line, or enjoy all the free quota (requests/sec, day, month...) from them at the same time. Just like this.
 
 ```go
 package main
@@ -21,6 +22,7 @@ package main
 import (
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/bing"
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
@@ -46,6 +48,9 @@ func main() {
 
 	// HERE
 	try(here.Geocoder("HERE_APP_ID", "HERE_APP_CODE", RADIUS))
+
+	// Bing
+	try(bing.Geocoder("BING_KEY"))
 }
 
 func try(geocoder geo.Geocoder) {
@@ -55,3 +60,7 @@ func try(geocoder geo.Geocoder) {
 	fmt.Printf("Address of (%f,%f) is %s\n\n", lat, lng, address)
 }
 ```
+
+License
+=
+geo-goang is distributed under the terms of the MIT license. See LICENSE for details.
