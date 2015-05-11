@@ -17,7 +17,7 @@ type geocodeResponse struct {
 	}
 }
 
-// Geocoder construct OpenCage geocoder
+// Geocoder constructs OpenCage geocoder
 func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
 		baseURL("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),

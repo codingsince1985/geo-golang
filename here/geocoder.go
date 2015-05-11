@@ -29,7 +29,7 @@ type geocodeResponse struct {
 
 var r = 100
 
-// Geocoder construct HERE geocoder
+// Geocoder constructs HERE geocoder
 func Geocoder(id, code string, radius int) geo.Geocoder {
 	if radius > 0 {
 		r = radius

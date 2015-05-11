@@ -22,7 +22,7 @@ type geocodeResponse struct {
 	}
 }
 
-// Geocoder construct Bing geocoder
+// Geocoder constructs Bing geocoder
 func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
 		baseURL("http://dev.virtualearth.net/REST/v1/Locations*key=" + key),
