@@ -13,6 +13,7 @@ type geocodeResponse struct {
 	Display_Name, Lat, Lon, Error string
 }
 
+// Geocoder construct MapRequest Nominatim geocoder
 func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
 		baseURL("http://open.mapquestapi.com/nominatim/v1/"),

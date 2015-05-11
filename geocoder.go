@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-// TimeoutError occurs when no response returned within timeoutInSeconds
-var TimeoutError = errors.New("TIMEOUT")
+// ErrTimeout occurs when no response returned within timeoutInSeconds
+var ErrTimeout = errors.New("TIMEOUT")
 var timeoutInSeconds = time.Second * 8
 
-// NoResultError occurs when no result returned
-var NoResultError = errors.New("NO_RESULT")
+// ErrNoResult occurs when no result returned
+var ErrNoResult = errors.New("NO_RESULT")
 
 // Location is the output of Geocode
 type Location struct {
@@ -54,7 +54,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 	case location := <-ch:
 		return location, anyError(location)
 	case <-time.After(timeoutInSeconds):
-		return Location{}, TimeoutError
+		return Location{}, ErrTimeout
 	}
 }
 
@@ -70,7 +70,7 @@ func (g Geocoder) ReverseGeocode(lat, lng float64) (string, error) {
 	case address := <-ch:
 		return address, anyError(address)
 	case <-time.After(timeoutInSeconds):
-		return "", TimeoutError
+		return "", ErrTimeout
 	}
 }
 
@@ -90,11 +90,11 @@ func anyError(v interface{}) (err error) {
 	switch v := v.(type) {
 	case Location:
 		if v.Lat == 0 && v.Lng == 0 {
-			return NoResultError
+			return ErrNoResult
 		}
 	case string:
 		if v == "" {
-			return NoResultError
+			return ErrNoResult
 		}
 	}
 	return

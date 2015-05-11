@@ -20,6 +20,7 @@ type geocodeResponse struct {
 	}
 }
 
+// Geocoder construct MapRequest Open geocoder
 func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
 		baseURL("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
