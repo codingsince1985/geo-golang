@@ -7,10 +7,10 @@ import (
 	"testing"
 )
 
-const app_id = "YOUR_APP_ID"
-const app_code = "YOUR_APP_CODE"
+const appID = "YOUR_APP_ID"
+const appCode = "YOUR_APP_CODE"
 
-var geocoder = here.Geocoder(app_id, app_code, 100)
+var geocoder = here.Geocoder(appID, appCode, 100)
 
 func TestGeocode(t *testing.T) {
 	location, err := geocoder.Geocode("Melbourne VIC")

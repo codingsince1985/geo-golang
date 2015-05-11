@@ -6,7 +6,7 @@ import (
 	"github.com/codingsince1985/geo-golang"
 )
 
-type baseUrl string
+type baseURL string
 
 type geocodeResponse struct {
 	Results []struct {
@@ -21,16 +21,16 @@ type geocodeResponse struct {
 
 func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
-		baseUrl("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&"),
+		baseURL("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&"),
 		&geocodeResponse{},
 	}
 }
 
-func (b baseUrl) GeocodeUrl(address string) string {
+func (b baseURL) GeocodeURL(address string) string {
 	return string(b) + "address=" + address
 }
 
-func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + fmt.Sprintf("latlng=%f,%f", l.Lat, l.Lng)
 }
 

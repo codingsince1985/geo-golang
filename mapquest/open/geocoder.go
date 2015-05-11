@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type baseUrl string
+type baseURL string
 
 type geocodeResponse struct {
 	Results []struct {
@@ -22,16 +22,16 @@ type geocodeResponse struct {
 
 func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
-		baseUrl("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
+		baseURL("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
 		&geocodeResponse{},
 	}
 }
 
-func (b baseUrl) GeocodeUrl(address string) string {
+func (b baseURL) GeocodeURL(address string) string {
 	return strings.Replace(string(b), "*", "address", 1) + address
 }
 
-func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", "reverse", 1) + fmt.Sprintf("%f,%f", l.Lat, l.Lng)
 }
 

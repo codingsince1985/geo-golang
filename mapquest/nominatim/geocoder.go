@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-type baseUrl string
+type baseURL string
 
 type geocodeResponse struct {
 	Display_Name, Lat, Lon, Error string
@@ -15,16 +15,16 @@ type geocodeResponse struct {
 
 func Geocoder() geo.Geocoder {
 	return geo.Geocoder{
-		baseUrl("http://open.mapquestapi.com/nominatim/v1/"),
+		baseURL("http://open.mapquestapi.com/nominatim/v1/"),
 		&geocodeResponse{},
 	}
 }
 
-func (b baseUrl) GeocodeUrl(address string) string {
+func (b baseURL) GeocodeURL(address string) string {
 	return string(b) + "search.php?format=json&limit=1&q=" + address
 }
 
-func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 

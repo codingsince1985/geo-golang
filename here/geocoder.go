@@ -6,7 +6,7 @@ import (
 	"github.com/codingsince1985/geo-golang"
 )
 
-type baseUrls struct {
+type baseURL struct {
 	forGeocode, forReverseGeocode string
 }
 
@@ -35,7 +35,7 @@ func Geocoder(id, code string, radius int) geo.Geocoder {
 	}
 	p := "gen=8&app_id=" + id + "&app_code=" + code
 	return geo.Geocoder{
-		baseUrls{
+		baseURL{
 			"http://geocoder.cit.api.here.com/6.2/geocode.json?" + p,
 			"http://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p,
 		},
@@ -43,11 +43,11 @@ func Geocoder(id, code string, radius int) geo.Geocoder {
 	}
 }
 
-func (b baseUrls) GeocodeUrl(address string) string {
+func (b baseURL) GeocodeURL(address string) string {
 	return b.forGeocode + "&searchtext=" + address
 }
 
-func (b baseUrls) ReverseGeocodeUrl(l geo.Location) string {
+func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return b.forReverseGeocode + fmt.Sprintf("&prox=%f,%f,%d", l.Lat, l.Lng, r)
 }
 

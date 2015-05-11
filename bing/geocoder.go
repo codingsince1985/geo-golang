@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type baseUrl string
+type baseURL string
 
 type geocodeResponse struct {
 	ResourceSets []struct {
@@ -24,16 +24,16 @@ type geocodeResponse struct {
 
 func Geocoder(key string) geo.Geocoder {
 	return geo.Geocoder{
-		baseUrl("http://dev.virtualearth.net/REST/v1/Locations*key=" + key),
+		baseURL("http://dev.virtualearth.net/REST/v1/Locations*key=" + key),
 		&geocodeResponse{},
 	}
 }
 
-func (b baseUrl) GeocodeUrl(address string) string {
+func (b baseURL) GeocodeURL(address string) string {
 	return strings.Replace(string(b), "*", "?q="+address+"&", 1)
 }
 
-func (b baseUrl) ReverseGeocodeUrl(l geo.Location) string {
+func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", fmt.Sprintf("/%f,%f?", l.Lat, l.Lng), 1)
 }
 

@@ -25,8 +25,8 @@ type Location struct {
 
 // EndpointBuilder defines functions that build urls for geocode/reverse geocode
 type EndpointBuilder interface {
-	GeocodeUrl(string) string
-	ReverseGeocodeUrl(Location) string
+	GeocodeURL(string) string
+	ReverseGeocodeURL(Location) string
 }
 
 // ResponseParser defines functions that parse response of geocode/reverse geocode
@@ -46,7 +46,7 @@ type Geocoder struct {
 func (g Geocoder) Geocode(address string) (Location, error) {
 	ch := make(chan Location)
 	go func() {
-		response(g.GeocodeUrl(url.QueryEscape(address)), g.ResponseObject())
+		response(g.GeocodeURL(url.QueryEscape(address)), g.ResponseObject())
 		ch <- g.Location()
 	}()
 
@@ -62,7 +62,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 func (g Geocoder) ReverseGeocode(lat, lng float64) (string, error) {
 	ch := make(chan string)
 	go func() {
-		response(g.ReverseGeocodeUrl(Location{lat, lng}), g.ResponseObject())
+		response(g.ReverseGeocodeURL(Location{lat, lng}), g.ResponseObject())
 		ch <- g.Address()
 	}()
 
