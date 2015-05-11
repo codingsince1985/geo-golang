@@ -1,5 +1,6 @@
 GeoService in Go
-=
+==
+[![GoDoc](https://godoc.org/github.com/codingsince1985/geo-golang?status.svg)](https://godoc.org/github.com/codingsince1985/geo-golang)
 
 A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
@@ -62,5 +63,5 @@ func try(geocoder geo.Geocoder) {
 ```
 
 License
-=
+==
 geo-goang is distributed under the terms of the MIT license. See LICENSE for details.
