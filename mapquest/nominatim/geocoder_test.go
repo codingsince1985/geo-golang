@@ -25,7 +25,7 @@ func TestReverseGeocode(t *testing.T) {
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
 	_, err := geocoder.ReverseGeocode(-37.816742, 164.964463)
-	if err != geo.NoResultError {
+	if err != geo.ErrNoResult {
 		t.Error("TestReverseGeocodeWithNoResult() failed", err)
 	}
 }
