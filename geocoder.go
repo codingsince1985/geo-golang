@@ -44,7 +44,7 @@ type Geocoder struct {
 
 // Geocode returns location for address
 func (g Geocoder) Geocode(address string) (Location, error) {
-	ch := make(chan Location)
+	ch := make(chan Location, 1)
 	go func() {
 		response(g.GeocodeURL(url.QueryEscape(address)), g.ResponseObject())
 		ch <- g.Location()
@@ -60,7 +60,7 @@ func (g Geocoder) Geocode(address string) (Location, error) {
 
 // ReverseGeocode returns address for location
 func (g Geocoder) ReverseGeocode(lat, lng float64) (string, error) {
-	ch := make(chan string)
+	ch := make(chan string, 1)
 	go func() {
 		response(g.ReverseGeocodeURL(Location{lat, lng}), g.ResponseObject())
 		ch <- g.Address()
