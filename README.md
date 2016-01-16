@@ -89,4 +89,4 @@ Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
 ```
 License
 ==
-geo-goang is distributed under the terms of the MIT license. See LICENSE for details.
+geo-golang is distributed under the terms of the MIT license. See LICENSE for details.
