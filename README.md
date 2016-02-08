@@ -29,6 +29,7 @@ import (
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
 	"github.com/codingsince1985/geo-golang/mapquest/open"
 	"github.com/codingsince1985/geo-golang/opencage"
+	"github.com/codingsince1985/geo-golang/mapbox"
 )
 
 const addr = "Melbourne VIC"
@@ -52,6 +53,9 @@ func main() {
 
 	// Bing
 	try(bing.Geocoder("BING_KEY"))
+
+	// Mapbox
+	try(mapbox.Geocoder("YOUR_ACCESS_TOKEN"))
 }
 
 func try(geocoder geo.Geocoder) {
@@ -86,6 +90,10 @@ Address of (-37.816742,144.964463) is 40-44 Elizabeth St, Melbourne VIC 3000, Au
 // Bing
 Melbourne VIC location is {-37.82429885864258 144.97799682617188}
 Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
+
+// Mapbox
+Melbourne VIC location is {-37.8142 144.9632}
+Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
 ```
 License
 ==
