@@ -12,6 +12,7 @@ This product is designed to open to any Geocoding service. Based on it,
 + [OpenCage](http://geocoder.opencagedata.com/api.html)
 + [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
 + [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
++ [Mapbox](https://www.mapbox.com/developers/api/geocoding/)
 
 clients are implemented in ~50 LoC each.
 
