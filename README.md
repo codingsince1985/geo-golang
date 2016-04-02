@@ -41,7 +41,7 @@ func main() {
 	try(google.Geocoder())
 
 	// MapQuest Nominatim
-	try(nominatim.Geocoder())
+	try(nominatim.Geocoder("MAPQUEST_KEY"))
 
 	// MapQuest Open
 	try(open.Geocoder("MAPQUEST_KEY"))

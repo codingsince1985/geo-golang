@@ -10,10 +10,9 @@ import (
 type baseURL string
 
 type geocodeResponse struct {
-	Query []interface{}
 	Features []struct {
 		Place_Name string
-		Center [2]float64
+		Center     [2]float64
 	}
 }
 

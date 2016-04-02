@@ -13,8 +13,11 @@ type geocodeResponse struct {
 	Display_Name, Lat, Lon, Error string
 }
 
+var key string
+
 // Geocoder constructs MapRequest Nominatim geocoder
-func Geocoder() geo.Geocoder {
+func Geocoder(k string) geo.Geocoder {
+	key = k
 	return geo.Geocoder{
 		baseURL("http://open.mapquestapi.com/nominatim/v1/"),
 		&geocodeResponse{},
@@ -22,11 +25,11 @@ func Geocoder() geo.Geocoder {
 }
 
 func (b baseURL) GeocodeURL(address string) string {
-	return string(b) + "search.php?format=json&limit=1&q=" + address
+	return string(b) + "search.php?key=" + key + "&format=json&limit=1&q=" + address
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
-	return string(b) + fmt.Sprintf("reverse.php?format=json&lat=%f&lon=%f", l.Lat, l.Lng)
+	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
 func (r *geocodeResponse) Location() (l geo.Location) {

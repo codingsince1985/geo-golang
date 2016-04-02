@@ -12,9 +12,7 @@ type baseURL string
 type geocodeResponse struct {
 	Results []struct {
 		Locations []struct {
-			LatLng struct {
-				Lat, Lng float64
-			}
+			LatLng                                     geo.Location
 			Street, AdminArea5, AdminArea3, AdminArea1 string
 		}
 	}
@@ -37,8 +35,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 }
 
 func (r *geocodeResponse) Location() geo.Location {
-	p := r.Results[0].Locations[0].LatLng
-	return geo.Location{p.Lat, p.Lng}
+	return r.Results[0].Locations[0].LatLng
 }
 
 func (r *geocodeResponse) Address() (address string) {
