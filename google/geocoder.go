@@ -1,27 +1,28 @@
-// Package google is a geo-golang based Google Maps geocode/reverse geocode client
+// Package google is a geo-golang based Google Geo Location API
+// https://developers.google.com/maps/documentation/geocoding/intro
 package google
 
 import (
 	"fmt"
-	"github.com/codingsince1985/geo-golang"
+	geo "github.com/codingsince1985/geo-golang"
 )
 
 type baseURL string
 
 type geocodeResponse struct {
 	Results []struct {
-		Formatted_Address string
-		Geometry          struct {
+		FormattedAddress string `json:"formatted_address"`
+		Geometry         struct {
 			Location geo.Location
 		}
 	}
 }
 
 // Geocoder constructs Google geocoder
-func Geocoder() geo.Geocoder {
+func Geocoder(apiKey string) geo.Geocoder {
 	return geo.Geocoder{
-		baseURL("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&"),
-		&geocodeResponse{},
+		EndpointBuilder: baseURL(fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?&key=%s&", apiKey)),
+		ResponseParser:  &geocodeResponse{},
 	}
 }
 
@@ -42,7 +43,7 @@ func (r *geocodeResponse) Location() (l geo.Location) {
 
 func (r *geocodeResponse) Address() (address string) {
 	if len(r.Results) > 0 {
-		address = r.Results[0].Formatted_Address
+		address = r.Results[0].FormattedAddress
 	}
 	return
 }
