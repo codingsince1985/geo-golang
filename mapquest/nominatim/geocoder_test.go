@@ -3,11 +3,12 @@ package nominatim_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
+	"os"
 	"strings"
 	"testing"
 )
 
-const key = "YOUR_KEY"
+var key = os.Getenv("NOMINATUM_KEY")
 
 var geocoder = nominatim.Geocoder(key)
 

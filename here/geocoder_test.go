@@ -3,12 +3,13 @@ package here_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/here"
+	"os"
 	"strings"
 	"testing"
 )
 
-const appID = "YOUR_APP_ID"
-const appCode = "YOUR_APP_CODE"
+var appID = os.Getenv("HERE_APP_ID")
+var appCode = os.Getenv("HERE_APP_CODE")
 
 var geocoder = here.Geocoder(appID, appCode, 100)
 

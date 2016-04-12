@@ -3,11 +3,12 @@ package bing_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/bing"
+	"os"
 	"strings"
 	"testing"
 )
 
-const key = "YOUR_KEY"
+var key = os.Getenv("BING_API_KEY")
 
 var geocoder = bing.Geocoder(key)
 
