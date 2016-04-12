@@ -3,11 +3,12 @@ package google_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/google"
+	"os"
 	"strings"
 	"testing"
 )
 
-const token = "YOUR_ACCESS_TOKEN"
+var token = os.Getenv("GOOGLE_API_KEY")
 
 var geocoder = google.Geocoder(token)
 

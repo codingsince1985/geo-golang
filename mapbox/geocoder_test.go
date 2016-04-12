@@ -3,11 +3,12 @@ package mapbox_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/mapbox"
+	"os"
 	"strings"
 	"testing"
 )
 
-const token = "YOUR_ACCESS_TOKEN"
+var token = os.Getenv("MAPBOX_API_KEY")
 
 var geocoder = mapbox.Geocoder(token)
 

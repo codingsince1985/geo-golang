@@ -3,11 +3,12 @@ package open_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/mapquest/open"
+	"os"
 	"strings"
 	"testing"
 )
 
-const key = "YOUR_KEY"
+var key = os.Getenv("MAPQUEST_OPEN_KEY")
 
 var geocoder = open.Geocoder(key)
 
