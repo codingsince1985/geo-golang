@@ -31,7 +31,8 @@ func Geocoder(key string) geo.Geocoder {
 }
 
 func (b baseURL) GeocodeURL(address string) string {
-	return strings.Replace(string(b), "*", "?q="+address+"&", 1)
+	u := strings.Replace(string(b), "*", "?q="+address+"&", 1)
+	return u
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
@@ -39,17 +40,20 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 }
 
 func (r *geocodeResponse) Location() (l geo.Location) {
-	if len(r.ResourceSets[0].Resources) > 0 {
-		c := r.ResourceSets[0].Resources[0].Point.Coordinates
-		l = geo.Location{c[0], c[1]}
+	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
+		return
 	}
+	c := r.ResourceSets[0].Resources[0].Point.Coordinates
+	l = geo.Location{c[0], c[1]}
 	return
 }
 
 func (r *geocodeResponse) Address() (address string) {
-	if len(r.ResourceSets[0].Resources) > 0 {
-		address = r.ResourceSets[0].Resources[0].Address.FormattedAddress
+	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
+		return
 	}
+
+	address = r.ResourceSets[0].Resources[0].Address.FormattedAddress
 	return
 }
 
