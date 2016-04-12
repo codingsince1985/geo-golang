@@ -10,6 +10,7 @@ This product is designed to open to any Geocoding service. Based on it,
  - [Nominatim Search](http://open.mapquestapi.com/nominatim/)
  - [Open Geocoding](http://open.mapquestapi.com/geocoding/)
 + [OpenCage](http://geocoder.opencagedata.com/api.html)
++ [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
 + [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
 + [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
 + [Mapbox](https://www.mapbox.com/developers/api/geocoding/)
