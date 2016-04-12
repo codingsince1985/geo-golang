@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-var key = os.Getenv("NOMINATUM_KEY")
+var key = os.Getenv("MAPQUEST_NOMINATUM_KEY")
 
 var geocoder = nominatim.Geocoder(key)
 
