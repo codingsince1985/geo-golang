@@ -7,7 +7,9 @@ import (
 	"testing"
 )
 
-var geocoder = google.Geocoder()
+const token = "YOUR_ACCESS_TOKEN"
+
+var geocoder = google.Geocoder(token)
 
 func TestGeocode(t *testing.T) {
 	if location, err := geocoder.Geocode("Melbourne VIC"); err != nil || location.Lat != -37.814107 || location.Lng != 144.96328 {
