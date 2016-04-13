@@ -10,10 +10,10 @@ This product is designed to open to any Geocoding service. Based on it,
  - [Nominatim Search](http://open.mapquestapi.com/nominatim/)
  - [Open Geocoding](http://open.mapquestapi.com/geocoding/)
 + [OpenCage](http://geocoder.opencagedata.com/api.html)
-+ [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
 + [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
 + [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
 + [Mapbox](https://www.mapbox.com/developers/api/geocoding/)
++ [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
 
 clients are implemented in ~50 LoC each.
 
@@ -32,6 +32,7 @@ import (
 	"github.com/codingsince1985/geo-golang/mapquest/open"
 	"github.com/codingsince1985/geo-golang/opencage"
 	"github.com/codingsince1985/geo-golang/mapbox"
+	"github.com/codingsince1985/geo-golang/openstreetmap"
 )
 
 const addr = "Melbourne VIC"
@@ -58,6 +59,9 @@ func main() {
 
 	// Mapbox
 	try(mapbox.Geocoder("YOUR_ACCESS_TOKEN"))
+
+	// OpenStreetMap
+	try(openstreetmap.Geocoder())
 }
 
 func try(geocoder geo.Geocoder) {
@@ -96,6 +100,10 @@ Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
 // Mapbox
 Melbourne VIC location is {-37.8142 144.9632}
 Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
+
+// OpenStreetMap
+Melbourne VIC location is {-37.8142175 144.9631608}
+Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 ```
 License
 ==
