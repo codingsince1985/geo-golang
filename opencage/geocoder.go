@@ -17,9 +17,9 @@ type geocodeResponse struct {
 
 // Geocoder constructs OpenCage geocoder
 func Geocoder(key string) geo.Geocoder {
-	return geo.Geocoder{
-		baseURL("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
-		&geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -43,8 +43,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.Results[0].Formatted
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }

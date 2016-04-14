@@ -18,9 +18,9 @@ type geocodeResponse struct {
 
 // Geocoder constructs Mapbox geocoder
 func Geocoder(token string) geo.Geocoder {
-	return geo.Geocoder{
-		baseURL("https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?access_token=" + token),
-		&geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL("https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?access_token=" + token),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -45,8 +45,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.Features[0].PlaceName
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }

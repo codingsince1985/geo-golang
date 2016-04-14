@@ -20,9 +20,9 @@ type geocodeResponse struct {
 
 // Geocoder constructs MapRequest Open geocoder
 func Geocoder(key string) geo.Geocoder {
-	return geo.Geocoder{
-		baseURL("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
-		&geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -44,8 +44,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = p.Street + ", " + p.AdminArea5 + ", " + p.AdminArea3 + ", " + p.AdminArea1
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }

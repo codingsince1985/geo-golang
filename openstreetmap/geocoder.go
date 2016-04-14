@@ -11,15 +11,17 @@ import (
 type baseURL string
 
 type geocodeResponse struct {
-	DisplayName     string `json:"display_name"`
-	Lat, Lon, Error string
+	DisplayName string `json:"display_name"`
+	Lat         string
+	Lon         string
+	Error       string
 }
 
 // Geocoder constructs OpenStreetMap geocoder
 func Geocoder() geo.Geocoder {
-	return geo.Geocoder{
-		baseURL("https://nominatim.openstreetmap.org/"),
-		&geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL("https://nominatim.openstreetmap.org/"),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -43,10 +45,6 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.DisplayName
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }
 
 func parseFloat(value interface{}) float64 {

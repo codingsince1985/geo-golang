@@ -35,12 +35,12 @@ func Geocoder(id, code string, radius int) geo.Geocoder {
 		r = radius
 	}
 	p := "gen=8&app_id=" + id + "&app_code=" + code
-	return geo.Geocoder{
-		baseURL{
+	return geo.HTTPGeocoder{
+		EndpointBuilder: baseURL{
 			"http://geocoder.cit.api.here.com/6.2/geocode.json?" + p,
 			"http://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p,
 		},
-		&geocodeResponse{},
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -65,8 +65,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.Response.View[0].Result[0].Location.Address.Label
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }
