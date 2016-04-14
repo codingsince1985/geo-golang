@@ -11,8 +11,8 @@ type baseURL string
 
 type geocodeResponse struct {
 	Features []struct {
-		Place_Name string
-		Center     [2]float64
+		PlaceName string `json:"place_name"`
+		Center    [2]float64
 	}
 }
 
@@ -42,7 +42,7 @@ func (r *geocodeResponse) Location() (l geo.Location) {
 
 func (r *geocodeResponse) Address() (address string) {
 	if len(r.Features) > 0 {
-		address = r.Features[0].Place_Name
+		address = r.Features[0].PlaceName
 	}
 	return
 }
