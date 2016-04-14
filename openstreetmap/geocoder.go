@@ -11,7 +11,8 @@ import (
 type baseURL string
 
 type geocodeResponse struct {
-	Display_Name, Lat, Lon, Error string
+	DisplayName     string `json:"display_name"`
+	Lat, Lon, Error string
 }
 
 // Geocoder constructs OpenStreetMap geocoder
@@ -39,7 +40,7 @@ func (r *geocodeResponse) Location() (l geo.Location) {
 
 func (r *geocodeResponse) Address() (address string) {
 	if r.Error == "" {
-		address = r.Display_Name
+		address = r.DisplayName
 	}
 	return
 }
