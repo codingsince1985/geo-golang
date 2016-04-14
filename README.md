@@ -1,6 +1,6 @@
 GeoService in Go
 ==
-[![GoDoc](https://godoc.org/github.com/codingsince1985/geo-golang?status.svg)](https://godoc.org/github.com/codingsince1985/geo-golang) [![Build Status](https://travis-ci.org/codingsince1985/geo-golang.svg?branch=master)](https://travis-ci.org/codingsince1985/geo-golang) [![Coverage Status](https://coveralls.io/repos/github/codingsince1985/geo-golang/badge.svg?branch=master)](https://coveralls.io/github/codingsince1985/geo-golang?branch=master)
+[![GoDoc](https://godoc.org/github.com/codingsince1985/geo-golang?status.svg)](https://godoc.org/github.com/codingsince1985/geo-golang) [![Build Status](https://travis-ci.org/codingsince1985/geo-golang.svg?branch=master)](https://travis-ci.org/codingsince1985/geo-golang) [![Coverage Status](https://coveralls.io/repos/github/codingsince1985/geo-golang/badge.svg?branch=master)](https://coveralls.io/github/codingsince1985/geo-golang?branch=master) [![Go Report Card](https://goreportcard.com/badge/codingsince1985/geo-golang)](https://goreportcard.com/report/codingsince1985/geo-golang)
 
 A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
