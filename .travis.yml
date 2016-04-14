@@ -13,7 +13,8 @@ script:
 # Uses go list to inspect all packages and dependencies to run full code coverage across all packages in project
 - go list -f '"go test -covermode count -coverprofile {{.Name}}.coverprofile -coverpkg={{range $i, $f := .Deps}}{{if eq (printf "%.37s" $f) "github.com/codingsince1985/geo-golang" }}{{$f}},{{end}}{{end}}{{.ImportPath}} {{.ImportPath}}"' ./... | xargs -I {} bash -c {}
 - gover
-- goveralls -service=travis-ci -coverprofile=gover.coverprofile
+# Only send coveralls.io code coverage on 1.5 build
+- '[ "${TRAVIS_GO_VERSION}" = "1.5" ] && goveralls -service=travis-ci -coverprofile=gover.coverprofile || true'
 env:
   global:
 # Generated encrypted environment variables of Geo API keys (won't work on forks/pull-request travis-ci builds): https://docs.travis-ci.com/user/environment-variables/#Encrypted-Variables
