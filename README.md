@@ -33,35 +33,43 @@ import (
 	"github.com/codingsince1985/geo-golang/opencage"
 	"github.com/codingsince1985/geo-golang/mapbox"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
+	"github.com/codingsince1985/geo-golang/chained"
 )
 
 const addr = "Melbourne VIC"
 const lat, lng = -37.8167416, 144.964463
 
 func main() {
-	// Goole Maps
-	try(google.Geocoder())
+	fmt.Println("Google Geocoding API")
+	try(google.Geocoder(os.Getenv("GOOGLE_API_KEY")))
 
-	// MapQuest Nominatim
-	try(nominatim.Geocoder("MAPQUEST_KEY"))
+	fmt.Println("Mapquest Nominatim")
+	try(nominatim.Geocoder(os.Getenv("MAPQUEST_NOMINATUM_KEY")))
 
-	// MapQuest Open
-	try(open.Geocoder("MAPQUEST_KEY"))
+	fmt.Println("Mapquest Open streetmaps")
+	try(open.Geocoder(os.Getenv("MAPQUEST_OPEN_KEY")))
 
-	// OpenCage Data
-	try(opencage.Geocoder("OPENCAGE_KEY"))
+	fmt.Println("OpenCage Data")
+	try(opencage.Geocoder(os.Getenv("OPENCAGE_API_KEY")))
 
-	// HERE
-	try(here.Geocoder("HERE_APP_ID", "HERE_APP_CODE", RADIUS))
+	fmt.Println("HERE API")
+	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), RADIUS))
 
-	// Bing
-	try(bing.Geocoder("BING_KEY"))
+	fmt.Println("Bing Geocoding API")
+	try(bing.Geocoder(os.Getenv("BING_API_KEY")))
 
-	// Mapbox
-	try(mapbox.Geocoder("YOUR_ACCESS_TOKEN"))
+	fmt.Println("Mapbox API")
+	try(mapbox.Geocoder(os.Getenv("MAPBOX_API_KEY")))
 
-	// OpenStreetMap
+	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
+
+	// Chained geocoder will fallback to subsequent geocoders
+	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
+	try(chained.Geocoder(
+		openstreetmap.Geocoder(),
+		google.Geocoder(os.Getenv("GOOGLE_API_KEY")),
+	))
 }
 
 func try(geocoder geo.Geocoder) {
@@ -73,35 +81,39 @@ func try(geocoder geo.Geocoder) {
 ```
 ###Result
 ```
-// Goole Maps
+Google Geocoding API
 Melbourne VIC location is {-37.814107 144.96328}
-Address of (-37.816742,144.964463) is 66 Elizabeth Street, Melbourne VIC 3000, Australia
+Address of (-37.816742,144.964463) is 66 Elizabeth St, Melbourne VIC 3000, Australia
 
-// MapQuest Nominatim
+Mapquest Nominatim
 Melbourne VIC location is {-37.8142176 144.9631608}
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
-// MapQuest Open
+Mapquest Open streetmaps
 Melbourne VIC location is {-37.814218 144.963161}
 Address of (-37.816742,144.964463) is Elizabeth Street, Melbourne, Victoria, AU
 
-// OpenCage Data
-Melbourne VIC location is {-37.8142176 144.9631608}
+OpenCage Data
+Melbourne VIC location is {-37.8142175 144.9631608}
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne VIC 3000, Australia
 
-// HERE
+HERE API
 Melbourne VIC location is {-37.81753 144.96715}
-Address of (-37.816742,144.964463) is 40-44 Elizabeth St, Melbourne VIC 3000, Australia
+Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3000, Australia
 
-// Bing
+Bing Geocoding API
 Melbourne VIC location is {-37.82429885864258 144.97799682617188}
 Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
 
-// Mapbox
+Mapbox API
 Melbourne VIC location is {-37.8142 144.9632}
 Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
 
-// OpenStreetMap
+OpenStreetMap
+Melbourne VIC location is {-37.8142175 144.9631608}
+Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+
+ChainedAPI[OpenStreetmap -> Google]
 Melbourne VIC location is {-37.8142175 144.9631608}
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 ```
