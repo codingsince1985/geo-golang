@@ -30,25 +30,23 @@ var geocoder = chained.Geocoder(
 )
 
 func TestGeocode(t *testing.T) {
-	if location, err := geocoder.Geocode("Melbourne VIC"); err != nil || location.Lat != -37.814107 || location.Lng != 144.96328 {
-		t.Error("TestGeocode() failed", err, location)
-	}
+	location, err := geocoder.Geocode("Melbourne VIC")
+	assert.NoError(t, err)
+	assert.Equal(t, geo.Location{Lat: -37.814107, Lng: 144.96328}, location)
 }
 
 func TestReverseGeocode(t *testing.T) {
-	if address, err := geocoder.ReverseGeocode(-37.816742, 144.964463); err != nil || !strings.HasSuffix(address, "Melbourne VIC 3000, Australia") {
-		t.Error("TestReverseGeocode() failed", err, address)
-	}
+	address, err := geocoder.ReverseGeocode(-37.816742, 144.964463)
+	assert.NoError(t, err)
+	assert.True(t, strings.HasSuffix(address, "Melbourne VIC 3000, Australia"))
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
-	if _, err := geocoder.ReverseGeocode(-37.816742, 164.964463); err != geo.ErrNoResult {
-		t.Error("TestReverseGeocodeWithNoResult() failed", err)
-	}
+	_, err := geocoder.ReverseGeocode(-37.816742, 164.964463)
+	assert.Equal(t, err, geo.ErrNoResult)
 }
 
 func TestChainedGeocode(t *testing.T) {
-
 	mock1 := data.Geocoder(
 		data.AddressToLocation{
 			"Austin,TX": geo.Location{Lat: 1, Lng: 2},
