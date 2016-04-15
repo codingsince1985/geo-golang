@@ -19,9 +19,9 @@ var key string
 // Geocoder constructs MapRequest Nominatim geocoder
 func Geocoder(k string) geo.Geocoder {
 	key = k
-	return geo.Geocoder{
-		baseURL("http://open.mapquestapi.com/nominatim/v1/"),
-		&geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL("http://open.mapquestapi.com/nominatim/v1/"),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -45,10 +45,6 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.DisplayName
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }
 
 func parseFloat(value interface{}) float64 {

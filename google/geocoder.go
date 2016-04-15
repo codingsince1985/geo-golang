@@ -20,9 +20,9 @@ type geocodeResponse struct {
 
 // Geocoder constructs Google geocoder
 func Geocoder(apiKey string) geo.Geocoder {
-	return geo.Geocoder{
-		EndpointBuilder: baseURL(fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?&key=%s&", apiKey)),
-		ResponseParser:  &geocodeResponse{},
+	return geo.HTTPGeocoder{
+		EndpointBuilder:       baseURL(fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?&key=%s&", apiKey)),
+		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
@@ -46,8 +46,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.Results[0].FormattedAddress
 	}
 	return
-}
-
-func (r *geocodeResponse) ResponseObject() geo.ResponseParser {
-	return r
 }
