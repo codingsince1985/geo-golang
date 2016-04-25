@@ -25,8 +25,8 @@ func Geocoder() geo.Geocoder {
 	}
 }
 
-// GeocoderLocal constructs OpenStreetMap geocoder using a custom installation of Nominatim
-func GeocoderLocal(nominatimURL string) geo.Geocoder {
+// GeocoderWithURL constructs OpenStreetMap geocoder using a custom installation of Nominatim
+func GeocoderWithURL(nominatimURL string) geo.Geocoder {
 	return geo.HTTPGeocoder{
 		EndpointBuilder:       baseURL(nominatimURL),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
