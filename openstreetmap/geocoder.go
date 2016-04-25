@@ -19,10 +19,7 @@ type geocodeResponse struct {
 
 // Geocoder constructs OpenStreetMap geocoder
 func Geocoder() geo.Geocoder {
-	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("https://nominatim.openstreetmap.org/"),
-		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
-	}
+	return GeocoderWithURL("https://nominatim.openstreetmap.org/")
 }
 
 // GeocoderWithURL constructs OpenStreetMap geocoder using a custom installation of Nominatim
