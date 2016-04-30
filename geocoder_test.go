@@ -77,7 +77,7 @@ func ExampleGeocoder() {
 	//
 	// Mapbox API
 	// Melbourne VIC location is (-37.814200, 144.963200)
-	// Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
+	// Address of (-37.816742,144.964463) is Clegs, 60 Elizabeth St, 3000 Melbourne, Australia
 	//
 	// OpenStreetMap
 	// Melbourne VIC location is (-37.814217, 144.963161)

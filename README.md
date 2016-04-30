@@ -88,39 +88,39 @@ func try(geocoder geo.Geocoder) {
 ###Result
 ```
 Google Geocoding API
-Melbourne VIC location is {-37.814107 144.96328}
+Melbourne VIC location is (-37.814107, 144.963280)
 Address of (-37.816742,144.964463) is 66 Elizabeth St, Melbourne VIC 3000, Australia
 
 Mapquest Nominatim
-Melbourne VIC location is {-37.8142176 144.9631608}
+Melbourne VIC location is (-37.814218, 144.963161)
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 Mapquest Open streetmaps
-Melbourne VIC location is {-37.814218 144.963161}
+Melbourne VIC location is (-37.814218, 144.963161)
 Address of (-37.816742,144.964463) is Elizabeth Street, Melbourne, Victoria, AU
 
 OpenCage Data
-Melbourne VIC location is {-37.8142175 144.9631608}
+Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne VIC 3000, Australia
 
 HERE API
-Melbourne VIC location is {-37.81753 144.96715}
+Melbourne VIC location is (-37.817530, 144.967150)
 Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3000, Australia
 
 Bing Geocoding API
-Melbourne VIC location is {-37.82429885864258 144.97799682617188}
+Melbourne VIC location is (-37.824299, 144.977997)
 Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
 
 Mapbox API
-Melbourne VIC location is {-37.8142 144.9632}
+Melbourne VIC location is (-37.814200, 144.963200)
 Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
 
 OpenStreetMap
-Melbourne VIC location is {-37.8142175 144.9631608}
+Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 ChainedAPI[OpenStreetmap -> Google]
-Melbourne VIC location is {-37.8142175 144.9631608}
+Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 ```
 License
