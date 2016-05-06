@@ -4,6 +4,7 @@ import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/cached"
 	"github.com/codingsince1985/geo-golang/data"
+	_ "github.com/orchestrate-io/dvr"
 	"github.com/patrickmn/go-cache"
 	"github.com/stretchr/testify/assert"
 

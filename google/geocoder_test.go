@@ -3,6 +3,7 @@ package google_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/google"
+	_ "github.com/orchestrate-io/dvr"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"strings"

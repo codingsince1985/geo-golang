@@ -1,6 +1,6 @@
 GeoService in Go
 ==
-[![GoDoc](https://godoc.org/github.com/codingsince1985/geo-golang?status.svg)](https://godoc.org/github.com/codingsince1985/geo-golang) [![Build Status](https://travis-ci.org/codingsince1985/geo-golang.svg?branch=master)](https://travis-ci.org/codingsince1985/geo-golang) 
+[![GoDoc](https://godoc.org/github.com/codingsince1985/geo-golang?status.svg)](https://godoc.org/github.com/codingsince1985/geo-golang) [![Build Status](https://travis-ci.org/codingsince1985/geo-golang.svg?branch=master)](https://travis-ci.org/codingsince1985/geo-golang)
 [![codecov](https://codecov.io/gh/codingsince1985/geo-golang/branch/master/graph/badge.svg)](https://codecov.io/gh/codingsince1985/geo-golang)
 [![Go Report Card](https://goreportcard.com/badge/codingsince1985/geo-golang)](https://goreportcard.com/report/codingsince1985/geo-golang)
 
@@ -123,6 +123,39 @@ ChainedAPI[OpenStreetmap -> Google]
 Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 ```
+
+Tests
+==
+To run tests that access the real geo API you must set environment variables with your specific keys:
+
+```bash
+export GOOGLE_API_KEY="XYZ"
+export BING_API_KEY="XYZ"
+export HERE_APP_ID="XYZ"
+export HERE_APP_CODE="XYZ"
+export MAPBOX_API_KEY="XYZ"
+export MAPQUEST_NOMINATUM_KEY="XYZ"
+export MAPQUEST_OPEN_KEY="XYZ"
+
+# Run tests which will use the real HTTP API
+$ ./scripts/test.sh
+```
+
+We also use https://godoc.org/github.com/orchestrate-io/dvr to record HTTP tests (so that pull-requests can run unit tests without using our encrypted travis-ci API keys).
+
+If an HTTP API is updated or a test changes you'll want to run the tests and record http responses by running:
+
+`$ ./scripts/record_http_test.sh`
+
+Then you can commit the changes it will make from `testdata/*`.
+
+If you want to test running unit tests with the DVR data, you can explicitly run `DVR_MODE=replay`:
+
+`$ DVR_MODE="replay" ./scripts/test.sh`
+
+(This is also the same behavior if you don't specify the Geo API Keys as environment variables)
+
+
 License
 ==
 geo-golang is distributed under the terms of the MIT license. See LICENSE for details.

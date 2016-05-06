@@ -14,6 +14,7 @@ import (
 	"github.com/codingsince1985/geo-golang/mapquest/open"
 	"github.com/codingsince1985/geo-golang/opencage"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
+	_ "github.com/orchestrate-io/dvr"
 )
 
 const addr = "Melbourne VIC"

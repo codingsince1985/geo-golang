@@ -9,8 +9,7 @@ before_install:
 - go get github.com/modocache/gover
 - go get
 script:
-# Uses go list to inspect all packages and dependencies to run full code coverage across all packages in project
-- go list -f '"go test -covermode count -coverprofile {{.Name}}.coverprofile -coverpkg={{range $i, $f := .Deps}}{{if eq (printf "%.37s" $f) "github.com/codingsince1985/geo-golang" }}{{$f}},{{end}}{{end}}{{.ImportPath}} {{.ImportPath}}"' ./... | xargs -I {} bash -c {}
+- scripts/test.sh
 - gover . coverprofile.txt
 - '[ "${TRAVIS_GO_VERSION}" = "1.5" ] && bash <(curl -s https://codecov.io/bash) -f coverprofile.txt || true'
 env:

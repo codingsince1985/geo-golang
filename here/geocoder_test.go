@@ -3,6 +3,7 @@ package here_test
 import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/here"
+	_ "github.com/orchestrate-io/dvr"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"strings"

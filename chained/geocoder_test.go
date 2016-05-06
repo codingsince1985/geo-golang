@@ -4,6 +4,7 @@ import (
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/chained"
 	"github.com/codingsince1985/geo-golang/data"
+	_ "github.com/orchestrate-io/dvr"
 	"github.com/stretchr/testify/assert"
 
 	"strings"
