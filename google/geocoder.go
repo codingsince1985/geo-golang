@@ -19,9 +19,15 @@ type geocodeResponse struct {
 }
 
 // Geocoder constructs Google geocoder
-func Geocoder(apiKey string) geo.Geocoder {
+func Geocoder(apiKey string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?key=%s&", apiKey)
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?&key=%s&", apiKey)),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
