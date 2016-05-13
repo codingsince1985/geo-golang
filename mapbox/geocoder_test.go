@@ -54,8 +54,7 @@ func testServer(response string) *httptest.Server {
 }
 
 const (
-	response1 = `
-{
+	response1 = `{
    "type":"FeatureCollection",
    "query":[
       "60",
@@ -309,10 +308,8 @@ const (
       }
    ],
    "attribution":"NOTICE: © 2016 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained."
-}
-`
-	response2 = `
-{
+}`
+	response2 = `{
    "type":"FeatureCollection",
    "query":[
       144.971756,
@@ -569,10 +566,8 @@ const (
       }
    ],
    "attribution":"NOTICE: © 2016 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained."
-}
-`
-	response3 = `
-{
+}`
+	response3 = `{
    "type":"FeatureCollection",
    "query":[
       164.971756,
@@ -582,6 +577,5 @@ const (
 
    ],
    "attribution":"NOTICE: © 2016 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained."
-}
-`
+}`
 )

@@ -52,8 +52,7 @@ func testServer(response string) *httptest.Server {
 }
 
 const (
-	response1 = `
-{
+	response1 = `{
    "results" : [
       {
          "address_components" : [
@@ -111,10 +110,8 @@ const (
       }
    ],
    "status" : "OK"
-}
-`
-	response2 = `
-{
+}`
+	response2 = `{
    "results" : [
       {
          "address_components" : [
@@ -456,12 +453,9 @@ const (
       }
    ],
    "status" : "OK"
-}
-`
-	response3 = `
-{
+}`
+	response3 = `{
    "results" : [],
    "status" : "ZERO_RESULTS"
-}
-`
+}`
 )

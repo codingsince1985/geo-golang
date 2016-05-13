@@ -53,8 +53,7 @@ func testServer(response string) *httptest.Server {
 }
 
 const (
-	response1 = `
-{
+	response1 = `{
    "Response":{
       "MetaInfo":{
          "Timestamp":"2016-05-13T07:57:11.878+0000"
@@ -125,10 +124,8 @@ const (
          }
       ]
    }
-}
-`
-	response2 = `
-{
+}`
+	response2 = `{
    "Response":{
       "MetaInfo":{
          "Timestamp":"2016-05-13T07:57:42.917+0000",
@@ -843,10 +840,8 @@ const (
          }
       ]
    }
-}
-`
-	response3 = `
-{
+}`
+	response3 = `{
    "Response":{
       "MetaInfo":{
          "Timestamp":"2016-05-13T07:57:43.402+0000"
@@ -855,6 +850,5 @@ const (
 
       ]
    }
-}
-`
+}`
 )

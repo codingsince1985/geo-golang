@@ -55,8 +55,7 @@ func testServer(response string) *httptest.Server {
 }
 
 const (
-	response1 = `
-{
+	response1 = `{
    "authenticationResultCode":"ValidCredentials",
    "brandLogoUri":"http:\/\/dev.virtualearth.net\/Branding\/logo_powered_by.png",
    "copyright":"Copyright © 2016 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
@@ -290,10 +289,8 @@ const (
    "statusCode":200,
    "statusDescription":"OK",
    "traceId":"f0ff69bb189c4fdba96a05a0ad86658c|HK20271556|02.00.164.2600|HK2SCH010280621, HK2SCH010281221, HK2SCH010281326, HK2SCH010260633, HK2SCH010310422, i-0186bca5.ap-southeast-1b"
-}
-`
-	response2 = `
-{
+}`
+	response2 = `{
    "authenticationResultCode":"ValidCredentials",
    "brandLogoUri":"http:\/\/dev.virtualearth.net\/Branding\/logo_powered_by.png",
    "copyright":"Copyright © 2016 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
@@ -397,10 +394,8 @@ const (
    "statusCode":200,
    "statusDescription":"OK",
    "traceId":"2c056005fa6643a6ac6bb8a9bb2a3a5c|HK20271556|02.00.164.2600|HK2SCH010280621, HK2SCH010281619"
-}
-`
-	response3 = `
-{
+}`
+	response3 = `{
    "authenticationResultCode":"ValidCredentials",
    "brandLogoUri":"http:\/\/dev.virtualearth.net\/Branding\/logo_powered_by.png",
    "copyright":"Copyright © 2016 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
@@ -415,6 +410,5 @@ const (
    "statusCode":200,
    "statusDescription":"OK",
    "traceId":"101c3af9b0984cd0937b9e4dde2910a6|HK20271556|02.00.164.2600|HK2SCH010280621, HK2SCH010281619"
-}
-`
+}`
 )

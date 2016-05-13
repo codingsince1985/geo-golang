@@ -57,8 +57,7 @@ func testServer(response string) *httptest.Server {
 }
 
 const (
-	response1 = `
-{
+	response1 = `{
    "documentation":"https://geocoder.opencagedata.com/api",
    "licenses":[
       {
@@ -216,10 +215,8 @@ const (
       "created_unix":1463135960
    },
    "total_results":2
-}
-`
-	response2 = `
-{
+}`
+	response2 = `{
    "documentation":"https://geocoder.opencagedata.com/api",
    "licenses":[
       {
@@ -315,10 +312,8 @@ const (
       "created_unix":1463136199
    },
    "total_results":1
-}
-`
-	response3 = `
-{
+}`
+	response3 = `{
    "documentation":"https://geocoder.opencagedata.com/api",
    "licenses":[
       {
@@ -352,6 +347,5 @@ const (
       "created_unix":1463135645
    },
    "total_results":0
-}
-`
+}`
 )
