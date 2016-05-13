@@ -29,7 +29,7 @@ func TestReverseGeocode(t *testing.T) {
 	ts := testServer(response2)
 	defer ts.Close()
 
-	geocoder := here.Geocoder(appID, appCode, 100, ts.URL)
+	geocoder := here.Geocoder(appID, appCode, 100, ts.URL+"/")
 	//geocoder := here.Geocoder(appID, appCode, 100)
 	address, err := geocoder.ReverseGeocode(-37.81375, 144.97176)
 	assert.NoError(t, err)
@@ -40,7 +40,7 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	ts := testServer(response3)
 	defer ts.Close()
 
-	geocoder := here.Geocoder(appID, appCode, 100, ts.URL)
+	geocoder := here.Geocoder(appID, appCode, 100, ts.URL+"/")
 	//geocoder := here.Geocoder(appID, appCode, 100)
 	_, err := geocoder.ReverseGeocode(-37.81375, 164.97176)
 	assert.Equal(t, err, geo.ErrNoResult)
