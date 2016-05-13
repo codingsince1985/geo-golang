@@ -19,9 +19,15 @@ type geocodeResponse struct {
 }
 
 // Geocoder constructs MapRequest Open geocoder
-func Geocoder(key string) geo.Geocoder {
+func Geocoder(key string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = "http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("http://open.mapquestapi.com/geocoding/v1/*?key=" + key + "&location="),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }

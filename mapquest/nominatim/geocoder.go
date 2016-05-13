@@ -17,10 +17,16 @@ type geocodeResponse struct {
 var key string
 
 // Geocoder constructs MapRequest Nominatim geocoder
-func Geocoder(k string) geo.Geocoder {
+func Geocoder(k string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = "http://open.mapquestapi.com/nominatim/v1/"
+	}
 	key = k
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("http://open.mapquestapi.com/nominatim/v1/"),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }

@@ -17,9 +17,15 @@ type geocodeResponse struct {
 }
 
 // Geocoder constructs Mapbox geocoder
-func Geocoder(token string) geo.Geocoder {
+func Geocoder(token string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?access_token=" + token
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?access_token=" + token),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }

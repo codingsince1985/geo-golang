@@ -30,16 +30,21 @@ type geocodeResponse struct {
 var r = 100
 
 // Geocoder constructs HERE geocoder
-func Geocoder(id, code string, radius int) geo.Geocoder {
+func Geocoder(id, code string, radius int, baseURLs ...string) geo.Geocoder {
 	if radius > 0 {
 		r = radius
 	}
-	p := "gen=8&app_id=" + id + "&app_code=" + code
+	var url1, url2 string
+	if len(baseURLs) > 0 {
+		url1 = baseURLs[0]
+		url2 = baseURLs[0]
+	} else {
+		p := "gen=8&app_id=" + id + "&app_code=" + code
+		url1 = "http://geocoder.cit.api.here.com/6.2/geocode.json?" + p
+		url2 = "http://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder: baseURL{
-			"http://geocoder.cit.api.here.com/6.2/geocode.json?" + p,
-			"http://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p,
-		},
+		EndpointBuilder:       baseURL{url1, url2},
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }

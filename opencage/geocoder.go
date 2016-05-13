@@ -16,9 +16,15 @@ type geocodeResponse struct {
 }
 
 // Geocoder constructs OpenCage geocoder
-func Geocoder(key string) geo.Geocoder {
+func Geocoder(key string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = "http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("http://api.opencagedata.com/geocode/v1/json?key=" + key + "&q="),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }

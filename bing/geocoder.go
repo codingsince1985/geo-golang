@@ -23,9 +23,15 @@ type geocodeResponse struct {
 }
 
 // Geocoder constructs Bing geocoder
-func Geocoder(key string) geo.Geocoder {
+func Geocoder(key string, baseURLs ...string) geo.Geocoder {
+	var url string
+	if len(baseURLs) > 0 {
+		url = baseURLs[0]
+	} else {
+		url = "http://dev.virtualearth.net/REST/v1/Locations*key=" + key
+	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL("http://dev.virtualearth.net/REST/v1/Locations*key=" + key),
+		EndpointBuilder:       baseURL(url),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
