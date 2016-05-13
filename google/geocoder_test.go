@@ -14,7 +14,7 @@ import (
 var token = os.Getenv("GOOGLE_API_KEY")
 
 func TestGeocode(t *testing.T) {
-	ts := httptest.NewServer(handler(response1))
+	ts := testServer(response1)
 	defer ts.Close()
 
 	geocoder := google.Geocoder(token, ts.URL+"?")
@@ -25,7 +25,7 @@ func TestGeocode(t *testing.T) {
 }
 
 func TestReverseGeocode(t *testing.T) {
-	ts := httptest.NewServer(handler(response2))
+	ts := testServer(response2)
 	defer ts.Close()
 
 	geocoder := google.Geocoder(token, ts.URL+"?")
@@ -36,7 +36,7 @@ func TestReverseGeocode(t *testing.T) {
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
-	ts := httptest.NewServer(handler(response3))
+	ts := testServer(response3)
 	defer ts.Close()
 
 	geocoder := google.Geocoder(token, ts.URL+"?")
@@ -45,10 +45,10 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	assert.Equal(t, err, geo.ErrNoResult)
 }
 
-func handler(response string) http.Handler {
-	return http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+func testServer(response string) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		resp.Write([]byte(response))
-	})
+	}))
 }
 
 const (
@@ -111,7 +111,8 @@ const (
       }
    ],
    "status" : "OK"
-}`
+}
+`
 	response2 = `
 {
    "results" : [
@@ -455,10 +456,12 @@ const (
       }
    ],
    "status" : "OK"
-}`
+}
+`
 	response3 = `
 {
    "results" : [],
    "status" : "ZERO_RESULTS"
-}`
+}
+`
 )
