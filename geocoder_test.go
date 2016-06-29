@@ -52,8 +52,8 @@ func ExampleGeocoder() {
 		google.Geocoder(os.Getenv("GOOGLE_API_KEY")),
 	))
 	// Output: Google Geocoding API
-	// Melbourne VIC location is (-37.814107, 144.963280)
-	// Address of (-37.816742,144.964463) is 66 Elizabeth St, Melbourne VIC 3000, Australia
+	// Melbourne VIC location is (-37.816279, 144.964246)
+	// Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3004, Australia
 	//
 	// Mapquest Nominatim
 	// Melbourne VIC location is (-37.814218, 144.963161)
