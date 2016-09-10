@@ -16,9 +16,11 @@ import (
 	"github.com/codingsince1985/geo-golang/openstreetmap"
 )
 
-const addr = "Melbourne VIC"
-const lat, lng = -37.8167416, 144.964463
-const RADIUS = 50
+const (
+	addr     = "Melbourne VIC"
+	lat, lng = -37.813611, 144.963056
+	RADIUS   = 50
+)
 
 func ExampleGeocoder() {
 	fmt.Println("Google Geocoding API")
@@ -52,40 +54,40 @@ func ExampleGeocoder() {
 		google.Geocoder(os.Getenv("GOOGLE_API_KEY")),
 	))
 	// Output: Google Geocoding API
-	// Melbourne VIC location is (-37.816279, 144.964246)
-	// Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3004, Australia
+	// Melbourne VIC location is (-37.813611, 144.963056)
+	// Address of (-37.813611,144.963056) is 350 Bourke St, Melbourne VIC 3004, Australia
 	//
 	// Mapquest Nominatim
 	// Melbourne VIC location is (-37.814218, 144.963161)
-	// Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 	//
 	// Mapquest Open streetmaps
 	// Melbourne VIC location is (-37.814218, 144.963161)
-	// Address of (-37.816742,144.964463) is Elizabeth Street, Melbourne, Victoria, AU
+	// Address of (-37.813611,144.963056) is Postal Lane, Melbourne, Victoria, AU
 	//
 	// OpenCage Data
 	// Melbourne VIC location is (-37.814217, 144.963161)
-	// Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne VIC 3000, Australia
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Melbourne VIC 3000, Australia
 	//
 	// HERE API
 	// Melbourne VIC location is (-37.817530, 144.967150)
-	// Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3000, Australia
+	// Address of (-37.813611,144.963056) is 197 Elizabeth St, Melbourne VIC 3000, Australia
 	//
 	// Bing Geocoding API
 	// Melbourne VIC location is (-37.824299, 144.977997)
-	// Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
+	// Address of (-37.813611,144.963056) is Elizabeth St, Melbourne, VIC 3000
 	//
 	// Mapbox API
 	// Melbourne VIC location is (-37.814200, 144.963200)
-	// Address of (-37.816742,144.964463) is Clegs, 60 Elizabeth St, 3000 Melbourne, Australia
+	// Address of (-37.813611,144.963056) is Elwood Park Playground, 3000 Melbourne, Australia
 	//
 	// OpenStreetMap
 	// Melbourne VIC location is (-37.814217, 144.963161)
-	// Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 	//
 	// ChainedAPI[OpenStreetmap -> Google]
 	// Melbourne VIC location is (-37.814217, 144.963161)
-	// Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 }
 
 func try(geocoder geo.Geocoder) {

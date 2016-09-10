@@ -4,9 +4,8 @@ GeoService in Go
 [![codecov](https://codecov.io/gh/codingsince1985/geo-golang/branch/master/graph/badge.svg)](https://codecov.io/gh/codingsince1985/geo-golang)
 [![Go Report Card](https://goreportcard.com/badge/codingsince1985/geo-golang)](https://goreportcard.com/report/codingsince1985/geo-golang)
 
-
 ## Code Coverage
-![codecov.io](https://codecov.io/gh/codingsince1985/geo-golang/branch/master/graphs/tree.svg)
+[![codecov.io](https://codecov.io/gh/codingsince1985/geo-golang/branch/master/graphs/icicle.svg)](https://codecov.io/gh/codingsince1985/geo-golang)
 
 A geocoding service developed in Go's way, idiomatic and elegant, not just in golang.
 
@@ -42,8 +41,10 @@ import (
 	"github.com/codingsince1985/geo-golang/chained"
 )
 
-const addr = "Melbourne VIC"
-const lat, lng = -37.8167416, 144.964463
+const (
+	addr     = "Melbourne VIC"
+	lat, lng = -37.813611, 144.963056
+)
 
 func main() {
 	fmt.Println("Google Geocoding API")
@@ -88,40 +89,40 @@ func try(geocoder geo.Geocoder) {
 ###Result
 ```
 Google Geocoding API
-Melbourne VIC location is (-37.814107, 144.963280)
-Address of (-37.816742,144.964463) is 66 Elizabeth St, Melbourne VIC 3000, Australia
+Melbourne VIC location is (-37.813611, 144.963056)
+Address of (-37.813611,144.963056) is 350 Bourke St, Melbourne VIC 3004, Australia
 
 Mapquest Nominatim
 Melbourne VIC location is (-37.814218, 144.963161)
-Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 Mapquest Open streetmaps
 Melbourne VIC location is (-37.814218, 144.963161)
-Address of (-37.816742,144.964463) is Elizabeth Street, Melbourne, Victoria, AU
+Address of (-37.813611,144.963056) is Postal Lane, Melbourne, Victoria, AU
 
 OpenCage Data
 Melbourne VIC location is (-37.814217, 144.963161)
-Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne VIC 3000, Australia
+Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Melbourne VIC 3000, Australia
 
 HERE API
 Melbourne VIC location is (-37.817530, 144.967150)
-Address of (-37.816742,144.964463) is 40 Elizabeth St, Melbourne VIC 3000, Australia
+Address of (-37.813611,144.963056) is 197 Elizabeth St, Melbourne VIC 3000, Australia
 
 Bing Geocoding API
 Melbourne VIC location is (-37.824299, 144.977997)
-Address of (-37.816742,144.964463) is 46 Elizabeth St, Melbourne, VIC 3000
+Address of (-37.813611,144.963056) is Elizabeth St, Melbourne, VIC 3000
 
 Mapbox API
 Melbourne VIC location is (-37.814200, 144.963200)
-Address of (-37.816742,144.964463) is Bankwest ATM, 43-55 Elizabeth St, 3000 Melbourne, Australia
+Address of (-37.813611,144.963056) is Elwood Park Playground, 3000 Melbourne, Australia
 
 OpenStreetMap
 Melbourne VIC location is (-37.814217, 144.963161)
-Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 ChainedAPI[OpenStreetmap -> Google]
 Melbourne VIC location is (-37.814217, 144.963161)
-Address of (-37.816742,144.964463) is Bankwest, Elizabeth Street, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 ```
 License
 ==
