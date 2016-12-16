@@ -85,8 +85,6 @@ func (r *geocodeResponse) Address() string {
 		return ""
 	}
 	return r.DisplayName
-	// TODO fix the interface to return interface{}
-	//return r.Address
 }
 
 func parseFloat(value string) float64 {
