@@ -70,14 +70,14 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f&zoom=%d", l.Lat, l.Lng, zoom)
 }
 
-func (r *geocodeResponse) Location() (l geo.Location) {
+func (r *geocodeResponse) Location() geo.Location {
+	l := geo.Location{}
+	// In case of empty response from LocationIQ or any other error we get zero values
 	if r.Lat != "" && r.Lon != "" {
-		l = geo.Location{
-			Lat: parseFloat(r.Lat),
-			Lng: parseFloat(r.Lon),
-		}
+		l.Lat = parseFloat(r.Lat)
+		l.Lng = parseFloat(r.Lon)
 	}
-	return
+	return l
 }
 
 func (r *geocodeResponse) Address() string {
