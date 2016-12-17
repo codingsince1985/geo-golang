@@ -19,6 +19,7 @@ This product is designed to open to any Geocoding service. Based on it,
 + [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
 + [Mapbox](https://www.mapbox.com/developers/api/geocoding/)
 + [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
++ [LocationIQ](http://locationiq.org/)
 
 clients are implemented in ~50 LoC each.
 
@@ -39,6 +40,7 @@ import (
 	"github.com/codingsince1985/geo-golang/mapbox"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
 	"github.com/codingsince1985/geo-golang/chained"
+	"github.com/codingsince1985/geo-golang/locationiq"
 )
 
 const (
@@ -70,6 +72,9 @@ func main() {
 
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
+	
+	fmt.Println("LocationIQ)
+	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY")))
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
@@ -118,6 +123,10 @@ Address of (-37.813611,144.963056) is Elwood Park Playground, 3000 Melbourne, Au
 
 OpenStreetMap
 Melbourne VIC location is (-37.814217, 144.963161)
+Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+
+LocationIQ
+Melbourne VIC location is (-37.8142175, 144.9631608)
 Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 ChainedAPI[OpenStreetmap -> Google]
