@@ -9,6 +9,7 @@ import (
 	"github.com/codingsince1985/geo-golang/chained"
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
+	"github.com/codingsince1985/geo-golang/locationiq"
 	"github.com/codingsince1985/geo-golang/mapbox"
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
 	"github.com/codingsince1985/geo-golang/mapquest/open"
@@ -20,6 +21,7 @@ const (
 	addr     = "Melbourne VIC"
 	lat, lng = -37.813611, 144.963056
 	RADIUS   = 50
+	ZOOM     = 18
 )
 
 func ExampleGeocoder() {
@@ -47,6 +49,9 @@ func ExampleGeocoder() {
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
 
+	fmt.Println("LocationIQ")
+	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), ZOOM))
+
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
 	try(chained.Geocoder(
@@ -54,16 +59,16 @@ func ExampleGeocoder() {
 		google.Geocoder(os.Getenv("GOOGLE_API_KEY")),
 	))
 	// Output: Google Geocoding API
-	// Melbourne VIC location is (-37.813611, 144.963056)
+	// Melbourne VIC location is (-37.813628, 144.963058)
 	// Address of (-37.813611,144.963056) is 350 Bourke St, Melbourne VIC 3004, Australia
 	//
 	// Mapquest Nominatim
 	// Melbourne VIC location is (-37.814218, 144.963161)
-	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 	//
 	// Mapquest Open streetmaps
 	// Melbourne VIC location is (-37.814218, 144.963161)
-	// Address of (-37.813611,144.963056) is Postal Lane, Melbourne, Victoria, AU
+	// Address of (-37.813611,144.963056) is Elizabeth Street, Melbourne, Victoria, AU
 	//
 	// OpenCage Data
 	// Melbourne VIC location is (-37.814217, 144.963161)
@@ -82,6 +87,10 @@ func ExampleGeocoder() {
 	// Address of (-37.813611,144.963056) is Elwood Park Playground, 3000 Melbourne, Australia
 	//
 	// OpenStreetMap
+	// Melbourne VIC location is (-37.814217, 144.963161)
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	//
+	// LocationIQ
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 	//

@@ -73,8 +73,8 @@ func main() {
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
 	
-	fmt.Println("LocationIQ)
-	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY")))
+	fmt.Println("LocationIQ")
+	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), ZOOM))
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
@@ -126,7 +126,7 @@ Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 LocationIQ
-Melbourne VIC location is (-37.8142175, 144.9631608)
+Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 
 ChainedAPI[OpenStreetmap -> Google]

@@ -3,8 +3,8 @@ package locationiq
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestGeocodeYieldsResult(t *testing.T) {
