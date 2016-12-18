@@ -24,6 +24,21 @@ type Location struct {
 	Lat, Lng float64
 }
 
+// Address is the structured representation of an address, including its flat representation
+type Address struct {
+	FormattedAddress string
+	Street           string
+	HouseNumber      string
+	Suburb           string
+	Postcode         string
+	State            string
+	StateDistrict    string
+	County           string
+	Country          string
+	CountryCode      string
+	City             string
+}
+
 // EndpointBuilder defines functions that build urls for geocode/reverse geocode
 type EndpointBuilder interface {
 	GeocodeURL(string) string
@@ -36,7 +51,12 @@ type ResponseParserFactory func() ResponseParser
 // ResponseParser defines functions that parse response of geocode/reverse geocode
 type ResponseParser interface {
 	Location() Location
-	Address() string
+	Address() Address
+}
+
+// AddressFormatter returns the flat uniform representation of the address (varies based on service provider)
+type AddressFormatter interface {
+	FormattedAddress() string
 }
 
 // HTTPGeocoder has EndpointBuilder and ResponseParser

@@ -80,7 +80,22 @@ func (r *geocodeResponse) Location() geo.Location {
 	return l
 }
 
-func (r *geocodeResponse) Address() string {
+func (r *geocodeResponse) Address() geo.Address {
+	if r.Error != "" {
+		return geo.Address{}
+	}
+	return geo.Address{
+		FormattedAddress: r.DisplayName,
+		Street:           r.Addr.Road,
+		HouseNumber:      r.Addr.HouseNumber,
+		City:             r.Addr.City,
+		Postcode:         r.Addr.Postcode,
+		Country:          r.Addr.CountryCode,
+		CountryCode:      r.Addr.CountryCode,
+	}
+}
+
+func (r *geocodeResponse) FormattedAddress() string {
 	if r.Error != "" {
 		return ""
 	}
