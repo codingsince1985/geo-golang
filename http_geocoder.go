@@ -50,8 +50,8 @@ type ResponseParserFactory func() ResponseParser
 
 // ResponseParser defines functions that parse response of geocode/reverse geocode
 type ResponseParser interface {
-	Location() Location
-	Address() Address
+	Location() (*Location, error)
+	Address() (*Address, error)
 }
 
 // AddressFormatter returns the flat uniform representation of the address (varies based on service provider)
@@ -66,36 +66,40 @@ type HTTPGeocoder struct {
 }
 
 // Geocode returns location for address
-func (g HTTPGeocoder) Geocode(address string) (Location, error) {
-	ch := make(chan Location, 1)
+func (g HTTPGeocoder) Geocode(address string) (*Location, error) {
+	ch := make(chan *Location, 1)
 	go func() {
 		responseParser := g.ResponseParserFactory()
 		response(g.GeocodeURL(url.QueryEscape(address)), responseParser)
-		ch <- responseParser.Location()
+		// TODO error handling
+		loc, _ := responseParser.Location()
+		ch <- loc
 	}()
 
 	select {
 	case location := <-ch:
 		return location, anyError(location)
 	case <-time.After(timeout):
-		return Location{}, ErrTimeout
+		return nil, ErrTimeout
 	}
 }
 
 // ReverseGeocode returns address for location
-func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (Address, error) {
-	ch := make(chan Address, 1)
+func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (*Address, error) {
+	ch := make(chan *Address, 1)
 	go func() {
 		responseParser := g.ResponseParserFactory()
 		response(g.ReverseGeocodeURL(Location{lat, lng}), responseParser)
-		ch <- responseParser.Address()
+		// TODO error handling
+		addr, _ := responseParser.Address()
+		ch <- addr
 	}()
 
 	select {
 	case address := <-ch:
 		return address, anyError(address)
 	case <-time.After(timeout):
-		return Address{}, ErrTimeout
+		return nil, ErrTimeout
 	}
 }
 
@@ -119,10 +123,6 @@ func anyError(v interface{}) error {
 	switch v := v.(type) {
 	case Location:
 		if v.Lat == 0 && v.Lng == 0 {
-			return ErrNoResult
-		}
-	case string:
-		if v == "" {
 			return ErrNoResult
 		}
 	case Address:

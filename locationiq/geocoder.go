@@ -70,21 +70,40 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f&zoom=%d", l.Lat, l.Lng, zoom)
 }
 
+<<<<<<< HEAD
 func (r *geocodeResponse) Location() geo.Location {
 	l := geo.Location{}
 	// In case of empty response from LocationIQ or any other error we get zero values
 	if r.Lat != "" && r.Lon != "" {
 		l.Lat = geo.ParseFloat(r.Lat)
 		l.Lng = geo.ParseFloat(r.Lon)
+=======
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Lat == "" || r.Lon == "" {
+		return nil, fmt.Errorf("empty lat/lon value: %s", r.Error)
+>>>>>>> Return pointer instead of value; also return error
 	}
-	return l
+
+	lat, err := parseFloat(r.Lat)
+	if err != nil {
+		return nil, fmt.Errorf("error converting lat to float: %s", err)
+	}
+	lon, err := parseFloat(r.Lon)
+	if err != nil {
+		return nil, fmt.Errorf("error converting lon to float: %s", err)
+	}
+
+	return &geo.Location{
+		Lat: lat,
+		Lng: lon,
+	}, nil
 }
 
-func (r *geocodeResponse) Address() geo.Address {
+func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
-		return geo.Address{}
+		return nil, fmt.Errorf("error reverse geocoding: %s", r.Error)
 	}
-	return geo.Address{
+	return &geo.Address{
 		FormattedAddress: r.DisplayName,
 		Street:           r.Addr.Road,
 		HouseNumber:      r.Addr.HouseNumber,
@@ -92,7 +111,7 @@ func (r *geocodeResponse) Address() geo.Address {
 		Postcode:         r.Addr.Postcode,
 		Country:          r.Addr.Country,
 		CountryCode:      r.Addr.CountryCode,
-	}
+	}, nil
 }
 
 func (r *geocodeResponse) FormattedAddress() string {
@@ -101,3 +120,10 @@ func (r *geocodeResponse) FormattedAddress() string {
 	}
 	return r.DisplayName
 }
+<<<<<<< HEAD
+=======
+
+func parseFloat(value string) (float64, error) {
+	return strconv.ParseFloat(value, 64)
+}
+>>>>>>> Return pointer instead of value; also return error

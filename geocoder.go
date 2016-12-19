@@ -3,6 +3,6 @@ package geo
 
 // Geocoder can look up (lat, long) by address and address by (lat, long)
 type Geocoder interface {
-	Geocode(address string) (Location, error)
-	ReverseGeocode(lat, lng float64) (Address, error)
+	Geocode(address string) (*Location, error)
+	ReverseGeocode(lat, lng float64) (*Address, error)
 }
