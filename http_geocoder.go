@@ -83,8 +83,8 @@ func (g HTTPGeocoder) Geocode(address string) (Location, error) {
 }
 
 // ReverseGeocode returns address for location
-func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
-	ch := make(chan string, 1)
+func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (Address, error) {
+	ch := make(chan Address, 1)
 	go func() {
 		responseParser := g.ResponseParserFactory()
 		response(g.ReverseGeocodeURL(Location{lat, lng}), responseParser)
@@ -95,7 +95,7 @@ func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
 	case address := <-ch:
 		return address, anyError(address)
 	case <-time.After(timeout):
-		return "", ErrTimeout
+		return Address{}, ErrTimeout
 	}
 }
 
@@ -123,6 +123,10 @@ func anyError(v interface{}) error {
 		}
 	case string:
 		if v == "" {
+			return ErrNoResult
+		}
+	case Address:
+		if v.Postcode == "" {
 			return ErrNoResult
 		}
 	}
