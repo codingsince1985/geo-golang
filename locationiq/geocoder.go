@@ -90,7 +90,7 @@ func (r *geocodeResponse) Address() geo.Address {
 		HouseNumber:      r.Addr.HouseNumber,
 		City:             r.Addr.City,
 		Postcode:         r.Addr.Postcode,
-		Country:          r.Addr.CountryCode,
+		Country:          r.Addr.Country,
 		CountryCode:      r.Addr.CountryCode,
 	}
 }
