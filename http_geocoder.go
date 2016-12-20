@@ -54,11 +54,6 @@ type ResponseParser interface {
 	Address() (*Address, error)
 }
 
-// AddressFormatter returns the flat uniform representation of the address (varies based on service provider)
-type AddressFormatter interface {
-	FormattedAddress() string
-}
-
 // HTTPGeocoder has EndpointBuilder and ResponseParser
 type HTTPGeocoder struct {
 	EndpointBuilder

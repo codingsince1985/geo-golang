@@ -2,6 +2,7 @@
 package bing
 
 import (
+	"errors"
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
 	"strings"
@@ -17,9 +18,16 @@ type (
 				}
 				Address struct {
 					FormattedAddress string
+					AddressLine      string
+					AdminDistrict    string
+					AdminDistrict2   string
+					CountryRegion    string
+					Locality         string
+					PostalCode       string
 				}
 			}
 		}
+		ErrorDetails []string
 	}
 )
 
@@ -46,17 +54,28 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", fmt.Sprintf("/%f,%f?", l.Lat, l.Lng), 1)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if len(r.ResourceSets) == 0 || len(r.ResourceSets[0].Resources) == 0 {
-		return geo.Location{}
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
+		return nil, fmt.Errorf("empty result resolving location")
 	}
 	c := r.ResourceSets[0].Resources[0].Point.Coordinates
-	return geo.Location{c[0], c[1]}
+	return &geo.Location{c[0], c[1]}, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if len(r.ResourceSets) == 0 || len(r.ResourceSets[0].Resources) == 0 {
-		return ""
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if len(r.ErrorDetails) > 0 {
+		return nil, errors.New(strings.Join(r.ErrorDetails, " "))
 	}
-	return r.ResourceSets[0].Resources[0].Address.FormattedAddress
+	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
+		return nil, nil
+	}
+	//fmt.Printf("%+v\n\n", r.ResourceSets[0].Resources[0].Address)
+	a := r.ResourceSets[0].Resources[0].Address
+	return &geo.Address{
+		FormattedAddress: a.FormattedAddress,
+		Street:           a.AddressLine,
+		City:             a.Locality,
+		Postcode:         a.PostalCode,
+		Country:          a.CountryRegion,
+	}, nil
 }
