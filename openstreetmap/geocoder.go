@@ -3,8 +3,6 @@ package openstreetmap
 
 import (
 	"fmt"
-	"strconv"
-
 	"github.com/codingsince1985/geo-golang"
 )
 
@@ -40,7 +38,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (l geo.Location) {
 	if r.Error == "" {
-		l = geo.Location{parseFloat(r.Lat), parseFloat(r.Lon)}
+		l = geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
 	}
 	return
 }
@@ -50,9 +48,4 @@ func (r *geocodeResponse) Address() (address string) {
 		address = r.DisplayName
 	}
 	return
-}
-
-func parseFloat(value interface{}) float64 {
-	f, _ := strconv.ParseFloat(value.(string), 64)
-	return f
 }

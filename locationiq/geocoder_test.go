@@ -14,8 +14,8 @@ func TestGeocodeYieldsResult(t *testing.T) {
 	gc := Geocoder("foobar", 18, ts.URL+"/")
 	l, err := gc.Geocode("Seidlstraße 26, 80335 München")
 
-	expLat := parseFloat("48.1453641")
-	expLon := parseFloat("11.5582083")
+	expLat := 48.1453641
+	expLon := 11.5582083
 
 	if err != nil {
 		t.Errorf("Expected nil error, got %v", err)

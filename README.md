@@ -46,6 +46,8 @@ import (
 const (
 	addr     = "Melbourne VIC"
 	lat, lng = -37.813611, 144.963056
+	RADIUS   = 50
+	ZOOM     = 18
 )
 
 func main() {

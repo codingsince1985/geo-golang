@@ -1,10 +1,9 @@
+// Package locationiq is a geo-golang based LocationIQ geocode/reverse geocode client
 package locationiq
 
 import (
 	"fmt"
-
 	"github.com/codingsince1985/geo-golang"
-	"strconv"
 )
 
 type baseURL string
@@ -40,6 +39,7 @@ var (
 	zoom int
 )
 
+// Geocoder constructs LocationIQ geocoder
 func Geocoder(k string, z int, baseURLs ...string) geo.Geocoder {
 	key = k
 
@@ -74,8 +74,8 @@ func (r *geocodeResponse) Location() geo.Location {
 	l := geo.Location{}
 	// In case of empty response from LocationIQ or any other error we get zero values
 	if r.Lat != "" && r.Lon != "" {
-		l.Lat = parseFloat(r.Lat)
-		l.Lng = parseFloat(r.Lon)
+		l.Lat = geo.ParseFloat(r.Lat)
+		l.Lng = geo.ParseFloat(r.Lon)
 	}
 	return l
 }
@@ -85,9 +85,4 @@ func (r *geocodeResponse) Address() string {
 		return ""
 	}
 	return r.DisplayName
-}
-
-func parseFloat(value string) float64 {
-	f, _ := strconv.ParseFloat(value, 64)
-	return f
 }

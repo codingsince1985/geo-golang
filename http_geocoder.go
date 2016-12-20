@@ -6,13 +6,15 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
 
+var timeout = time.Second * 8
+
 // ErrTimeout occurs when no response returned within timeoutInSeconds
 var ErrTimeout = errors.New("TIMEOUT")
-var timeout = time.Second * 8
 
 // ErrNoResult occurs when no result returned
 var ErrNoResult = errors.New("NO_RESULT")
@@ -40,7 +42,7 @@ type ResponseParser interface {
 // HTTPGeocoder has EndpointBuilder and ResponseParser
 type HTTPGeocoder struct {
 	EndpointBuilder
-	ResponseParserFactory ResponseParserFactory
+	ResponseParserFactory
 }
 
 // Geocode returns location for address
@@ -105,4 +107,9 @@ func anyError(v interface{}) (err error) {
 		}
 	}
 	return
+}
+
+func ParseFloat(value string) float64 {
+	f, _ := strconv.ParseFloat(value, 64)
+	return f
 }
