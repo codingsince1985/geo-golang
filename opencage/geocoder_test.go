@@ -22,7 +22,6 @@ func TestGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
-	//geocoder := opencage.Geocoder(key)
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
 	assert.InDelta(t, -37.8154176, location.Lat, locDelta)
@@ -34,7 +33,6 @@ func TestReverseGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
-	//geocoder := opencage.Geocoder(key)
 	address, err := geocoder.ReverseGeocode(-37.8154176, 144.9665563)
 	assert.NoError(t, err)
 	assert.True(t, strings.Index(address, "Collins St") > 0)
@@ -45,7 +43,6 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
-	//geocoder := opencage.Geocoder(key)
 	_, err := geocoder.ReverseGeocode(-37.8154176, 164.9665563)
 	assert.Equal(t, err, geo.ErrNoResult)
 }

@@ -18,7 +18,6 @@ func TestGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
-	//geocoder := nominatim.Geocoder(key)
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
 	assert.Equal(t, geo.Location{Lat: -37.8137433689794, Lng: 144.971745104488}, location)
@@ -29,7 +28,6 @@ func TestReverseGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
-	//geocoder := nominatim.Geocoder(key)
 	address, err := geocoder.ReverseGeocode(-37.8137433689794, 144.971745104488)
 	assert.NoError(t, err)
 	assert.True(t, strings.HasPrefix(address, "Reserve Bank of Australia"))
@@ -40,7 +38,6 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
-	//geocoder := nominatim.Geocoder(key)
 	_, err := geocoder.ReverseGeocode(-37.8137433689794, 164.971745104488)
 	assert.Equal(t, err, geo.ErrNoResult)
 }

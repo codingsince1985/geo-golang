@@ -6,28 +6,30 @@ import (
 	"github.com/codingsince1985/geo-golang"
 )
 
-type baseURL string
-
-type geocodeResponse struct {
-	DisplayName     string `json:"display_name"`
-	Lat, Lon, Error string
-}
+type (
+	baseURL         string
+	geocodeResponse struct {
+		DisplayName     string `json:"display_name"`
+		Lat, Lon, Error string
+	}
+)
 
 var key string
 
 // Geocoder constructs MapRequest Nominatim geocoder
 func Geocoder(k string, baseURLs ...string) geo.Geocoder {
-	var url string
-	if len(baseURLs) > 0 {
-		url = baseURLs[0]
-	} else {
-		url = "http://open.mapquestapi.com/nominatim/v1/"
-	}
 	key = k
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(url),
+		EndpointBuilder:       baseURL(getUrl(baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
+}
+
+func getUrl(baseURLs ...string) string {
+	if len(baseURLs) > 0 {
+		return baseURLs[0]
+	}
+	return "http://open.mapquestapi.com/nominatim/v1/"
 }
 
 func (b baseURL) GeocodeURL(address string) string {
@@ -38,16 +40,16 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() (l geo.Location) {
+func (r *geocodeResponse) Location() geo.Location {
 	if r.Error == "" {
-		l = geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
+		return geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
 	}
-	return
+	return geo.Location{}
 }
 
-func (r *geocodeResponse) Address() (address string) {
+func (r *geocodeResponse) Address() string {
 	if r.Error == "" {
-		address = r.DisplayName
+		return r.DisplayName
 	}
-	return
+	return ""
 }

@@ -19,7 +19,6 @@ func TestGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := bing.Geocoder(key, ts.URL+"/")
-	//geocoder := bing.Geocoder(key)
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC")
 	assert.NoError(t, err)
 	fmt.Println(location)
@@ -31,7 +30,6 @@ func TestReverseGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := bing.Geocoder(key, ts.URL+"/")
-	//geocoder := bing.Geocoder(key)
 	address, err := geocoder.ReverseGeocode(-37.81375, 144.97176)
 	assert.NoError(t, err)
 	fmt.Println(address)
@@ -43,7 +41,6 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := bing.Geocoder(key, ts.URL+"/")
-	//geocoder := bing.Geocoder(key)
 	_, err := geocoder.ReverseGeocode(-37.81375, 164.97176)
 	assert.Equal(t, err, geo.ErrNoResult)
 }

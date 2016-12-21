@@ -19,7 +19,6 @@ func TestGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
-	//geocoder := mapbox.Geocoder(token)
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
 	assert.Equal(t, geo.Location{Lat: -37.813754, Lng: 144.971756}, location)
@@ -30,7 +29,6 @@ func TestReverseGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
-	//geocoder := mapbox.Geocoder(token)
 	address, err := geocoder.ReverseGeocode(-37.813754, 144.971756)
 	assert.NoError(t, err)
 	fmt.Println(address)
@@ -42,7 +40,6 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
-	//geocoder := mapbox.Geocoder(token)
 	_, err := geocoder.ReverseGeocode(-37.813754, 164.971756)
 	assert.Equal(t, err, geo.ErrNoResult)
 }

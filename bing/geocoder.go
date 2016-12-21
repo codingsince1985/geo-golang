@@ -7,58 +7,56 @@ import (
 	"strings"
 )
 
-type baseURL string
-
-type geocodeResponse struct {
-	ResourceSets []struct {
-		Resources []struct {
-			Point struct {
-				Coordinates []float64
-			}
-			Address struct {
-				FormattedAddress string
+type (
+	baseURL         string
+	geocodeResponse struct {
+		ResourceSets []struct {
+			Resources []struct {
+				Point struct {
+					Coordinates []float64
+				}
+				Address struct {
+					FormattedAddress string
+				}
 			}
 		}
 	}
-}
+)
 
 // Geocoder constructs Bing geocoder
 func Geocoder(key string, baseURLs ...string) geo.Geocoder {
-	var url string
-	if len(baseURLs) > 0 {
-		url = baseURLs[0]
-	} else {
-		url = "http://dev.virtualearth.net/REST/v1/Locations*key=" + key
-	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(url),
+		EndpointBuilder:       baseURL(getUrl(key, baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
+func getUrl(key string, baseURLs ...string) string {
+	if len(baseURLs) > 0 {
+		return baseURLs[0]
+	}
+	return "http://dev.virtualearth.net/REST/v1/Locations*key=" + key
+}
+
 func (b baseURL) GeocodeURL(address string) string {
-	u := strings.Replace(string(b), "*", "?q="+address+"&", 1)
-	return u
+	return strings.Replace(string(b), "*", "?q="+address+"&", 1)
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", fmt.Sprintf("/%f,%f?", l.Lat, l.Lng), 1)
 }
 
-func (r *geocodeResponse) Location() (l geo.Location) {
-	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
-		return
+func (r *geocodeResponse) Location() geo.Location {
+	if len(r.ResourceSets) == 0 || len(r.ResourceSets[0].Resources) == 0 {
+		return geo.Location{}
 	}
 	c := r.ResourceSets[0].Resources[0].Point.Coordinates
-	l = geo.Location{c[0], c[1]}
-	return
+	return geo.Location{c[0], c[1]}
 }
 
-func (r *geocodeResponse) Address() (address string) {
-	if len(r.ResourceSets) <= 0 || len(r.ResourceSets[0].Resources) <= 0 {
-		return
+func (r *geocodeResponse) Address() string {
+	if len(r.ResourceSets) == 0 || len(r.ResourceSets[0].Resources) == 0 {
+		return ""
 	}
-
-	address = r.ResourceSets[0].Resources[0].Address.FormattedAddress
-	return
+	return r.ResourceSets[0].Resources[0].Address.FormattedAddress
 }

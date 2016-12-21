@@ -6,19 +6,16 @@ import (
 	"github.com/codingsince1985/geo-golang"
 )
 
-type baseURL string
-
-type geocodeResponse struct {
-	DisplayName string `json:"display_name"`
-	Lat         string
-	Lon         string
-	Error       string
-}
+type (
+	baseURL         string
+	geocodeResponse struct {
+		DisplayName     string `json:"display_name"`
+		Lat, Lon, Error string
+	}
+)
 
 // Geocoder constructs OpenStreetMap geocoder
-func Geocoder() geo.Geocoder {
-	return GeocoderWithURL("https://nominatim.openstreetmap.org/")
-}
+func Geocoder() geo.Geocoder { return GeocoderWithURL("https://nominatim.openstreetmap.org/") }
 
 // GeocoderWithURL constructs OpenStreetMap geocoder using a custom installation of Nominatim
 func GeocoderWithURL(nominatimURL string) geo.Geocoder {
@@ -36,16 +33,16 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse?" + fmt.Sprintf("format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() (l geo.Location) {
+func (r *geocodeResponse) Location() geo.Location {
 	if r.Error == "" {
-		l = geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
+		return geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
 	}
-	return
+	return geo.Location{}
 }
 
-func (r *geocodeResponse) Address() (address string) {
+func (r *geocodeResponse) Address() string {
 	if r.Error == "" {
-		address = r.DisplayName
+		return r.DisplayName
 	}
-	return
+	return ""
 }

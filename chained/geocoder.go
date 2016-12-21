@@ -4,25 +4,20 @@ import (
 	"github.com/codingsince1985/geo-golang"
 )
 
-type chainedGeocoder struct {
-	Geocoders []geo.Geocoder
-}
+type chainedGeocoder struct{ Geocoders []geo.Geocoder }
 
 // Geocoder creates a chain of Geocoders to lookup address and fallback on
-func Geocoder(geocoders ...geo.Geocoder) geo.Geocoder {
-	return chainedGeocoder{Geocoders: geocoders}
-}
+func Geocoder(geocoders ...geo.Geocoder) geo.Geocoder { return chainedGeocoder{Geocoders: geocoders} }
 
 // Geocode returns location for address
 func (c chainedGeocoder) Geocode(address string) (geo.Location, error) {
 	// Geocode address by each geocoder until we get a real location response
 	for i := range c.Geocoders {
-		l, err := c.Geocoders[i].Geocode(address)
-		if err != nil {
-			// skip error and try the next geocoder
-			continue
+		if l, err := c.Geocoders[i].Geocode(address); err == nil {
+			return l, nil
 		}
-		return l, nil
+		// skip error and try the next geocoder
+		continue
 	}
 	// No geocoders found a result
 	return geo.Location{}, geo.ErrNoResult
@@ -32,12 +27,11 @@ func (c chainedGeocoder) Geocode(address string) (geo.Location, error) {
 func (c chainedGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
 	// Geocode address by each geocoder until we get a real location response
 	for i := range c.Geocoders {
-		addr, err := c.Geocoders[i].ReverseGeocode(lat, lng)
-		if err != nil {
-			// skip error and try the next geocoder
-			continue
+		if addr, err := c.Geocoders[i].ReverseGeocode(lat, lng); err == nil {
+			return addr, nil
 		}
-		return addr, nil
+		// skip error and try the next geocoder
+		continue
 	}
 	// No geocoders found a result
 	return "", geo.ErrNoResult

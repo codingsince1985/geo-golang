@@ -7,49 +7,49 @@ import (
 	geo "github.com/codingsince1985/geo-golang"
 )
 
-type baseURL string
-
-type geocodeResponse struct {
-	Results []struct {
-		FormattedAddress string `json:"formatted_address"`
-		Geometry         struct {
-			Location geo.Location
+type (
+	baseURL         string
+	geocodeResponse struct {
+		Results []struct {
+			FormattedAddress string `json:"formatted_address"`
+			Geometry         struct {
+				Location geo.Location
+			}
 		}
 	}
-}
+)
 
 // Geocoder constructs Google geocoder
 func Geocoder(apiKey string, baseURLs ...string) geo.Geocoder {
-	var url string
-	if len(baseURLs) > 0 {
-		url = baseURLs[0]
-	} else {
-		url = fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?key=%s&", apiKey)
-	}
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(url),
+		EndpointBuilder:       baseURL(getUrl(apiKey, baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func (b baseURL) GeocodeURL(address string) string {
-	return string(b) + "address=" + address
+func getUrl(apiKey string, baseURLs ...string) string {
+	if len(baseURLs) > 0 {
+		return baseURLs[0]
+	}
+	return fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?key=%s&", apiKey)
 }
+
+func (b baseURL) GeocodeURL(address string) string { return string(b) + "address=" + address }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + fmt.Sprintf("latlng=%f,%f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() (l geo.Location) {
+func (r *geocodeResponse) Location() geo.Location {
 	if len(r.Results) > 0 {
-		l = r.Results[0].Geometry.Location
+		return r.Results[0].Geometry.Location
 	}
-	return
+	return geo.Location{}
 }
 
-func (r *geocodeResponse) Address() (address string) {
+func (r *geocodeResponse) Address() string {
 	if len(r.Results) > 0 {
-		address = r.Results[0].FormattedAddress
+		return r.Results[0].FormattedAddress
 	}
-	return
+	return ""
 }
