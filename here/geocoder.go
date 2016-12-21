@@ -17,13 +17,31 @@ type (
 							Latitude, Longitude float64
 						}
 						Address struct {
-							Label string
+							Label          string
+							Country        string
+							State          string
+							County         string
+							City           string
+							District       string
+							Street         string
+							HouseNumber    string
+							PostalCode     string
+							AdditionalData []struct {
+								Key   string
+								Value string
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+)
+
+const (
+	KeyCountryName = "CountryName"
+	KeyStateName   = "StateName"
+	KeyCountyName  = "CountyName"
 )
 
 var r = 100
@@ -62,17 +80,36 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return b.forReverseGeocode + fmt.Sprintf("&prox=%f,%f,%d", l.Lat, l.Lng, r)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if len(r.Response.View) > 0 {
-		p := r.Response.View[0].Result[0].Location.DisplayPosition
-		return geo.Location{p.Latitude, p.Longitude}
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if len(r.Response.View) == 0 {
+		return nil, nil
 	}
-	return geo.Location{}
+	p := r.Response.View[0].Result[0].Location.DisplayPosition
+	return &geo.Location{p.Latitude, p.Longitude}, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if len(r.Response.View) > 0 {
-		return r.Response.View[0].Result[0].Location.Address.Label
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if len(r.Response.View) == 0 || len(r.Response.View[0].Result) == 0 {
+		return nil, nil
 	}
-	return ""
+
+	res := r.Response.View[0].Result[0].Location.Address
+
+	addr := &geo.Address{
+		FormattedAddress: res.Label,
+		Street:           res.Street,
+		HouseNumber:      res.HouseNumber,
+		City:             res.City,
+		Postcode:         res.PostalCode,
+		CountryCode:      res.Country,
+	}
+	for _, v := range res.AdditionalData {
+		switch v.Key {
+		case KeyCountryName:
+			addr.Country = v.Value
+		case KeyStateName:
+			addr.State = v.Value
+		}
+	}
+	return addr, nil
 }
