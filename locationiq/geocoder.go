@@ -4,6 +4,7 @@ package locationiq
 import (
 	"fmt"
 	"github.com/codingsince1985/geo-golang"
+	"strings"
 )
 
 type baseURL string
@@ -19,6 +20,7 @@ type locationiqAddress struct {
 	Suburb        string `json:"suburb"`
 	City          string `json:"city"`
 	County        string `json:"county"`
+	Village       string `json:"village"`
 	Country       string `json:"country"`
 	CountryCode   string `json:"country_code"`
 	Road          string `json:"road"`
@@ -103,14 +105,22 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
 		return nil, fmt.Errorf("error reverse geocoding: %s", r.Error)
 	}
+	var locality string
+	if r.Addr.City != "" {
+		locality = r.Addr.City
+	} else {
+		locality = r.Addr.Village
+	}
 	return &geo.Address{
 		FormattedAddress: r.DisplayName,
 		Street:           r.Addr.Road,
 		HouseNumber:      r.Addr.HouseNumber,
-		City:             r.Addr.City,
+		City:             locality,
 		Postcode:         r.Addr.Postcode,
+		Suburb:           r.Addr.Suburb,
+		State:            r.Addr.State,
 		Country:          r.Addr.Country,
-		CountryCode:      r.Addr.CountryCode,
+		CountryCode:      strings.ToUpper(r.Addr.CountryCode),
 	}, nil
 }
 
