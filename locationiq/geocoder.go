@@ -75,6 +75,9 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 }
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Error != "" {
+		return nil, fmt.Errorf("geocoding error: %s", r.Error)
+	}
 	if r.Lat == "" || r.Lon == "" {
 		return nil, fmt.Errorf("empty lat/lon value: %s", r.Error)
 	}
@@ -87,7 +90,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
-		return nil, fmt.Errorf("error reverse geocoding: %s", r.Error)
+		return nil, fmt.Errorf("reverse geocoding error: %s", r.Error)
 	}
 	var locality string
 	if r.Addr.City != "" {
