@@ -19,13 +19,18 @@ type geocodeResponse struct {
 
 type locationiqAddress struct {
 	HouseNumber   string `json:"house_number"`
+	Road          string `json:"road"`
+	Pedestrian    string `json:"pedestrian"`
+	Cycleway      string `json:"cycleway"`
+	Highway       string `json:"highway"`
+	Path          string `json:"path"`
 	Suburb        string `json:"suburb"`
 	City          string `json:"city"`
-	County        string `json:"county"`
+	Town          string `json:"town"`
 	Village       string `json:"village"`
+	County        string `json:"county"`
 	Country       string `json:"country"`
 	CountryCode   string `json:"country_code"`
-	Road          string `json:"road"`
 	State         string `json:"state"`
 	StateDistrict string `json:"state_district"`
 	Postcode      string `json:"postcode"`
@@ -92,17 +97,12 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
 		return nil, fmt.Errorf("reverse geocoding error: %s", r.Error)
 	}
-	var locality string
-	if r.Addr.City != "" {
-		locality = r.Addr.City
-	} else {
-		locality = r.Addr.Village
-	}
+
 	return &geo.Address{
 		FormattedAddress: r.DisplayName,
-		Street:           r.Addr.Road,
+		Street:           extractStreet(r.Addr),
 		HouseNumber:      r.Addr.HouseNumber,
-		City:             locality,
+		City:             extractLocality(r.Addr),
 		Postcode:         r.Addr.Postcode,
 		Suburb:           r.Addr.Suburb,
 		State:            r.Addr.State,
@@ -116,4 +116,36 @@ func (r *geocodeResponse) FormattedAddress() string {
 		return ""
 	}
 	return r.DisplayName
+}
+
+func extractLocality(a locationiqAddress) string {
+	var locality string
+
+	if a.City != "" {
+		locality = a.City
+	} else if a.Town != "" {
+		locality = a.Town
+	} else if a.Village != "" {
+		locality = a.Village
+	}
+
+	return locality
+}
+
+func extractStreet(a locationiqAddress) string {
+	var street string
+
+	if a.Road != "" {
+		street = a.Road
+	} else if a.Pedestrian != "" {
+		street = a.Pedestrian
+	} else if a.Path != "" {
+		street = a.Path
+	} else if a.Cycleway != "" {
+		street = a.Cycleway
+	} else if a.Highway != "" {
+		street = a.Highway
+	}
+
+	return street
 }
