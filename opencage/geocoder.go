@@ -12,29 +12,29 @@ type (
 	baseURL string
 
 	geocodeResponse struct {
-	Results []struct {
-		Formatted  string
-		Geometry   geo.Location
-		Components osmAddress
-	}
-	Status struct {
-		Code    int
-		Message string
-	}
+		Results []struct {
+			Formatted  string
+			Geometry   geo.Location
+			Components osmAddress
+		}
+		Status struct {
+			Code    int
+			Message string
+		}
 	}
 
 	osmAddress struct {
-	HouseNumber   string `json:"house_number"`
-	Suburb        string `json:"suburb"`
-	City          string `json:"city"`
-	Village       string `json:"village"`
-	County        string `json:"county"`
-	Country       string `json:"country"`
-	CountryCode   string `json:"country_code"`
-	Road          string `json:"road"`
-	State         string `json:"state"`
-	StateDistrict string `json:"state_district"`
-	Postcode      string `json:"postcode"`
+		HouseNumber   string `json:"house_number"`
+		Suburb        string `json:"suburb"`
+		City          string `json:"city"`
+		Village       string `json:"village"`
+		County        string `json:"county"`
+		Country       string `json:"country"`
+		CountryCode   string `json:"country_code"`
+		Road          string `json:"road"`
+		State         string `json:"state"`
+		StateDistrict string `json:"state_district"`
+		Postcode      string `json:"postcode"`
 	}
 )
 
