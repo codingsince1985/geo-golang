@@ -1,6 +1,7 @@
 package geo
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -11,20 +12,20 @@ import (
 	"time"
 )
 
-var timeout = time.Second * 8
-
-// ErrTimeout occurs when no response returned within timeoutInSeconds
-var ErrTimeout = errors.New("TIMEOUT")
+// Default timeout for the request execution
+const DefaultTimeout = time.Second * 8
 
 // ErrNoResult occurs when no result returned
 var ErrNoResult = errors.New("NO_RESULT")
+var ErrTimeout = errors.New("TIMEOUT")
 
 // Location is the output of Geocode
 type Location struct {
 	Lat, Lng float64
 }
 
-// Address is the structured representation of an address, including its flat representation
+// Address is returned by ReverseGeocode.
+// This is a structured representation of an address, including its flat representation
 type Address struct {
 	FormattedAddress string
 	Street           string
@@ -62,69 +63,106 @@ type HTTPGeocoder struct {
 
 // Geocode returns location for address
 func (g HTTPGeocoder) Geocode(address string) (*Location, error) {
-	ch := make(chan *Location, 1)
+	responseParser := g.ResponseParserFactory()
+
+	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
+	defer cancel()
+
+	ch := make(chan struct {
+		l *Location
+		e error
+	}, 1)
 	go func() {
-		responseParser := g.ResponseParserFactory()
-		response(g.GeocodeURL(url.QueryEscape(address)), responseParser)
-		// TODO error handling
-		loc, _ := responseParser.Location()
-		ch <- loc
+		if err := response(ctx, g.GeocodeURL(url.QueryEscape(address)), responseParser); err != nil {
+			ch <- struct {
+				l *Location
+				e error
+			}{
+				l: nil,
+				e: err,
+			}
+		}
+
+		loc, err := responseParser.Location()
+		ch <- struct {
+			l *Location
+			e error
+		}{
+			l: loc,
+			e: err,
+		}
 	}()
 
 	select {
-	case location := <-ch:
-		return location, anyError(location)
-	case <-time.After(timeout):
+	case <-ctx.Done():
 		return nil, ErrTimeout
+	case res := <-ch:
+		return res.l, res.e
 	}
 }
 
 // ReverseGeocode returns address for location
 func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (*Address, error) {
-	ch := make(chan *Address, 1)
+	responseParser := g.ResponseParserFactory()
+
+	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
+	defer cancel()
+
+	ch := make(chan struct {
+		a *Address
+		e error
+	}, 1)
 	go func() {
-		responseParser := g.ResponseParserFactory()
-		response(g.ReverseGeocodeURL(Location{lat, lng}), responseParser)
-		// TODO error handling
-		addr, _ := responseParser.Address()
-		ch <- addr
+		if err := response(ctx, g.ReverseGeocodeURL(Location{lat, lng}), responseParser); err != nil {
+			ch <- struct {
+				a *Address
+				e error
+			}{
+				a: nil,
+				e: err,
+			}
+		}
+
+		addr, err := responseParser.Address()
+		ch <- struct {
+			a *Address
+			e error
+		}{
+			a: addr,
+			e: err,
+		}
 	}()
 
 	select {
-	case address := <-ch:
-		return address, anyError(address)
-	case <-time.After(timeout):
+	case <-ctx.Done():
 		return nil, ErrTimeout
+	case res := <-ch:
+		return res.a, res.e
 	}
 }
 
 // Response gets response from url
-func response(url string, obj ResponseParser) {
-	if req, err := http.NewRequest("GET", url, nil); err == nil {
-		if resp, err := (&http.Client{}).Do(req); err == nil {
-			defer resp.Body.Close()
-			if data, err := ioutil.ReadAll(resp.Body); err == nil {
-				// TODO: don't swallow json unmarshal errors
-				// currently it just treats an empty response as a ErrNoResult which
-				// is fine for now but we should have some logging or something to indicate
-				// failed json unmarshal
-				json.Unmarshal([]byte(strings.Trim(string(data), " []")), obj)
-			}
-		}
+func response(ctx context.Context, url string, obj ResponseParser) error {
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return err
 	}
-}
 
-func anyError(v interface{}) error {
-	switch v := v.(type) {
-	case Location:
-		if v.Lat == 0 && v.Lng == 0 {
-			return ErrNoResult
-		}
-	case Address:
-		if v.Postcode == "" {
-			return ErrNoResult
-		}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
 	}
+
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal([]byte(strings.Trim(string(data), " []")), obj); err != nil {
+		return err
+	}
+
 	return nil
 }
 
