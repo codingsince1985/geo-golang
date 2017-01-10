@@ -2,8 +2,8 @@
 // and some helper functions to reduce code repetition across specific client implementations.
 package osm
 
-// OSMAddress contains address fields specific to OpenStreetMap
-type OSMAddress struct {
+// Address contains address fields specific to OpenStreetMap
+type Address struct {
 	HouseNumber   string `json:"house_number"`
 	Road          string `json:"road"`
 	Pedestrian    string `json:"pedestrian"`
@@ -23,7 +23,7 @@ type OSMAddress struct {
 }
 
 // Locality checks different fields for the locality name
-func (a OSMAddress) Locality() string {
+func (a Address) Locality() string {
 	var locality string
 
 	if a.City != "" {
@@ -38,7 +38,7 @@ func (a OSMAddress) Locality() string {
 }
 
 // Street checks different fields for the street name
-func (a OSMAddress) Street() string {
+func (a Address) Street() string {
 	var street string
 
 	if a.Road != "" {
