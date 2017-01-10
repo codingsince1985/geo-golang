@@ -40,7 +40,7 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	geocoder := open.Geocoder(key, ts.URL+"/")
 	//geocoder := open.Geocoder(key)
 	addr, err := geocoder.ReverseGeocode(-37.813743, 164.971745)
-	assert.Equal(t, err, nil)
+	assert.Nil(t, err)
 	assert.Nil(t, addr)
 }
 
