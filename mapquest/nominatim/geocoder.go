@@ -3,14 +3,20 @@ package nominatim
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
 )
 
 type (
-	baseURL         string
+	baseURL string
+
 	geocodeResponse struct {
 		DisplayName     string `json:"display_name"`
 		Lat, Lon, Error string
+		Addr            osm.Address `json:"address"`
 	}
 )
 
@@ -40,16 +46,37 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if r.Error == "" {
-		return geo.Location{geo.ParseFloat(r.Lat), geo.ParseFloat(r.Lon)}
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Error != "" {
+		return nil, fmt.Errorf("geocode error: %s", r.Error)
 	}
-	return geo.Location{}
+
+	return &geo.Location{
+		Lat: parseFloat(r.Lat),
+		Lng: parseFloat(r.Lon),
+	}, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if r.Error == "" {
-		return r.DisplayName
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if r.Error != "" {
+		return nil, fmt.Errorf("reverse geocode error: %s", r.Error)
 	}
-	return ""
+
+	return &geo.Address{
+		FormattedAddress: r.DisplayName,
+		HouseNumber:      r.Addr.HouseNumber,
+		Street:           r.Addr.Street(),
+		Suburb:           r.Addr.Suburb,
+		City:             r.Addr.Locality(),
+		State:            r.Addr.State,
+		County:           r.Addr.County,
+		Postcode:         r.Addr.Postcode,
+		Country:          r.Addr.Country,
+		CountryCode:      strings.ToUpper(r.Addr.CountryCode),
+	}, nil
+}
+
+func parseFloat(value string) float64 {
+	f, _ := strconv.ParseFloat(value, 64)
+	return f
 }
