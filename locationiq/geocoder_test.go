@@ -30,7 +30,6 @@ func TestGeocodeYieldsResult(t *testing.T) {
 	}
 }
 
-/* TODO uncomment as soon as the propagated error from client is returned
 func TestGeocodeYieldsNoResult(t *testing.T) {
 	ts := testServer("[]")
 	defer ts.Close()
@@ -38,17 +37,15 @@ func TestGeocodeYieldsNoResult(t *testing.T) {
 	gc := Geocoder("foobar", 18, ts.URL+"/")
 	l, err := gc.Geocode("Seidlstraße 26, 80335 München")
 
-	if err == nil {
-		t.Fatal("Got nil error")
+	if l != nil {
+		t.Errorf("Expected nil, got %#v", l)
 	}
-	if l.Lat != 0 {
-		t.Errorf("Expected latitude: %d, got: %f", 0, l.Lat)
-	}
-	if l.Lng != 0 {
-		t.Errorf("Expected longitude: %d, got: %f", 0, l.Lat)
+
+	if err != nil {
+		t.Errorf("Expected nil error, got %v", err)
 	}
 }
-*/
+
 func TestReverseGeocodeYieldsResult(t *testing.T) {
 	ts := testServer(responseForReverse)
 	defer ts.Close()
@@ -64,7 +61,6 @@ func TestReverseGeocodeYieldsResult(t *testing.T) {
 	}
 }
 
-/* TODO uncomment as soon as the propagated error from client is returned
 func TestReverseGeocodeYieldsNoResult(t *testing.T) {
 	ts := testServer(errorResponse)
 	defer ts.Close()
@@ -79,7 +75,7 @@ func TestReverseGeocodeYieldsNoResult(t *testing.T) {
 		t.Errorf("Expected nil as address, got: %s", addr)
 	}
 }
-*/
+
 func testServer(response string) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		resp.Write([]byte(response))

@@ -3,10 +3,10 @@ package locationiq
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
 )
 
 type baseURL string
@@ -14,26 +14,7 @@ type baseURL string
 type geocodeResponse struct {
 	DisplayName     string `json:"display_name"`
 	Lat, Lon, Error string
-	Addr            locationiqAddress `json:"address"`
-}
-
-type locationiqAddress struct {
-	HouseNumber   string `json:"house_number"`
-	Road          string `json:"road"`
-	Pedestrian    string `json:"pedestrian"`
-	Cycleway      string `json:"cycleway"`
-	Highway       string `json:"highway"`
-	Path          string `json:"path"`
-	Suburb        string `json:"suburb"`
-	City          string `json:"city"`
-	Town          string `json:"town"`
-	Village       string `json:"village"`
-	County        string `json:"county"`
-	Country       string `json:"country"`
-	CountryCode   string `json:"country_code"`
-	State         string `json:"state"`
-	StateDistrict string `json:"state_district"`
-	Postcode      string `json:"postcode"`
+	Addr            osm.Address `json:"address"`
 }
 
 const (
@@ -83,8 +64,10 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if r.Error != "" {
 		return nil, fmt.Errorf("geocoding error: %s", r.Error)
 	}
+
+	// no result
 	if r.Lat == "" || r.Lon == "" {
-		return nil, fmt.Errorf("empty lat/lon value: %s", r.Error)
+		return nil, nil
 	}
 
 	return &geo.Location{
@@ -100,9 +83,9 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 
 	return &geo.Address{
 		FormattedAddress: r.DisplayName,
-		Street:           extractStreet(r.Addr),
+		Street:           r.Addr.Street(),
 		HouseNumber:      r.Addr.HouseNumber,
-		City:             extractLocality(r.Addr),
+		City:             r.Addr.Locality(),
 		Postcode:         r.Addr.Postcode,
 		Suburb:           r.Addr.Suburb,
 		State:            r.Addr.State,
@@ -116,36 +99,4 @@ func (r *geocodeResponse) FormattedAddress() string {
 		return ""
 	}
 	return r.DisplayName
-}
-
-func extractLocality(a locationiqAddress) string {
-	var locality string
-
-	if a.City != "" {
-		locality = a.City
-	} else if a.Town != "" {
-		locality = a.Town
-	} else if a.Village != "" {
-		locality = a.Village
-	}
-
-	return locality
-}
-
-func extractStreet(a locationiqAddress) string {
-	var street string
-
-	if a.Road != "" {
-		street = a.Road
-	} else if a.Pedestrian != "" {
-		street = a.Pedestrian
-	} else if a.Path != "" {
-		street = a.Path
-	} else if a.Cycleway != "" {
-		street = a.Cycleway
-	} else if a.Highway != "" {
-		street = a.Highway
-	}
-
-	return street
 }
