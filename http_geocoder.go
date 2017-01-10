@@ -159,7 +159,11 @@ func response(ctx context.Context, url string, obj ResponseParser) error {
 		return err
 	}
 
-	if err := json.Unmarshal([]byte(strings.Trim(string(data), " []")), obj); err != nil {
+	body := strings.Trim(string(data), " []")
+	if body == "" {
+		return nil
+	}
+	if err := json.Unmarshal([]byte(body), obj); err != nil {
 		return err
 	}
 
