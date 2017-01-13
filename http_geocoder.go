@@ -17,6 +17,8 @@ const DefaultTimeout = time.Second * 8
 
 // ErrNoResult occurs when no result returned
 var ErrNoResult = errors.New("NO_RESULT")
+
+// ErrTimeout occurs when no response returned within timeoutInSeconds
 var ErrTimeout = errors.New("TIMEOUT")
 
 // Location is the output of Geocode
@@ -68,30 +70,26 @@ func (g HTTPGeocoder) Geocode(address string) (*Location, error) {
 	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
 	defer cancel()
 
-	ch := make(chan struct {
+	type geoResp struct {
 		l *Location
 		e error
-	}, 1)
-	go func() {
+	}
+	ch := make(chan geoResp, 1)
+
+	go func(ch chan geoResp) {
 		if err := response(ctx, g.GeocodeURL(url.QueryEscape(address)), responseParser); err != nil {
-			ch <- struct {
-				l *Location
-				e error
-			}{
+			ch <- geoResp{
 				l: nil,
 				e: err,
 			}
 		}
 
 		loc, err := responseParser.Location()
-		ch <- struct {
-			l *Location
-			e error
-		}{
+		ch <- geoResp{
 			l: loc,
 			e: err,
 		}
-	}()
+	}(ch)
 
 	select {
 	case <-ctx.Done():
@@ -108,30 +106,26 @@ func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (*Address, error) {
 	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
 	defer cancel()
 
-	ch := make(chan struct {
+	type revResp struct {
 		a *Address
 		e error
-	}, 1)
-	go func() {
+	}
+	ch := make(chan revResp, 1)
+
+	go func(ch chan revResp) {
 		if err := response(ctx, g.ReverseGeocodeURL(Location{lat, lng}), responseParser); err != nil {
-			ch <- struct {
-				a *Address
-				e error
-			}{
+			ch <- revResp{
 				a: nil,
 				e: err,
 			}
 		}
 
 		addr, err := responseParser.Address()
-		ch <- struct {
-			a *Address
-			e error
-		}{
+		ch <- revResp{
 			a: addr,
 			e: err,
 		}
-	}()
+	}(ch)
 
 	select {
 	case <-ctx.Done():
@@ -147,6 +141,7 @@ func response(ctx context.Context, url string, obj ResponseParser) error {
 	if err != nil {
 		return err
 	}
+	req = req.WithContext(ctx)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
