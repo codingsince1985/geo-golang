@@ -7,6 +7,7 @@ type Address struct {
 	HouseNumber   string `json:"house_number"`
 	Road          string `json:"road"`
 	Pedestrian    string `json:"pedestrian"`
+	Footway       string `json:"footway"`
 	Cycleway      string `json:"cycleway"`
 	Highway       string `json:"highway"`
 	Path          string `json:"path"`
@@ -49,6 +50,8 @@ func (a Address) Street() string {
 		street = a.Path
 	} else if a.Cycleway != "" {
 		street = a.Cycleway
+	} else if a.Footway != "" {
+		street = a.Footway
 	} else if a.Highway != "" {
 		street = a.Highway
 	}
