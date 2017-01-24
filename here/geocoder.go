@@ -85,7 +85,10 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 		return nil, nil
 	}
 	p := r.Response.View[0].Result[0].Location.DisplayPosition
-	return &geo.Location{p.Latitude, p.Longitude}, nil
+	return &geo.Location{
+		Lat: p.Latitude,
+		Lng: p.Longitude,
+	}, nil
 }
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {

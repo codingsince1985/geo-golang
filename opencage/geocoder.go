@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
 )
 
 type (
@@ -15,26 +16,12 @@ type (
 		Results []struct {
 			Formatted  string
 			Geometry   geo.Location
-			Components osmAddress
+			Components osm.Address
 		}
 		Status struct {
 			Code    int
 			Message string
 		}
-	}
-
-	osmAddress struct {
-		HouseNumber   string `json:"house_number"`
-		Suburb        string `json:"suburb"`
-		City          string `json:"city"`
-		Village       string `json:"village"`
-		County        string `json:"county"`
-		Country       string `json:"country"`
-		CountryCode   string `json:"country_code"`
-		Road          string `json:"road"`
-		State         string `json:"state"`
-		StateDistrict string `json:"state_district"`
-		Postcode      string `json:"postcode"`
 	}
 )
 
@@ -92,10 +79,10 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	return &geo.Address{
 		FormattedAddress: r.Results[0].Formatted,
 		HouseNumber:      addr.HouseNumber,
-		Street:           addr.Road,
+		Street:           addr.Street(),
 		Suburb:           addr.Suburb,
 		Postcode:         addr.Postcode,
-		City:             locality,
+		City:             addr.Locality(),
 		CountryCode:      strings.ToUpper(addr.CountryCode),
 		Country:          addr.Country,
 		County:           addr.County,

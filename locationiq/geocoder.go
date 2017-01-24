@@ -93,10 +93,3 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		CountryCode:      strings.ToUpper(r.Addr.CountryCode),
 	}, nil
 }
-
-func (r *geocodeResponse) FormattedAddress() string {
-	if r.Error != "" {
-		return ""
-	}
-	return r.DisplayName
-}

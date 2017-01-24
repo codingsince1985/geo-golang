@@ -3,32 +3,19 @@ package openstreetmap
 
 import (
 	"fmt"
-	"strings"
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
+	"strings"
 )
 
 type (
-	baseURL string
+	baseURL         string
 	geocodeResponse struct {
-	DisplayName string `json:"display_name"`
-	Lat         string
-	Lon         string
-	Error       string
-	Addr        osmAddress `json:"address"`
-	}
-
-	osmAddress struct {
-	HouseNumber   string `json:"house_number"`
-	Suburb        string `json:"suburb"`
-	City          string `json:"city"`
-	Village       string `json:"village"`
-	County        string `json:"county"`
-	Country       string `json:"country"`
-	CountryCode   string `json:"country_code"`
-	Road          string `json:"road"`
-	State         string `json:"state"`
-	StateDistrict string `json:"state_district"`
-	Postcode      string `json:"postcode"`
+		DisplayName string `json:"display_name"`
+		Lat         string
+		Lon         string
+		Error       string
+		Addr        osm.Address `json:"address"`
 	}
 )
 
@@ -69,18 +56,13 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
 		return nil, fmt.Errorf("reverse geocoding error: %s", r.Error)
 	}
-	var locality string
-	if r.Addr.City != "" {
-		locality = r.Addr.City
-	} else {
-		locality = r.Addr.Village
-	}
+
 	return &geo.Address{
 		FormattedAddress: r.DisplayName,
 		HouseNumber:      r.Addr.HouseNumber,
-		Street:           r.Addr.Road,
+		Street:           r.Addr.Street(),
 		Postcode:         r.Addr.Postcode,
-		City:             locality,
+		City:             r.Addr.Locality(),
 		Suburb:           r.Addr.Suburb,
 		State:            r.Addr.State,
 		Country:          r.Addr.Country,

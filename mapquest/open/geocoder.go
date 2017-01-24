@@ -9,7 +9,6 @@ import (
 
 type (
 	baseURL string
-
 	geocodeResponse struct {
 		Results []struct {
 			Locations []struct {
