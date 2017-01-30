@@ -84,7 +84,7 @@ func ExampleGeocoder() {
 	//
 	// Mapbox API
 	// Melbourne VIC location is (-37.814200, 144.963200)
-	// Address of (-37.813611,144.963056) is Elwood Park Playground, 3000 Melbourne, Australia
+	// Address of (-37.813611,144.963056) is Elwood Park Playground, Melbourne, Victoria 3000, Australia
 	//
 	// OpenStreetMap
 	// Melbourne VIC location is (-37.814217, 144.963161)

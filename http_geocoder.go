@@ -95,7 +95,7 @@ func response(url string, obj ResponseParser) {
 	}
 }
 
-func anyError(v interface{}) (err error) {
+func anyError(v interface{}) error {
 	switch v := v.(type) {
 	case Location:
 		if v.Lat == 0 && v.Lng == 0 {
@@ -106,7 +106,7 @@ func anyError(v interface{}) (err error) {
 			return ErrNoResult
 		}
 	}
-	return
+	return nil
 }
 
 func ParseFloat(value string) float64 {
