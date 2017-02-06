@@ -3,9 +3,10 @@ package openstreetmap
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/osm"
-	"strings"
 )
 
 type (

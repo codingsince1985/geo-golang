@@ -4,8 +4,9 @@ package bing
 import (
 	"errors"
 	"fmt"
-	"github.com/codingsince1985/geo-golang"
 	"strings"
+
+	"github.com/codingsince1985/geo-golang"
 )
 
 type (

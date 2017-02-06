@@ -3,12 +3,13 @@ package open
 
 import (
 	"fmt"
-	"github.com/codingsince1985/geo-golang"
 	"strings"
+
+	"github.com/codingsince1985/geo-golang"
 )
 
 type (
-	baseURL string
+	baseURL         string
 	geocodeResponse struct {
 		Results []struct {
 			Locations []struct {

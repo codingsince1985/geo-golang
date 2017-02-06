@@ -38,8 +38,8 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
 	//geocoder := openstreetmap.Geocoder()
 	addr, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
-	assert.Nil(t, err)
 	assert.Nil(t, addr)
+	assert.NotNil(t, err)
 }
 
 func testServer(response string) *httptest.Server {

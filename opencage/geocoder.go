@@ -69,12 +69,6 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	}
 
 	addr := r.Results[0].Components
-	var locality string
-	if addr.City != "" {
-		locality = addr.City
-	} else {
-		locality = addr.Village
-	}
 
 	return &geo.Address{
 		FormattedAddress: r.Results[0].Formatted,
