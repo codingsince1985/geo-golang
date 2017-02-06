@@ -12,13 +12,6 @@ import (
 var (
 	addressFixture = geo.Address{
 		FormattedAddress: "64 Elizabeth Street, Melbourne, Victoria 3000, Australia",
-		//Street:           "Elizabeth Street",
-		//HouseNumber:      "64",
-		//City:             "Melbourne",
-		//Postcode:         "3000",
-		//State:            "Victoria",
-		//Country:          "Australia",
-		//CountryCode:      "AU",
 	}
 	locationFixture = geo.Location{
 		Lat: -37.814107,
