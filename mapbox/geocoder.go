@@ -13,8 +13,24 @@ type (
 		Features []struct {
 			PlaceName string `json:"place_name"`
 			Center    [2]float64
+			Text      string `json:"text"`    // usually street name
+			Address   string `json:"address"` // potentially house number
+			Context   []struct {
+				Text      string `json:"text"`
+				Id        string `json:"id"`
+				ShortCode string `json:"short_code"`
+				Wikidata  string `json:"wikidata"`
+			}
 		}
+		Message string `json:"message"`
 	}
+)
+
+const (
+	mapboxPrefixLocality = "place"
+	mapboxPrefixPostcode = "postcode"
+	mapboxPrefixState    = "region"
+	mapboxPrefixCountry  = "country"
 )
 
 // Geocoder constructs Mapbox geocoder
@@ -29,7 +45,7 @@ func getUrl(token string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?access_token=" + token
+	return "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?limit=1&access_token=" + token
 }
 
 func (b baseURL) GeocodeURL(address string) string { return strings.Replace(string(b), "*", address, 1) }
@@ -38,17 +54,54 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", fmt.Sprintf("%+f,%+f", l.Lng, l.Lat), 1)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if len(r.Features) > 0 {
-		g := r.Features[0]
-		return geo.Location{g.Center[1], g.Center[0]}
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if len(r.Features) == 0 {
+		// error in response
+		if r.Message != "" {
+			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
+		} else { // no results
+			return nil, nil
+		}
 	}
-	return geo.Location{}
+
+	g := r.Features[0]
+	return &geo.Location{
+		Lat: g.Center[1],
+		Lng: g.Center[0],
+	}, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if len(r.Features) > 0 {
-		return r.Features[0].PlaceName
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if len(r.Features) == 0 {
+		// error in response
+		if r.Message != "" {
+			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
+		} else { // no results
+			return nil, nil
+		}
 	}
-	return ""
+
+	return parseMapboxResponse(r), nil
+}
+
+func parseMapboxResponse(r *geocodeResponse) *geo.Address {
+	addr := &geo.Address{}
+	f := r.Features[0]
+	addr.FormattedAddress = f.PlaceName
+	addr.Street = f.Text
+	addr.HouseNumber = f.Address
+	for _, c := range f.Context {
+		if strings.HasPrefix(c.Id, mapboxPrefixLocality) {
+			addr.City = c.Text
+		} else if strings.HasPrefix(c.Id, mapboxPrefixPostcode) {
+			addr.Postcode = c.Text
+		} else if strings.HasPrefix(c.Id, mapboxPrefixState) {
+			addr.State = c.Text
+		} else if strings.HasPrefix(c.Id, mapboxPrefixCountry) {
+			addr.Country = c.Text
+			addr.CountryCode = strings.ToUpper(c.ShortCode)
+		}
+	}
+
+	return addr
 }
