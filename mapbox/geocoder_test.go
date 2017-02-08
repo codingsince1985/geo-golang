@@ -1,7 +1,6 @@
 package mapbox_test
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -32,7 +31,6 @@ func TestReverseGeocode(t *testing.T) {
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(-37.813754, 144.971756)
 	assert.NoError(t, err)
-	fmt.Println(address)
 	assert.True(t, strings.Index(address.FormattedAddress, "60 Collins St") >= 0)
 }
 
