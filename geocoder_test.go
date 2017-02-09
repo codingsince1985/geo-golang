@@ -101,7 +101,17 @@ func ExampleGeocoder() {
 
 func try(geocoder geo.Geocoder) {
 	location, _ := geocoder.Geocode(addr)
-	fmt.Printf("%s location is (%.6f, %.6f)\n", addr, location.Lat, location.Lng)
+	if location != nil {
+		fmt.Printf("%s location is (%.6f, %.6f)\n", addr, location.Lat, location.Lng)
+	} else {
+		fmt.Println("got <nil> location")
+	}
 	address, _ := geocoder.ReverseGeocode(lat, lng)
-	fmt.Printf("Address of (%.6f,%.6f) is %s\n\n", lat, lng, address)
+	if address != nil {
+		fmt.Printf("Address of (%.6f,%.6f) is %s\n", lat, lng, address.FormattedAddress)
+		fmt.Printf("Detailed address: %#v\n", address)
+	} else {
+		fmt.Println("got <nil> address")
+	}
+	fmt.Println("\n")
 }
