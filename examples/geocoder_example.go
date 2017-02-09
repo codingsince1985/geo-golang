@@ -1,4 +1,4 @@
-package geo_test
+package main
 
 import (
 	"fmt"
@@ -24,12 +24,16 @@ const (
 	ZOOM     = 18
 )
 
+func main() {
+	ExampleGeocoder()
+}
+
 func ExampleGeocoder() {
 	fmt.Println("Google Geocoding API")
 	try(google.Geocoder(os.Getenv("GOOGLE_API_KEY")))
 
 	fmt.Println("Mapquest Nominatim")
-	try(nominatim.Geocoder(os.Getenv("MAPQUEST_NOMINATUM_KEY")))
+	try(nominatim.Geocoder(os.Getenv("MAPQUEST_NOMINATIM_KEY")))
 
 	fmt.Println("Mapquest Open streetmaps")
 	try(open.Geocoder(os.Getenv("MAPQUEST_OPEN_KEY")))
