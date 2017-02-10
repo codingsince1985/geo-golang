@@ -15,32 +15,8 @@ import (
 // Default timeout for the request execution
 const DefaultTimeout = time.Second * 8
 
-// ErrNoResult occurs when no result returned
-var ErrNoResult = errors.New("NO_RESULT")
-
 // ErrTimeout occurs when no response returned within timeoutInSeconds
 var ErrTimeout = errors.New("TIMEOUT")
-
-// Location is the output of Geocode
-type Location struct {
-	Lat, Lng float64
-}
-
-// Address is returned by ReverseGeocode.
-// This is a structured representation of an address, including its flat representation
-type Address struct {
-	FormattedAddress string
-	Street           string
-	HouseNumber      string
-	Suburb           string
-	Postcode         string
-	State            string
-	StateDistrict    string
-	County           string
-	Country          string
-	CountryCode      string
-	City             string
-}
 
 // EndpointBuilder defines functions that build urls for geocode/reverse geocode
 type EndpointBuilder interface {
