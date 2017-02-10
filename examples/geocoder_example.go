@@ -146,5 +146,5 @@ func try(geocoder geo.Geocoder) {
 	} else {
 		fmt.Println("got <nil> address")
 	}
-	fmt.Println("\n")
+	fmt.Print("\n")
 }
