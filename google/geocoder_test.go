@@ -1,14 +1,15 @@
 package google_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/google"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/google"
+	"github.com/stretchr/testify/assert"
 )
 
 var token = os.Getenv("GOOGLE_API_KEY")

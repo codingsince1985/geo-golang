@@ -1,14 +1,15 @@
 package here_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/here"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/here"
+	"github.com/stretchr/testify/assert"
 )
 
 var appID = os.Getenv("HERE_APP_ID")

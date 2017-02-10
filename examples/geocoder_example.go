@@ -63,44 +63,73 @@ func ExampleGeocoder() {
 		google.Geocoder(os.Getenv("GOOGLE_API_KEY")),
 	))
 	// Output: Google Geocoding API
-	// Melbourne VIC location is (-37.813628, 144.963058)
-	// Address of (-37.813611,144.963056) is 350 Bourke St, Melbourne VIC 3004, Australia
+	// Melbourne VIC location is (-37.813611, 144.963056)
+	// Address of (-37.813611,144.963056) is 197 Elizabeth St, Melbourne VIC 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"197 Elizabeth St, Melbourne VIC 3000, Australia",
+	// 	Street:"Elizabeth Street", HouseNumber:"197", Suburb:"", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"Melbourne City", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// Mapquest Nominatim
 	// Melbourne VIC location is (-37.814218, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Melbourne, City of Melbourne,
+	// 	Greater Melbourne, Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne",
+	// 	Postcode:"3000", State:"Victoria", StateDistrict:"", County:"City of Melbourne", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// Mapquest Open streetmaps
 	// Melbourne VIC location is (-37.814218, 144.963161)
 	// Address of (-37.813611,144.963056) is Elizabeth Street, Melbourne, Victoria, AU
+	// Detailed address: &geo.Address{FormattedAddress:"Elizabeth Street, 3000, Melbourne, Victoria, AU",
+	// 	Street:"Elizabeth Street", HouseNumber:"", Suburb:"", Postcode:"3000", State:"Victoria", StateDistrict:"",
+	// 	County:"", Country:"", CountryCode:"AU", City:"Melbourne"}
 	//
 	// OpenCage Data
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Melbourne VIC 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Melbourne VIC 3000, Australia",
+	// 	Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne (3000)", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"", County:"City of Melbourne", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// HERE API
 	// Melbourne VIC location is (-37.817530, 144.967150)
 	// Address of (-37.813611,144.963056) is 197 Elizabeth St, Melbourne VIC 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"197 Elizabeth St, Melbourne VIC 3000, Australia", Street:"Elizabeth St",
+	// 	HouseNumber:"197", Suburb:"", Postcode:"3000", State:"Victoria", StateDistrict:"", County:"", Country:"Australia",
+	// 	CountryCode:"AUS", City:"Melbourne"}
 	//
 	// Bing Geocoding API
 	// Melbourne VIC location is (-37.824299, 144.977997)
 	// Address of (-37.813611,144.963056) is Elizabeth St, Melbourne, VIC 3000
+	// Detailed address: &geo.Address{FormattedAddress:"Elizabeth St, Melbourne, VIC 3000", Street:"Elizabeth St",
+	// 	HouseNumber:"", Suburb:"", Postcode:"3000", State:"", StateDistrict:"", County:"", Country:"Australia", CountryCode:"", City:"Melbourne"}
 	//
 	// Mapbox API
 	// Melbourne VIC location is (-37.814200, 144.963200)
 	// Address of (-37.813611,144.963056) is Elwood Park Playground, Melbourne, Victoria 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Elwood Park Playground, Melbourne, Victoria 3000, Australia",
+	// 	Street:"Elwood Park Playground", HouseNumber:"", Suburb:"", Postcode:"3000", State:"Victoria", StateDistrict:"",
+	// 	County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// OpenStreetMap
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne,
+	// 	Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// LocationIQ
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne,
+	// 	Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// ChainedAPI[OpenStreetmap -> Google]
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne,
+	// 	Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 }
 
 func try(geocoder geo.Geocoder) {

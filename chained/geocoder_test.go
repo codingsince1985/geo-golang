@@ -1,13 +1,13 @@
 package chained_test
 
 import (
+	"strings"
+	"testing"
+
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/chained"
 	"github.com/codingsince1985/geo-golang/data"
 	"github.com/stretchr/testify/assert"
-
-	"strings"
-	"testing"
 )
 
 // geocoder is chained with one data geocoder with address -> location data

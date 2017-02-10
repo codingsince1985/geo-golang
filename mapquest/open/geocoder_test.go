@@ -1,14 +1,15 @@
 package open_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/mapquest/open"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/mapquest/open"
+	"github.com/stretchr/testify/assert"
 )
 
 var key = os.Getenv("MAPQUEST_OPEN_KEY")
