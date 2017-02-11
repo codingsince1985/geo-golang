@@ -3,7 +3,6 @@ package nominatim
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/codingsince1985/geo-golang"
