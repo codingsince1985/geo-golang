@@ -4,19 +4,40 @@ package google
 
 import (
 	"fmt"
-	geo "github.com/codingsince1985/geo-golang"
+
+	"github.com/codingsince1985/geo-golang"
 )
 
 type (
 	baseURL         string
 	geocodeResponse struct {
 		Results []struct {
-			FormattedAddress string `json:"formatted_address"`
-			Geometry         struct {
+			FormattedAddress  string                   `json:"formatted_address"`
+			AddressComponents []googleAddressComponent `json:"address_components"`
+			Geometry          struct {
 				Location geo.Location
 			}
 		}
+		Status string `json: "status"`
 	}
+	googleAddressComponent struct {
+		LongName  string   `json:"long_name"`
+		ShortName string   `json:"short_name"`
+		Types     []string `json:"types"`
+	}
+)
+
+const (
+	statusOK                   = "OK"
+	statusNoResults            = "ZERO_RESULTS"
+	componentTypeHouseNumber   = "street_number"
+	componentTypeStreetName    = "route"
+	componentTypeSuburb        = "sublocality"
+	componentTypeLocality      = "locality"
+	componentTypeStateDistrict = "administrative_area_level_2"
+	componentTypeState         = "administrative_area_level_1"
+	componentTypeCountry       = "country"
+	componentTypePostcode      = "postal_code"
 )
 
 // Geocoder constructs Google geocoder
@@ -37,19 +58,71 @@ func getUrl(apiKey string, baseURLs ...string) string {
 func (b baseURL) GeocodeURL(address string) string { return string(b) + "address=" + address }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
-	return string(b) + fmt.Sprintf("latlng=%f,%f", l.Lat, l.Lng)
+	return string(b) + fmt.Sprintf("result_type=street_address&latlng=%f,%f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if len(r.Results) > 0 {
-		return r.Results[0].Geometry.Location
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Status == statusNoResults {
+		return nil, nil
+	} else if r.Status != statusOK {
+		return nil, fmt.Errorf("geocoding error: %s", r.Status)
 	}
-	return geo.Location{}
+
+	return &r.Results[0].Geometry.Location, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if len(r.Results) > 0 {
-		return r.Results[0].FormattedAddress
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if r.Status == statusNoResults {
+		return nil, nil
+	} else if r.Status != statusOK {
+		return nil, fmt.Errorf("reverse geocoding error: %s", r.Status)
 	}
-	return ""
+
+	if len(r.Results) == 0 || len(r.Results[0].AddressComponents) == 0 {
+		return nil, nil
+	}
+
+	addr := parseGoogleResult(r)
+
+	return addr, nil
+}
+
+func parseGoogleResult(r *geocodeResponse) *geo.Address {
+	addr := &geo.Address{}
+	res := r.Results[0]
+	addr.FormattedAddress = res.FormattedAddress
+OuterLoop:
+	for _, comp := range res.AddressComponents {
+		for _, typ := range comp.Types {
+			switch typ {
+			case componentTypeHouseNumber:
+				addr.HouseNumber = comp.LongName
+				continue OuterLoop
+			case componentTypeStreetName:
+				addr.Street = comp.LongName
+				continue OuterLoop
+			case componentTypeSuburb:
+				addr.Suburb = comp.LongName
+				continue OuterLoop
+			case componentTypeLocality:
+				addr.City = comp.LongName
+				continue OuterLoop
+			case componentTypeStateDistrict:
+				addr.StateDistrict = comp.LongName
+				continue OuterLoop
+			case componentTypeState:
+				addr.State = comp.LongName
+				continue OuterLoop
+			case componentTypeCountry:
+				addr.Country = comp.LongName
+				addr.CountryCode = comp.ShortName
+				continue OuterLoop
+			case componentTypePostcode:
+				addr.Postcode = comp.LongName
+				continue OuterLoop
+			}
+		}
+	}
+
+	return addr
 }

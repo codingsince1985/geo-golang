@@ -1,14 +1,15 @@
 package nominatim_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
+	"github.com/stretchr/testify/assert"
 )
 
 var key = os.Getenv("MAPQUEST_NOMINATUM_KEY")
@@ -20,7 +21,7 @@ func TestGeocode(t *testing.T) {
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
-	assert.Equal(t, geo.Location{Lat: -37.8137433689794, Lng: 144.971745104488}, location)
+	assert.Equal(t, geo.Location{Lat: -37.8137433689794, Lng: 144.971745104488}, *location)
 }
 
 func TestReverseGeocode(t *testing.T) {
@@ -28,9 +29,9 @@ func TestReverseGeocode(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
-	address, err := geocoder.ReverseGeocode(-37.8137433689794, 144.971745104488)
+	addr, err := geocoder.ReverseGeocode(-37.8137433689794, 144.971745104488)
 	assert.NoError(t, err)
-	assert.True(t, strings.HasPrefix(address, "Reserve Bank of Australia"))
+	assert.True(t, strings.HasPrefix(addr.FormattedAddress, "Reserve Bank of Australia"))
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -38,8 +39,10 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := nominatim.Geocoder(key, ts.URL+"/")
-	_, err := geocoder.ReverseGeocode(-37.8137433689794, 164.971745104488)
-	assert.Equal(t, err, geo.ErrNoResult)
+	//geocoder := nominatim.Geocoder(key)
+	addr, err := geocoder.ReverseGeocode(-37.8137433689794, 164.971745104488)
+	assert.NotNil(t, err)
+	assert.Nil(t, addr)
 }
 
 func testServer(response string) *httptest.Server {

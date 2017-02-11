@@ -1,6 +1,7 @@
 package geo
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -11,18 +12,11 @@ import (
 	"time"
 )
 
-var timeout = time.Second * 8
+// Default timeout for the request execution
+const DefaultTimeout = time.Second * 8
 
 // ErrTimeout occurs when no response returned within timeoutInSeconds
 var ErrTimeout = errors.New("TIMEOUT")
-
-// ErrNoResult occurs when no result returned
-var ErrNoResult = errors.New("NO_RESULT")
-
-// Location is the output of Geocode
-type Location struct {
-	Lat, Lng float64
-}
 
 // EndpointBuilder defines functions that build urls for geocode/reverse geocode
 type EndpointBuilder interface {
@@ -35,8 +29,8 @@ type ResponseParserFactory func() ResponseParser
 
 // ResponseParser defines functions that parse response of geocode/reverse geocode
 type ResponseParser interface {
-	Location() Location
-	Address() string
+	Location() (*Location, error)
+	Address() (*Address, error)
 }
 
 // HTTPGeocoder has EndpointBuilder and ResponseParser
@@ -46,66 +40,104 @@ type HTTPGeocoder struct {
 }
 
 // Geocode returns location for address
-func (g HTTPGeocoder) Geocode(address string) (Location, error) {
-	ch := make(chan Location, 1)
-	go func() {
-		responseParser := g.ResponseParserFactory()
-		response(g.GeocodeURL(url.QueryEscape(address)), responseParser)
-		ch <- responseParser.Location()
-	}()
+func (g HTTPGeocoder) Geocode(address string) (*Location, error) {
+	responseParser := g.ResponseParserFactory()
+
+	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
+	defer cancel()
+
+	type geoResp struct {
+		l *Location
+		e error
+	}
+	ch := make(chan geoResp, 1)
+
+	go func(ch chan geoResp) {
+		if err := response(ctx, g.GeocodeURL(url.QueryEscape(address)), responseParser); err != nil {
+			ch <- geoResp{
+				l: nil,
+				e: err,
+			}
+		}
+
+		loc, err := responseParser.Location()
+		ch <- geoResp{
+			l: loc,
+			e: err,
+		}
+	}(ch)
 
 	select {
-	case location := <-ch:
-		return location, anyError(location)
-	case <-time.After(timeout):
-		return Location{}, ErrTimeout
+	case <-ctx.Done():
+		return nil, ErrTimeout
+	case res := <-ch:
+		return res.l, res.e
 	}
 }
 
 // ReverseGeocode returns address for location
-func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
-	ch := make(chan string, 1)
-	go func() {
-		responseParser := g.ResponseParserFactory()
-		response(g.ReverseGeocodeURL(Location{lat, lng}), responseParser)
-		ch <- responseParser.Address()
-	}()
+func (g HTTPGeocoder) ReverseGeocode(lat, lng float64) (*Address, error) {
+	responseParser := g.ResponseParserFactory()
+
+	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
+	defer cancel()
+
+	type revResp struct {
+		a *Address
+		e error
+	}
+	ch := make(chan revResp, 1)
+
+	go func(ch chan revResp) {
+		if err := response(ctx, g.ReverseGeocodeURL(Location{lat, lng}), responseParser); err != nil {
+			ch <- revResp{
+				a: nil,
+				e: err,
+			}
+		}
+
+		addr, err := responseParser.Address()
+		ch <- revResp{
+			a: addr,
+			e: err,
+		}
+	}(ch)
 
 	select {
-	case address := <-ch:
-		return address, anyError(address)
-	case <-time.After(timeout):
-		return "", ErrTimeout
+	case <-ctx.Done():
+		return nil, ErrTimeout
+	case res := <-ch:
+		return res.a, res.e
 	}
 }
 
 // Response gets response from url
-func response(url string, obj ResponseParser) {
-	if req, err := http.NewRequest("GET", url, nil); err == nil {
-		if resp, err := (&http.Client{}).Do(req); err == nil {
-			defer resp.Body.Close()
-			if data, err := ioutil.ReadAll(resp.Body); err == nil {
-				// TODO: don't swallow json unmarshal errors
-				// currently it just treats an empty response as a ErrNoResult which
-				// is fine for now but we should have some logging or something to indicate
-				// failed json unmarshal
-				json.Unmarshal([]byte(strings.Trim(string(data), " []")), obj)
-			}
-		}
+func response(ctx context.Context, url string, obj ResponseParser) error {
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return err
 	}
-}
+	req = req.WithContext(ctx)
 
-func anyError(v interface{}) error {
-	switch v := v.(type) {
-	case Location:
-		if v.Lat == 0 && v.Lng == 0 {
-			return ErrNoResult
-		}
-	case string:
-		if v == "" {
-			return ErrNoResult
-		}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
 	}
+
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	body := strings.Trim(string(data), " []")
+	if body == "" {
+		return nil
+	}
+	if err := json.Unmarshal([]byte(body), obj); err != nil {
+		return err
+	}
+
 	return nil
 }
 

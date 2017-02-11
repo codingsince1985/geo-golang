@@ -1,14 +1,14 @@
 package opencage_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/opencage"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang/opencage"
+	"github.com/stretchr/testify/assert"
 )
 
 var key = os.Getenv("OPENCAGE_API_KEY")
@@ -23,7 +23,7 @@ func TestGeocode(t *testing.T) {
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
-	assert.NoError(t, err)
+	assert.Nil(t, err)
 	assert.InDelta(t, -37.8154176, location.Lat, locDelta)
 	assert.InDelta(t, 144.9665563, location.Lng, locDelta)
 }
@@ -35,7 +35,7 @@ func TestReverseGeocode(t *testing.T) {
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(-37.8154176, 144.9665563)
 	assert.NoError(t, err)
-	assert.True(t, strings.Index(address, "Collins St") > 0)
+	assert.True(t, strings.Index(address.FormattedAddress, "Collins St") > 0)
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -43,8 +43,10 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
-	_, err := geocoder.ReverseGeocode(-37.8154176, 164.9665563)
-	assert.Equal(t, err, geo.ErrNoResult)
+	//geocoder := opencage.Geocoder(key)
+	address, err := geocoder.ReverseGeocode(-37.8154176, 164.9665563)
+	assert.Nil(t, err)
+	assert.Nil(t, address)
 }
 
 func testServer(response string) *httptest.Server {

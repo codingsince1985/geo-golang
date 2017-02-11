@@ -37,14 +37,12 @@ func TestGeocodeYieldsNoResult(t *testing.T) {
 	gc := Geocoder("foobar", 18, ts.URL+"/")
 	l, err := gc.Geocode("Seidlstraße 26, 80335 München")
 
-	if err == nil {
-		t.Error("Got nil error")
+	if l != nil {
+		t.Errorf("Expected nil, got %#v", l)
 	}
-	if l.Lat != 0 {
-		t.Errorf("Expected latitude: %d, got: %f", 0, l.Lat)
-	}
-	if l.Lng != 0 {
-		t.Errorf("Expected longitude: %d, got: %f", 0, l.Lat)
+
+	if err != nil {
+		t.Errorf("Expected nil error, got %v", err)
 	}
 }
 
@@ -58,7 +56,7 @@ func TestReverseGeocodeYieldsResult(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected nil error, got %v", err)
 	}
-	if !strings.HasPrefix(addr, "26, Seidlstraße") {
+	if !strings.HasPrefix(addr.FormattedAddress, "26, Seidlstraße") {
 		t.Errorf("Expected address string starting with %s, got string: %s", "26, Seidlstraße", addr)
 	}
 }
@@ -73,8 +71,8 @@ func TestReverseGeocodeYieldsNoResult(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error, got nil")
 	}
-	if addr != "" {
-		t.Errorf("Expected empty string as address, got: %s", addr)
+	if addr != nil {
+		t.Errorf("Expected nil as address, got: %s", addr)
 	}
 }
 

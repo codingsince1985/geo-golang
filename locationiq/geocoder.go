@@ -3,7 +3,10 @@ package locationiq
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
 )
 
 type baseURL string
@@ -11,20 +14,7 @@ type baseURL string
 type geocodeResponse struct {
 	DisplayName     string `json:"display_name"`
 	Lat, Lon, Error string
-	Addr            locationiqAddress `json:"address"`
-}
-
-type locationiqAddress struct {
-	HouseNumber   string `json:"house_number"`
-	Suburb        string `json:"suburb"`
-	City          string `json:"city"`
-	County        string `json:"county"`
-	Country       string `json:"country"`
-	CountryCode   string `json:"country_code"`
-	Road          string `json:"road"`
-	State         string `json:"state"`
-	StateDistrict string `json:"state_district"`
-	Postcode      string `json:"postcode"`
+	Addr            osm.Address `json:"address"`
 }
 
 const (
@@ -70,19 +60,36 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f&zoom=%d", l.Lat, l.Lng, zoom)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	l := geo.Location{}
-	// In case of empty response from LocationIQ or any other error we get zero values
-	if r.Lat != "" && r.Lon != "" {
-		l.Lat = geo.ParseFloat(r.Lat)
-		l.Lng = geo.ParseFloat(r.Lon)
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Error != "" {
+		return nil, fmt.Errorf("geocoding error: %s", r.Error)
 	}
-	return l
+
+	// no result
+	if r.Lat == "" || r.Lon == "" {
+		return nil, nil
+	}
+
+	return &geo.Location{
+		Lat: geo.ParseFloat(r.Lat),
+		Lng: geo.ParseFloat(r.Lon),
+	}, nil
 }
 
-func (r *geocodeResponse) Address() string {
+func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Error != "" {
-		return ""
+		return nil, fmt.Errorf("reverse geocoding error: %s", r.Error)
 	}
-	return r.DisplayName
+
+	return &geo.Address{
+		FormattedAddress: r.DisplayName,
+		Street:           r.Addr.Street(),
+		HouseNumber:      r.Addr.HouseNumber,
+		City:             r.Addr.Locality(),
+		Postcode:         r.Addr.Postcode,
+		Suburb:           r.Addr.Suburb,
+		State:            r.Addr.State,
+		Country:          r.Addr.Country,
+		CountryCode:      strings.ToUpper(r.Addr.CountryCode),
+	}, nil
 }

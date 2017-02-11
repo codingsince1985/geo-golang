@@ -5,10 +5,10 @@ import (
 )
 
 // AddressToLocation maps address string to location (lat, long)
-type AddressToLocation map[string]geo.Location
+type AddressToLocation map[geo.Address]geo.Location
 
 // LocationToAddress maps location(lat,lng) to address
-type LocationToAddress map[geo.Location]string
+type LocationToAddress map[geo.Location]geo.Address
 
 // dataGeocoder represents geo data in memory
 type dataGeocoder struct {
@@ -25,17 +25,21 @@ func Geocoder(addressToLocation AddressToLocation, LocationToAddress LocationToA
 }
 
 // Geocode returns location for address
-func (d dataGeocoder) Geocode(address string) (geo.Location, error) {
-	if l, ok := d.AddressToLocation[address]; ok {
-		return l, nil
+func (d dataGeocoder) Geocode(address string) (*geo.Location, error) {
+	addr := geo.Address{
+		FormattedAddress: address,
 	}
-	return geo.Location{}, geo.ErrNoResult
+	if l, ok := d.AddressToLocation[addr]; ok {
+		return &l, nil
+	}
+
+	return nil, nil
 }
 
 // ReverseGeocode returns address for location
-func (d dataGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
+func (d dataGeocoder) ReverseGeocode(lat, lng float64) (*geo.Address, error) {
 	if address, ok := d.LocationToAddress[geo.Location{Lat: lat, Lng: lng}]; ok {
-		return address, nil
+		return &address, nil
 	}
-	return "", geo.ErrNoResult
+	return nil, nil
 }

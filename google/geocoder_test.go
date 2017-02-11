@@ -1,14 +1,15 @@
 package google_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/google"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/google"
+	"github.com/stretchr/testify/assert"
 )
 
 var token = os.Getenv("GOOGLE_API_KEY")
@@ -20,7 +21,7 @@ func TestGeocode(t *testing.T) {
 	geocoder := google.Geocoder(token, ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
-	assert.Equal(t, geo.Location{Lat: -37.8137683, Lng: 144.9718448}, location)
+	assert.Equal(t, geo.Location{Lat: -37.8137683, Lng: 144.9718448}, *location)
 }
 
 func TestReverseGeocode(t *testing.T) {
@@ -30,7 +31,8 @@ func TestReverseGeocode(t *testing.T) {
 	geocoder := google.Geocoder(token, ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(-37.8137683, 144.9718448)
 	assert.NoError(t, err)
-	assert.True(t, strings.HasPrefix(address, "60 Collins St"))
+	assert.True(t, strings.HasPrefix(address.FormattedAddress, "60 Collins St"))
+	assert.True(t, strings.HasPrefix(address.Street, "Collins St"))
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -38,8 +40,9 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := google.Geocoder(token, ts.URL+"/")
-	_, err := geocoder.ReverseGeocode(-37.8137683, 164.9718448)
-	assert.Equal(t, err, geo.ErrNoResult)
+	addr, err := geocoder.ReverseGeocode(-37.8137683, 164.9718448)
+	assert.Nil(t, err)
+	assert.Nil(t, addr)
 }
 
 func testServer(response string) *httptest.Server {

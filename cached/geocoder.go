@@ -18,10 +18,10 @@ func Geocoder(geocoder geo.Geocoder, cache *cache.Cache) geo.Geocoder {
 }
 
 // Geocode returns location for address
-func (c cachedGeocoder) Geocode(address string) (geo.Location, error) {
+func (c cachedGeocoder) Geocode(address string) (*geo.Location, error) {
 	// Check if we've cached this response
 	if cachedLoc, found := c.Cache.Get(address); found {
-		return cachedLoc.(geo.Location), nil
+		return cachedLoc.(*geo.Location), nil
 	}
 
 	if loc, err := c.Geocoder.Geocode(address); err != nil {
@@ -33,15 +33,15 @@ func (c cachedGeocoder) Geocode(address string) (geo.Location, error) {
 }
 
 // ReverseGeocode returns address for location
-func (c cachedGeocoder) ReverseGeocode(lat, lng float64) (string, error) {
+func (c cachedGeocoder) ReverseGeocode(lat, lng float64) (*geo.Address, error) {
 	// Check if we've cached this response
 	locKey := fmt.Sprintf("geo.Location{%f,%f}", lat, lng)
 	if cachedAddr, found := c.Cache.Get(locKey); found {
-		return cachedAddr.(string), nil
+		return cachedAddr.(*geo.Address), nil
 	}
 
 	if addr, err := c.Geocoder.ReverseGeocode(lat, lng); err != nil {
-		return "", err
+		return nil, err
 	} else {
 		c.Cache.Set(locKey, addr, 0)
 		return addr, nil

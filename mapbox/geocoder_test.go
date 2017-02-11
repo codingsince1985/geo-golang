@@ -1,15 +1,15 @@
 package mapbox_test
 
 import (
-	"fmt"
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/mapbox"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/mapbox"
+	"github.com/stretchr/testify/assert"
 )
 
 var token = os.Getenv("MAPBOX_API_KEY")
@@ -21,7 +21,7 @@ func TestGeocode(t *testing.T) {
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.NoError(t, err)
-	assert.Equal(t, geo.Location{Lat: -37.813754, Lng: 144.971756}, location)
+	assert.Equal(t, geo.Location{Lat: -37.813754, Lng: 144.971756}, *location)
 }
 
 func TestReverseGeocode(t *testing.T) {
@@ -31,8 +31,7 @@ func TestReverseGeocode(t *testing.T) {
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(-37.813754, 144.971756)
 	assert.NoError(t, err)
-	fmt.Println(address)
-	assert.True(t, strings.Index(address, "60 Collins St") >= 0)
+	assert.True(t, strings.Index(address.FormattedAddress, "60 Collins St") >= 0)
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -40,8 +39,9 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := mapbox.Geocoder(token, ts.URL+"/")
-	_, err := geocoder.ReverseGeocode(-37.813754, 164.971756)
-	assert.Equal(t, err, geo.ErrNoResult)
+	addr, err := geocoder.ReverseGeocode(-37.813754, 164.971756)
+	assert.Nil(t, err)
+	assert.Nil(t, addr)
 }
 
 func testServer(response string) *httptest.Server {

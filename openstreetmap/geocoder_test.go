@@ -17,8 +17,8 @@ func TestGeocode(t *testing.T) {
 
 	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
-	assert.NoError(t, err)
-	assert.Equal(t, geo.Location{Lat: -37.8157915, Lng: 144.9656171}, location)
+	assert.Nil(t, err)
+	assert.Equal(t, geo.Location{Lat: -37.8157915, Lng: 144.9656171}, *location)
 }
 
 func TestReverseGeocode(t *testing.T) {
@@ -27,8 +27,8 @@ func TestReverseGeocode(t *testing.T) {
 
 	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
 	address, err := geocoder.ReverseGeocode(-37.8157915, 144.9656171)
-	assert.NoError(t, err)
-	assert.True(t, strings.Index(address, "Collins St") > 0)
+	assert.Nil(t, err)
+	assert.True(t, strings.Index(address.FormattedAddress, "Collins St") > 0)
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -36,8 +36,10 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
-	_, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
-	assert.Equal(t, err, geo.ErrNoResult)
+	//geocoder := openstreetmap.Geocoder()
+	addr, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
+	assert.Nil(t, addr)
+	assert.NotNil(t, err)
 }
 
 func testServer(response string) *httptest.Server {

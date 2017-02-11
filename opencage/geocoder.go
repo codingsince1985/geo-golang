@@ -3,15 +3,24 @@ package opencage
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/osm"
 )
 
 type (
-	baseURL         string
+	baseURL string
+
 	geocodeResponse struct {
 		Results []struct {
-			Formatted string
-			Geometry  geo.Location
+			Formatted  string
+			Geometry   geo.Location
+			Components osm.Address
+		}
+		Status struct {
+			Code    int
+			Message string
 		}
 	}
 )
@@ -37,16 +46,41 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return string(b) + fmt.Sprintf("%+f,%+f", l.Lat, l.Lng)
 }
 
-func (r *geocodeResponse) Location() geo.Location {
-	if len(r.Results) > 0 {
-		return r.Results[0].Geometry
+func (r *geocodeResponse) Location() (*geo.Location, error) {
+	if r.Status.Code >= 400 {
+		return nil, fmt.Errorf("geocoding error: %s", r.Status.Message)
 	}
-	return geo.Location{}
+	if len(r.Results) == 0 {
+		return nil, nil
+	}
+
+	return &geo.Location{
+		Lat: r.Results[0].Geometry.Lat,
+		Lng: r.Results[0].Geometry.Lng,
+	}, nil
 }
 
-func (r *geocodeResponse) Address() string {
-	if len(r.Results) > 0 {
-		return r.Results[0].Formatted
+func (r *geocodeResponse) Address() (*geo.Address, error) {
+	if r.Status.Code >= 400 {
+		return nil, fmt.Errorf("geocoding error: %s", r.Status.Message)
 	}
-	return ""
+	if len(r.Results) == 0 {
+		return nil, nil
+	}
+
+	addr := r.Results[0].Components
+
+	return &geo.Address{
+		FormattedAddress: r.Results[0].Formatted,
+		HouseNumber:      addr.HouseNumber,
+		Street:           addr.Street(),
+		Suburb:           addr.Suburb,
+		Postcode:         addr.Postcode,
+		City:             addr.Locality(),
+		CountryCode:      strings.ToUpper(addr.CountryCode),
+		Country:          addr.Country,
+		County:           addr.County,
+		State:            addr.State,
+		StateDistrict:    addr.StateDistrict,
+	}, nil
 }
