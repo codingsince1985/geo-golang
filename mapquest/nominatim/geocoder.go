@@ -52,8 +52,8 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 	}
 
 	return &geo.Location{
-		Lat: parseFloat(r.Lat),
-		Lng: parseFloat(r.Lon),
+		Lat: geo.ParseFloat(r.Lat),
+		Lng: geo.ParseFloat(r.Lon),
 	}, nil
 }
 
@@ -74,9 +74,4 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		Country:          r.Addr.Country,
 		CountryCode:      strings.ToUpper(r.Addr.CountryCode),
 	}, nil
-}
-
-func parseFloat(value string) float64 {
-	f, _ := strconv.ParseFloat(value, 64)
-	return f
 }

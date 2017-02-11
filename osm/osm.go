@@ -1,4 +1,4 @@
-// Package osm provides common types for OpneStreetMap used by various providers
+// Package osm provides common types for OpenStreetMap used by various providers
 // and some helper functions to reduce code repetition across specific client implementations.
 package osm
 
