@@ -52,7 +52,7 @@ func Geocoder(id, code string, radius int, baseURLs ...string) geo.Geocoder {
 	if radius > 0 {
 		r = radius
 	}
-	p := "gen=8&app_id=" + id + "&app_code=" + code
+	p := "gen=9&app_id=" + id + "&app_code=" + code
 	return geo.HTTPGeocoder{
 		EndpointBuilder: baseURL{
 			getGeocodeUrl(p, baseURLs...),
