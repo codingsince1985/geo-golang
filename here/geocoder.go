@@ -65,14 +65,14 @@ func getGeocodeUrl(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "http://geocoder.cit.api.here.com/6.2/geocode.json?" + p
+	return "http://geocoder.api.here.com/6.2/geocode.json?" + p
 }
 
 func getReverseGeocodeUrl(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "http://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p
+	return "http://reverse.geocoder.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p
 }
 
 func (b baseURL) GeocodeURL(address string) string { return b.forGeocode + "&searchtext=" + address }
