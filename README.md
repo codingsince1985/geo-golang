@@ -107,7 +107,7 @@ func try(geocoder geo.Geocoder) {
 	fmt.Println("\n")
 }
 ```
-###Result
+### Result
 ```
 Google Geocoding API
 Melbourne VIC location is (-37.813611, 144.963056)
