@@ -18,6 +18,9 @@ const DefaultTimeout = time.Second * 8
 // ErrTimeout occurs when no response returned within timeoutInSeconds
 var ErrTimeout = errors.New("TIMEOUT")
 
+// ErrZeroResults occurs when response returned no results
+var ErrZeroResults = errors.New("ZERO_RESULTS")
+
 // EndpointBuilder defines functions that build urls for geocode/reverse geocode
 type EndpointBuilder interface {
 	GeocodeURL(string) string
@@ -132,7 +135,7 @@ func response(ctx context.Context, url string, obj ResponseParser) error {
 
 	body := strings.Trim(string(data), " []")
 	if body == "" {
-		return nil
+		return ErrZeroResults
 	}
 	if err := json.Unmarshal([]byte(body), obj); err != nil {
 		return err
