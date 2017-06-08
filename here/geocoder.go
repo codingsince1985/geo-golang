@@ -39,6 +39,7 @@ type (
 	}
 )
 
+// Key*Name represents constants for geocoding more address detail
 const (
 	KeyCountryName = "CountryName"
 	KeyStateName   = "StateName"
@@ -55,20 +56,20 @@ func Geocoder(id, code string, radius int, baseURLs ...string) geo.Geocoder {
 	p := "gen=9&app_id=" + id + "&app_code=" + code
 	return geo.HTTPGeocoder{
 		EndpointBuilder: baseURL{
-			getGeocodeUrl(p, baseURLs...),
-			getReverseGeocodeUrl(p, baseURLs...)},
+			getGeocodeURL(p, baseURLs...),
+			getReverseGeocodeURL(p, baseURLs...)},
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func getGeocodeUrl(p string, baseURLs ...string) string {
+func getGeocodeURL(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
 	return "http://geocoder.api.here.com/6.2/geocode.json?" + p
 }
 
-func getReverseGeocodeUrl(p string, baseURLs ...string) string {
+func getReverseGeocodeURL(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}

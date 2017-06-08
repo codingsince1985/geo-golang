@@ -35,12 +35,12 @@ type (
 // Geocoder constructs Bing geocoder
 func Geocoder(key string, baseURLs ...string) geo.Geocoder {
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(getUrl(key, baseURLs...)),
+		EndpointBuilder:       baseURL(getURL(key, baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func getUrl(key string, baseURLs ...string) string {
+func getURL(key string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}

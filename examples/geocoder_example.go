@@ -20,14 +20,15 @@ import (
 const (
 	addr     = "Melbourne VIC"
 	lat, lng = -37.813611, 144.963056
-	RADIUS   = 50
-	ZOOM     = 18
+	radius   = 50
+	zoom     = 18
 )
 
 func main() {
 	ExampleGeocoder()
 }
 
+// ExampleGeocoder demonstrates the different geocoding services
 func ExampleGeocoder() {
 	fmt.Println("Google Geocoding API")
 	try(google.Geocoder(os.Getenv("GOOGLE_API_KEY")))
@@ -42,7 +43,7 @@ func ExampleGeocoder() {
 	try(opencage.Geocoder(os.Getenv("OPENCAGE_API_KEY")))
 
 	fmt.Println("HERE API")
-	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), RADIUS))
+	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), radius))
 
 	fmt.Println("Bing Geocoding API")
 	try(bing.Geocoder(os.Getenv("BING_API_KEY")))
@@ -54,7 +55,7 @@ func ExampleGeocoder() {
 	try(openstreetmap.Geocoder())
 
 	fmt.Println("LocationIQ")
-	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), ZOOM))
+	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), zoom))
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")

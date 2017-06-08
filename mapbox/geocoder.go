@@ -37,12 +37,12 @@ const (
 // Geocoder constructs Mapbox geocoder
 func Geocoder(token string, baseURLs ...string) geo.Geocoder {
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(getUrl(token, baseURLs...)),
+		EndpointBuilder:       baseURL(getURL(token, baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func getUrl(token string, baseURLs ...string) string {
+func getURL(token string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
@@ -60,9 +60,9 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 		// error in response
 		if r.Message != "" {
 			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
-		} else { // no results
-			return nil, nil
 		}
+		// no results
+		return nil, nil
 	}
 
 	g := r.Features[0]
@@ -77,9 +77,9 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		// error in response
 		if r.Message != "" {
 			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
-		} else { // no results
-			return nil, nil
 		}
+		// no results
+		return nil, nil
 	}
 
 	return parseMapboxResponse(r), nil

@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Default timeout for the request execution
+// DefaultTimeout for the request execution
 const DefaultTimeout = time.Second * 8
 
 // ErrTimeout occurs when no response returned within timeoutInSeconds
@@ -141,6 +141,7 @@ func response(ctx context.Context, url string, obj ResponseParser) error {
 	return nil
 }
 
+// ParseFloat is a helper to parse a string to a float
 func ParseFloat(value string) float64 {
 	f, _ := strconv.ParseFloat(value, 64)
 	return f
