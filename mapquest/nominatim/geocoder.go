@@ -25,12 +25,12 @@ var key string
 func Geocoder(k string, baseURLs ...string) geo.Geocoder {
 	key = k
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(getUrl(baseURLs...)),
+		EndpointBuilder:       baseURL(getURL(baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func getUrl(baseURLs ...string) string {
+func getURL(baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}

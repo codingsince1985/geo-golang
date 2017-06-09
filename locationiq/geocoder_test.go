@@ -22,11 +22,11 @@ func TestGeocodeYieldsResult(t *testing.T) {
 	}
 
 	if expLat != l.Lat {
-		t.Errorf("Expected latitude: %s, got %s", expLat, l.Lat)
+		t.Errorf("Expected latitude: %f, got %f", expLat, l.Lat)
 	}
 
 	if expLon != l.Lng {
-		t.Errorf("Expected longitude %s, got %s", expLon, l.Lng)
+		t.Errorf("Expected longitude %f, got %f", expLon, l.Lng)
 	}
 }
 

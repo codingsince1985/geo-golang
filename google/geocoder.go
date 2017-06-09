@@ -18,7 +18,7 @@ type (
 				Location geo.Location
 			}
 		}
-		Status string `json: "status"`
+		Status string `json:"status"`
 	}
 	googleAddressComponent struct {
 		LongName  string   `json:"long_name"`
@@ -43,12 +43,12 @@ const (
 // Geocoder constructs Google geocoder
 func Geocoder(apiKey string, baseURLs ...string) geo.Geocoder {
 	return geo.HTTPGeocoder{
-		EndpointBuilder:       baseURL(getUrl(apiKey, baseURLs...)),
+		EndpointBuilder:       baseURL(getURL(apiKey, baseURLs...)),
 		ResponseParserFactory: func() geo.ResponseParser { return &geocodeResponse{} },
 	}
 }
 
-func getUrl(apiKey string, baseURLs ...string) string {
+func getURL(apiKey string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
