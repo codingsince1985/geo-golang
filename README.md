@@ -21,6 +21,10 @@ This product is designed to open to any Geocoding service. Based on it,
 + [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
 + [PickPoint](https://pickpoint.io)
 + [LocationIQ](http://locationiq.org/)
++ [ArcGIS](https://www.arcgis.com/features/index.html)
++ [geocodio](https://geocod.io)
++ [Mapzen](https://mapzen.com)
++ [TomTom](https://www.tomtom.com)
 
 clients are implemented in ~50 LoC each.
 
@@ -31,31 +35,38 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/arcgis"
 	"github.com/codingsince1985/geo-golang/bing"
+	"github.com/codingsince1985/geo-golang/chained"
+	"github.com/codingsince1985/geo-golang/geocod"
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
+	"github.com/codingsince1985/geo-golang/locationiq"
+	"github.com/codingsince1985/geo-golang/mapbox"
 	"github.com/codingsince1985/geo-golang/mapquest/nominatim"
 	"github.com/codingsince1985/geo-golang/mapquest/open"
+	"github.com/codingsince1985/geo-golang/mapzen"
 	"github.com/codingsince1985/geo-golang/opencage"
-	"github.com/codingsince1985/geo-golang/mapbox"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
 	"github.com/codingsince1985/geo-golang/pickpoint"
-	"github.com/codingsince1985/geo-golang/locationiq"
-	"github.com/codingsince1985/geo-golang/chained"
+	"github.com/codingsince1985/geo-golang/tomtom"
 )
 
 const (
 	addr     = "Melbourne VIC"
 	lat, lng = -37.813611, 144.963056
-	RADIUS   = 50
-	ZOOM     = 18
+	radius   = 50
+	zoom     = 18
 )
 
 func main() {
 	ExampleGeocoder()
 }
 
+// ExampleGeocoder demonstrates the different geocoding services
 func ExampleGeocoder() {
 	fmt.Println("Google Geocoding API")
 	try(google.Geocoder(os.Getenv("GOOGLE_API_KEY")))
@@ -70,7 +81,7 @@ func ExampleGeocoder() {
 	try(opencage.Geocoder(os.Getenv("OPENCAGE_API_KEY")))
 
 	fmt.Println("HERE API")
-	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), RADIUS))
+	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), radius))
 
 	fmt.Println("Bing Geocoding API")
 	try(bing.Geocoder(os.Getenv("BING_API_KEY")))
@@ -80,12 +91,24 @@ func ExampleGeocoder() {
 
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
-	
-    fmt.Println("PickPoint")
-    try(pickpoint.Geocoder(os.Getenv("PICKPOINT_API_KEY")))
+
+	fmt.Println("PickPoint")
+	try(pickpoint.Geocoder(os.Getenv("PICKPOINT_API_KEY")))
 
 	fmt.Println("LocationIQ")
-	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), ZOOM))
+	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), zoom))
+
+	fmt.Println("ArcGIS")
+	try(arcgis.Geocoder(os.Getenv("ARCGIS_TOKEN")))
+
+	fmt.Println("geocod.io")
+	try(geocod.Geocoder(os.Getenv("GEOCOD_API_KEY")))
+
+	fmt.Println("Mapzen")
+	try(mapzen.Geocoder(os.Getenv("MAPZEN_API_KEY")))
+
+	fmt.Println("TomTom")
+	try(tomtom.Geocoder(os.Getenv("TOMTOM_API_KEY")))
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
@@ -109,7 +132,7 @@ func try(geocoder geo.Geocoder) {
 	} else {
 		fmt.Println("got <nil> address")
 	}
-	fmt.Println("\n")
+	fmt.Print("\n")
 }
 ```
 ### Result
@@ -163,6 +186,25 @@ LocationIQ
 Melbourne VIC location is (-37.814217, 144.963161)
 Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne", Postcode:"3000", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
+
+ArcGIS
+Melbourne VIC location is (-37.817530, 144.967150)
+Address of (-37.813611,144.963056) is Melbourne's Gpo
+Detailed address: &geo.Address{FormattedAddress:"Melbourne's Gpo", Street:"350 Bourke Street Mall", HouseNumber:"350", Suburb:"", Postcode:"3000", State:"Victoria", StateDistrict:"", County:"", Country:"", CountryCode:"AUS", City:""}
+
+geocod.io
+Melbourne VIC location is (28.079357, -80.623618)
+got <nil> address
+
+Mapzen
+Melbourne VIC location is (45.551136, 11.533929)
+Address of (-37.813611,144.963056) is Stop 3: Bourke Street Mall, Bourke Street, Melbourne, Australia
+Detailed address: &geo.Address{FormattedAddress:"Stop 3: Bourke Street Mall, Bourke Street, Melbourne, Australia", Street:"", HouseNumber:"", Suburb:"", Postcode:"", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AUS", City:""}
+
+TomTom
+Melbourne VIC location is (-37.815340, 144.963230)
+Address of (-37.813611,144.963056) is Doyles Road, Elaine, West Central Victoria, Victoria, 3334
+Detailed address: &geo.Address{FormattedAddress:"Doyles Road, Elaine, West Central Victoria, Victoria, 3334", Street:"Doyles Road", HouseNumber:"", Suburb:"", Postcode:"3334", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Elaine"}
 
 ChainedAPI[OpenStreetmap -> Google]
 Melbourne VIC location is (-37.814217, 144.963161)
