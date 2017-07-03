@@ -15,6 +15,7 @@ import (
 	"github.com/codingsince1985/geo-golang/mapquest/open"
 	"github.com/codingsince1985/geo-golang/opencage"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
+	"github.com/codingsince1985/geo-golang/pickpoint"
 )
 
 const (
@@ -53,6 +54,9 @@ func ExampleGeocoder() {
 
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
+
+	fmt.Println("PickPoint")
+	try(pickpoint.Geocoder(os.Getenv("PICKPOINT_API_KEY")))
 
 	fmt.Println("LocationIQ")
 	try(locationiq.Geocoder(os.Getenv("LOCATIONIQ_API_KEY"), zoom))
@@ -112,6 +116,13 @@ func ExampleGeocoder() {
 	// 	County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
 	// OpenStreetMap
+	// Melbourne VIC location is (-37.814217, 144.963161)
+	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
+	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne,
+	// 	Victoria, 3000, Australia", Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne", Postcode:"3000", State:"Victoria",
+	// 	StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
+	//
+	// PickPoint
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
 	// Detailed address: &geo.Address{FormattedAddress:"Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne,
