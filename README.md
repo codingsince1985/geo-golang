@@ -21,6 +21,10 @@ This product is designed to open to any Geocoding service. Based on it,
 + [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)
 + [PickPoint](https://pickpoint.io)
 + [LocationIQ](http://locationiq.org/)
++ [ArcGIS](https://www.arcgis.com/features/index.html)
++ [geocodio](https://geocod.io)
++ [Mapzen](https://mapzen.com)
++ [TomTom](https://www.tomtom.com)
 
 clients are implemented in ~50 LoC each.
 
@@ -80,7 +84,7 @@ func ExampleGeocoder() {
 
 	fmt.Println("OpenStreetMap")
 	try(openstreetmap.Geocoder())
-	
+
     fmt.Println("PickPoint")
     try(pickpoint.Geocoder(os.Getenv("PICKPOINT_API_KEY")))
 
