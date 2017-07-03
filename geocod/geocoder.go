@@ -45,12 +45,14 @@ func getUrl(key string, baseURLs ...string) string {
 
 func (b baseURL) GeocodeURL(address string) string {
 	params := fmt.Sprintf("geocode?q=%s", address)
-	return strings.Replace(string(b), "*", params, 1)
+	url := strings.Replace(string(b), "*", params, 1)
+	return url
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	params := fmt.Sprintf("reverse?q=%f,%f", l.Lat, l.Lng)
-	return strings.Replace(string(b), "*", params, 1)
+	url := strings.Replace(string(b), "*", params, 1)
+	return url
 }
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
@@ -58,8 +60,8 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 		return nil, nil
 	}
 
-	g := r.Results[0]
-	return &geo.Location{Lat: g.Location.Lat, Lng: g.Location.Lng}, nil
+	loc := r.Results[0].Location
+	return &geo.Location{Lat: loc.Lat, Lng: loc.Lng}, nil
 }
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {

@@ -56,7 +56,7 @@ func getUrl(token string, baseURLs ...string) string {
 }
 
 func (b baseURL) GeocodeURL(address string) string {
-	params := fmt.Sprintf("?findAddressCandidates?f=json&maxLocations=%d&SingleLine=%s", 1, address)
+	params := fmt.Sprintf("findAddressCandidates?f=json&maxLocations=%d&SingleLine=%s", 1, address)
 	return strings.Replace(string(b), "*", params, 1)
 }
 
