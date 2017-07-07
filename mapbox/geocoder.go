@@ -4,6 +4,7 @@ package mapbox
 import (
 	"fmt"
 	"strings"
+	"encoding/json"
 
 	"github.com/codingsince1985/geo-golang"
 )
