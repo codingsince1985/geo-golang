@@ -14,8 +14,8 @@ type (
 		Features []struct {
 			PlaceName string `json:"place_name"`
 			Center    [2]float64
-			Text      string `json:"text"`    // usually street name
-			Address   string `json:"address"` // potentially house number
+			Text      string          `json:"text"`    // usually street name
+			Address   json.RawMessage `json:"address"` // potentially house number
 			Context   []struct {
 				Text      string `json:"text"`
 				Id        string `json:"id"`
@@ -90,7 +90,7 @@ func parseMapboxResponse(r *geocodeResponse) *geo.Address {
 	f := r.Features[0]
 	addr.FormattedAddress = f.PlaceName
 	addr.Street = f.Text
-	addr.HouseNumber = f.Address
+	addr.HouseNumber = string(f.Address)
 	for _, c := range f.Context {
 		if strings.HasPrefix(c.Id, mapboxPrefixLocality) {
 			addr.City = c.Text
