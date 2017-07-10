@@ -130,7 +130,7 @@ const (
                -37.75522
             ]
          },
-         "address":"60",
+         "address":60,
          "context":[
             {
                "id":"locality.4441790122623020",
@@ -226,7 +226,7 @@ const (
                -37.738092
             ]
          },
-         "address":"60",
+         "address":60,
          "context":[
             {
                "id":"locality.14089594205891930",
