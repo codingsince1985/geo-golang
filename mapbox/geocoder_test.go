@@ -34,6 +34,17 @@ func TestReverseGeocode(t *testing.T) {
 	assert.True(t, strings.Index(address.FormattedAddress, "60 Collins St") >= 0)
 }
 
+func TestReverseGeocodeWithNumberAddress(t *testing.T) {
+	ts := testServer(response4)
+	defer ts.Close()
+
+	geocoder := mapbox.Geocoder(token, ts.URL+"/")
+	address, err := geocoder.ReverseGeocode(-4.370522, 48.377621)
+	assert.NoError(t, err)
+	assert.True(t, strings.Index(address.FormattedAddress, "23 Rue Paul Gauguin, Plougastel-Daoulas, Finistère 29470, France") >= 0)
+	assert.True(t, strings.Index(address.HouseNumber, "23") >= 0)
+}
+
 func TestReverseGeocodeWithNoResult(t *testing.T) {
 	ts := testServer(response3)
 	defer ts.Close()
@@ -575,4 +586,227 @@ const (
    ],
    "attribution":"NOTICE: © 2016 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained."
 }`
+	response4 = `
+	{  
+  "type":"FeatureCollection",
+  "query":[  
+    -4.370522,
+    48.377621
+  ],
+  "features":[  
+    {  
+      "id":"address.10778754613063890",
+      "type":"Feature",
+      "place_type":[  
+        "address"
+      ],
+      "relevance":1,
+      "properties":{  
+
+      },
+      "text":"Rue Paul Gauguin",
+      "place_name":"23 Rue Paul Gauguin, Plougastel-Daoulas, Finistère 29470, France",
+      "center":[  
+        -4.370594583793459,
+        48.377569981837475
+      ],
+      "geometry":{  
+        "type":"Point",
+        "coordinates":[  
+          -4.370594583793459,
+          48.377569981837475
+        ]
+      },
+      "address":23,
+      "context":[  
+        {  
+          "id":"postcode.16172",
+          "text":"29470"
+        },
+        {  
+          "id":"place.6924966128854418",
+          "wikidata":"Q383277",
+          "text":"Plougastel-Daoulas"
+        },
+        {  
+          "id":"region.3406",
+          "wikidata":"Q3389",
+          "short_code":"FR-29",
+          "text":"Finistère"
+        },
+        {  
+          "id":"country.3148",
+          "wikidata":"Q142",
+          "short_code":"fr",
+          "text":"France"
+        }
+      ]
+    },
+    {  
+      "id":"postcode.16172",
+      "type":"Feature",
+      "place_type":[  
+        "postcode"
+      ],
+      "relevance":1,
+      "properties":{  
+
+      },
+      "text":"29470",
+      "place_name":"29470, Plougastel-Daoulas, Finistère, France",
+      "bbox":[  
+        -4.4632912,
+        48.3227674,
+        -4.2799557,
+        48.419071
+      ],
+      "center":[  
+        -4.359929,
+        48.371299
+      ],
+      "geometry":{  
+        "type":"Point",
+        "coordinates":[  
+          -4.359929,
+          48.371299
+        ]
+      },
+      "context":[  
+        {  
+          "id":"place.6924966128854418",
+          "wikidata":"Q383277",
+          "text":"Plougastel-Daoulas"
+        },
+        {  
+          "id":"region.3406",
+          "wikidata":"Q3389",
+          "short_code":"FR-29",
+          "text":"Finistère"
+        },
+        {  
+          "id":"country.3148",
+          "wikidata":"Q142",
+          "short_code":"fr",
+          "text":"France"
+        }
+      ]
+    },
+    {  
+      "id":"place.6924966128854418",
+      "type":"Feature",
+      "place_type":[  
+        "place"
+      ],
+      "relevance":1,
+      "properties":{  
+        "wikidata":"Q383277"
+      },
+      "text":"Plougastel-Daoulas",
+      "place_name":"Plougastel-Daoulas, Finistère, France",
+      "bbox":[  
+        -4.4632912,
+        48.3227674,
+        -4.3186642,
+        48.4045641
+      ],
+      "center":[  
+        -4.37056,
+        48.3725
+      ],
+      "geometry":{  
+        "type":"Point",
+        "coordinates":[  
+          -4.37056,
+          48.3725
+        ]
+      },
+      "context":[  
+        {  
+          "id":"region.3406",
+          "wikidata":"Q3389",
+          "short_code":"FR-29",
+          "text":"Finistère"
+        },
+        {  
+          "id":"country.3148",
+          "wikidata":"Q142",
+          "short_code":"fr",
+          "text":"France"
+        }
+      ]
+    },
+    {  
+      "id":"region.3406",
+      "type":"Feature",
+      "place_type":[  
+        "region"
+      ],
+      "relevance":1,
+      "properties":{  
+        "wikidata":"Q3389",
+        "short_code":"FR-29"
+      },
+      "text":"Finistère",
+      "place_name":"Finistère, France",
+      "bbox":[  
+        -5.238938,
+        47.666876,
+        -3.386851,
+        48.852372
+      ],
+      "center":[  
+        -4.182871,
+        48.258966
+      ],
+      "geometry":{  
+        "type":"Point",
+        "coordinates":[  
+          -4.182871,
+          48.258966
+        ]
+      },
+      "context":[  
+        {  
+          "id":"country.3148",
+          "wikidata":"Q142",
+          "short_code":"fr",
+          "text":"France"
+        }
+      ]
+    },
+    {  
+      "id":"country.3148",
+      "type":"Feature",
+      "place_type":[  
+        "country"
+      ],
+      "relevance":1,
+      "properties":{  
+        "wikidata":"Q142",
+        "short_code":"fr"
+      },
+      "text":"France",
+      "place_name":"France",
+      "bbox":[  
+        -62.9357076,
+        -21.478802,
+        55.94248,
+        51.184074
+      ],
+      "center":[  
+        2.618787,
+        47.824905
+      ],
+      "geometry":{  
+        "type":"Point",
+        "coordinates":[  
+          2.618787,
+          47.824905
+        ]
+      }
+    }
+  ],
+  "attribution":"NOTICE: © 2017 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained."
+}	
+	`
 )
