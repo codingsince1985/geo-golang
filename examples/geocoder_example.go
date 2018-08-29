@@ -20,6 +20,7 @@ import (
 	"github.com/codingsince1985/geo-golang/openstreetmap"
 	"github.com/codingsince1985/geo-golang/pickpoint"
 	"github.com/codingsince1985/geo-golang/tomtom"
+	"github.com/codingsince1985/geo-golang/yandex"
 )
 
 const (
@@ -76,6 +77,9 @@ func ExampleGeocoder() {
 
 	fmt.Println("TomTom")
 	try(tomtom.Geocoder(os.Getenv("TOMTOM_API_KEY")))
+
+	fmt.Println("Yandex")
+	try(yandex.Geocoder(os.Getenv("YANDEX_API_KEY")))
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
@@ -170,6 +174,13 @@ func ExampleGeocoder() {
 	// Melbourne VIC location is (-37.815340, 144.963230)
 	// Address of (-37.813611,144.963056) is Doyles Road, Elaine, West Central Victoria, Victoria, 3334
 	// Detailed address: &geo.Address{FormattedAddress:"Doyles Road, Elaine, West Central Victoria, Victoria, 3334", Street:"Doyles Road", HouseNumber:"", Suburb:"", Postcode:"3334", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU", City:"Elaine"}
+	//
+	// Yandex
+	// Melbourne VIC location is (41.926823, 2.254232)
+	// Address of (-37.813611,144.963056) is Victoria, City of Melbourne, Elizabeth Street
+	// Detailed address: &geo.Address{FormattedAddress:"Victoria, City of Melbourne, Elizabeth Street", Street:"Elizabeth Street",
+	//  HouseNumber:"", Suburb:"", Postcode:"", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU",
+	//  City:"City of Melbourne"}
 	//
 	// ChainedAPI[OpenStreetmap -> Google]
 	// Melbourne VIC location is (-37.814217, 144.963161)
