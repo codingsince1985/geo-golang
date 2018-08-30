@@ -125,28 +125,26 @@ func parseYandexResult(r *yandexFeatureMember) *geo.Address {
 	addr := &geo.Address{}
 	res := r.GeoObject.MetaDataProperty.GeocoderMetaData
 
-OuterLoop:
 	for _, comp := range res.Address.Components {
 		switch comp.Kind {
 		case componentTypeHouseNumber:
 			addr.HouseNumber = comp.Name
-			continue OuterLoop
+			continue
 		case componentTypeStreetName:
 			addr.Street = comp.Name
-			continue OuterLoop
+			continue
 		case componentTypeLocality:
 			addr.City = comp.Name
-			continue OuterLoop
+			continue
 		case componentTypeStateDistrict:
 			addr.StateDistrict = comp.Name
-			continue OuterLoop
+			continue
 		case componentTypeState:
 			addr.State = comp.Name
-			continue OuterLoop
+			continue
 		case componentTypeCountry:
 			addr.Country = comp.Name
-			addr.CountryCode = comp.Name
-			continue OuterLoop
+			continue
 		}
 	}
 
