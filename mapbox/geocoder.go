@@ -2,9 +2,9 @@
 package mapbox
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
-	"encoding/json"
 
 	"github.com/codingsince1985/geo-golang"
 )

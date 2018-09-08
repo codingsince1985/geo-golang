@@ -1,14 +1,14 @@
 package pickpoint_test
 
 import (
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/pickpoint"
+	"github.com/stretchr/testify/assert"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
-	"net/http"
-	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/pickpoint"
 )
 
 var key = os.Getenv("PICKPOINT_API_KEY")
@@ -17,7 +17,7 @@ func TestGeocode(t *testing.T) {
 	ts := testServer(response1)
 	defer ts.Close()
 
-	geocoder := pickpoint.Geocoder(key, ts.URL + "/")
+	geocoder := pickpoint.Geocoder(key, ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC 3000")
 	assert.Nil(t, err)
 	assert.Equal(t, geo.Location{Lat: -37.8157915, Lng: 144.9656171}, *location)
@@ -27,7 +27,7 @@ func TestReverseGeocode(t *testing.T) {
 	ts := testServer(response2)
 	defer ts.Close()
 
-	geocoder := pickpoint.Geocoder(key, ts.URL + "/")
+	geocoder := pickpoint.Geocoder(key, ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(-37.8157915, 144.9656171)
 	assert.Nil(t, err)
 	assert.True(t, strings.Index(address.FormattedAddress, "Collins St") > 0)
@@ -37,7 +37,7 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	ts := testServer(response3)
 	defer ts.Close()
 
-	geocoder := pickpoint.Geocoder(key, ts.URL + "/")
+	geocoder := pickpoint.Geocoder(key, ts.URL+"/")
 	addr, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
 	assert.Nil(t, addr)
 	assert.NotNil(t, err)
