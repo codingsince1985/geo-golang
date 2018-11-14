@@ -70,13 +70,17 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 
 	addr := r.Results[0].Components
 
+	locality := addr.Locality()
+	if locality == "" {
+		locality = addr.Suburb
+	}
 	return &geo.Address{
 		FormattedAddress: r.Results[0].Formatted,
 		HouseNumber:      addr.HouseNumber,
 		Street:           addr.Street(),
 		Suburb:           addr.Suburb,
 		Postcode:         addr.Postcode,
-		City:             addr.Locality(),
+		City:             locality,
 		CountryCode:      strings.ToUpper(addr.CountryCode),
 		Country:          addr.Country,
 		County:           addr.County,
