@@ -43,10 +43,20 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	defer ts.Close()
 
 	geocoder := opencage.Geocoder(key, ts.URL+"/")
-	//geocoder := opencage.Geocoder(key)
 	address, err := geocoder.ReverseGeocode(-37.8154176, 164.9665563)
 	assert.Nil(t, err)
 	assert.Nil(t, address)
+}
+
+func TestReverseGeocodeUsingSuburbAsLocality(t *testing.T) {
+	ts := testServer(responseMissingLocality)
+	defer ts.Close()
+
+	geocoder := opencage.Geocoder(key, ts.URL+"/")
+	address, err := geocoder.ReverseGeocode(-37.8154176, 164.9665563)
+	assert.Nil(t, err)
+	assert.NotNil(t, address)
+	assert.Equal(t, "Lütten Klein", address.City)
 }
 
 func testServer(response string) *httptest.Server {
@@ -346,5 +356,124 @@ const (
       "created_unix":1463135645
    },
    "total_results":0
+}`
+	responseMissingLocality = `{
+    "documentation": "https://opencagedata.com/api",
+    "licenses": [
+        {
+            "name": "CC-BY-SA",
+            "url": "https://creativecommons.org/licenses/by-sa/3.0/"
+        },
+        {
+            "name": "ODbL",
+            "url": "https://opendatacommons.org/licenses/odbl/summary/"
+        }
+    ],
+    "results": [
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "54° 8' 30.29676'' N",
+                    "lng": "12° 3' 0.72252'' E"
+                },
+                "MGRS": "33UUA0732603314",
+                "Maidenhead": "JO64ad64aa",
+                "Mercator": {
+                    "x": 1341422.206,
+                    "y": 7162391.731
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?way=89311416#map=17/54.14175/12.05020",
+                    "url": "https://www.openstreetmap.org/?mlat=54.14175&mlon=12.05020#map=17/54.14175/12.05020"
+                },
+                "callingcode": 49,
+                "currency": {
+                    "alternate_symbols": [],
+                    "decimal_mark": ",",
+                    "html_entity": "&#x20AC;",
+                    "iso_code": "EUR",
+                    "iso_numeric": 978,
+                    "name": "Euro",
+                    "smallest_denomination": 1,
+                    "subunit": "Cent",
+                    "subunit_to_unit": 100,
+                    "symbol": "€",
+                    "symbol_first": 1,
+                    "thousands_separator": "."
+                },
+                "flag": "\ud83c\udde9\ud83c\uddea🇩🇪",
+                "geohash": "u38s40nww18cs2tdhe9q",
+                "qibla": 136.28,
+                "sun": {
+                    "rise": {
+                        "apparent": 1542177540,
+                        "astronomical": 1542170040,
+                        "civil": 1542175140,
+                        "nautical": 1542172560
+                    },
+                    "set": {
+                        "apparent": 1542208380,
+                        "astronomical": 1542215880,
+                        "civil": 1542210780,
+                        "nautical": 1542213360
+                    }
+                },
+                "timezone": {
+                    "name": "Europe/Berlin",
+                    "now_in_dst": 0,
+                    "offset_sec": 3600,
+                    "offset_string": 100,
+                    "short_name": "CET"
+                },
+                "what3words": {
+                    "words": "staked.nimbly.scatter"
+                }
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 54.1418491,
+                    "lng": 12.0503007
+                },
+                "southwest": {
+                    "lat": 54.1416491,
+                    "lng": 12.0501007
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "DE",
+                "_type": "building",
+                "city_district": "Ortsbeirat 5 : Lütten Klein",
+                "country": "Germany",
+                "country_code": "de",
+                "county": "Rostock",
+                "house_number": "30",
+                "political_union": "European Union",
+                "postcode": "18107",
+                "road": "Turkuer Straße",
+                "state": "Mecklenburg-Vorpommern",
+                "suburb": "Lütten Klein"
+            },
+            "confidence": 10,
+            "formatted": "Turkuer Straße 30, 18107 Rostock, Germany",
+            "geometry": {
+                "lat": 54.1417491,
+                "lng": 12.0502007
+            }
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "OK"
+    },
+    "stay_informed": {
+        "blog": "https://blog.opencagedata.com",
+        "twitter": "https://twitter.com/opencagedata"
+    },
+    "thanks": "For using an OpenCage Data API",
+    "timestamp": {
+        "created_http": "Wed, 14 Nov 2018 11:55:11 GMT",
+        "created_unix": 1542196511
+    },
+    "total_results": 1
 }`
 )
