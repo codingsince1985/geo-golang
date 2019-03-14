@@ -135,6 +135,7 @@ func response(ctx context.Context, url string, obj ResponseParser) error {
 		return nil
 	}
 	if err := json.Unmarshal([]byte(body), obj); err != nil {
+		Logger.Printf("payload: %s", body)
 		return err
 	}
 
