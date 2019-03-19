@@ -1,4 +1,4 @@
-// Package is a geo-golang based ArcGIS geocode/reverse client
+// Package arcgis is a geo-golang based ArcGIS geocode/reverse client
 package arcgis
 
 import (

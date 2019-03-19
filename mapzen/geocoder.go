@@ -1,4 +1,4 @@
-// Package is a geo-golang based Mapzen geocode/reverse client
+// Package mapzen is a geo-golang based Mapzen geocode/reverse client
 package mapzen
 
 import (
