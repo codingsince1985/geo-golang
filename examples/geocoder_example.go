@@ -8,6 +8,7 @@ import (
 	"github.com/codingsince1985/geo-golang/arcgis"
 	"github.com/codingsince1985/geo-golang/bing"
 	"github.com/codingsince1985/geo-golang/chained"
+	"github.com/codingsince1985/geo-golang/frenchapigouv"
 	"github.com/codingsince1985/geo-golang/geocod"
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
@@ -24,10 +25,12 @@ import (
 )
 
 const (
-	addr     = "Melbourne VIC"
-	lat, lng = -37.813611, 144.963056
-	radius   = 50
-	zoom     = 18
+	addr         = "Melbourne VIC"
+	lat, lng     = -37.813611, 144.963056
+	radius       = 50
+	zoom         = 18
+	addrFR       = "Champs de Mars Paris"
+	latFR, lngFR = 48.854395, 2.304770
 )
 
 func main() {
@@ -80,6 +83,11 @@ func ExampleGeocoder() {
 
 	fmt.Println("Yandex")
 	try(yandex.Geocoder(os.Getenv("YANDEX_API_KEY")))
+
+	// To use only with french locations or addresses,
+	// or values ​​could be estimated and will be false
+	fmt.Println("FrenchAPIGouv")
+	tryOnlyFRData(frenchapigouv.Geocoder())
 
 	// Chained geocoder will fallback to subsequent geocoders
 	fmt.Println("ChainedAPI[OpenStreetmap -> Google]")
@@ -182,6 +190,13 @@ func ExampleGeocoder() {
 	//  HouseNumber:"", Suburb:"", Postcode:"", State:"Victoria", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AU",
 	//  City:"City of Melbourne"}
 	//
+	// FrenchAPIGouv
+	//  Champs de Mars Paris location is (2.304770, 48.854395)
+	//  Address of (48.854395,2.304770) is 9001, Parc du Champs de Mars, 75007, Paris, Paris, Île-de-France, France
+	//  Detailed address: &geo.Address{FormattedAddress:"9001, Parc du Champs de Mars, 75007, Paris, Paris, Île-de-France, France",
+	//   Street:"Parc du Champs de Mars", HouseNumber:"9001", Suburb:"", Postcode:"75007", State:" Île-de-France", StateDistrict:"",
+	//   County:" Paris", Country:"France", CountryCode:"FRA", City:"Paris"}
+	//
 	// ChainedAPI[OpenStreetmap -> Google]
 	// Melbourne VIC location is (-37.814217, 144.963161)
 	// Address of (-37.813611,144.963056) is Melbourne's GPO, Postal Lane, Chinatown, Melbourne, City of Melbourne, Greater Melbourne, Victoria, 3000, Australia
@@ -200,6 +215,23 @@ func try(geocoder geo.Geocoder) {
 	address, _ := geocoder.ReverseGeocode(lat, lng)
 	if address != nil {
 		fmt.Printf("Address of (%.6f,%.6f) is %s\n", lat, lng, address.FormattedAddress)
+		fmt.Printf("Detailed address: %#v\n", address)
+	} else {
+		fmt.Println("got <nil> address")
+	}
+	fmt.Print("\n")
+}
+
+func tryOnlyFRData(geocoder geo.Geocoder) {
+	location, _ := geocoder.Geocode(addrFR)
+	if location != nil {
+		fmt.Printf("%s location is (%.6f, %.6f)\n", addrFR, location.Lat, location.Lng)
+	} else {
+		fmt.Println("got <nil> location")
+	}
+	address, _ := geocoder.ReverseGeocode(latFR, lngFR)
+	if address != nil {
+		fmt.Printf("Address of (%.6f,%.6f) is %s\n", latFR, lngFR, address.FormattedAddress)
 		fmt.Printf("Detailed address: %#v\n", address)
 	} else {
 		fmt.Println("got <nil> address")
