@@ -26,6 +26,7 @@ This product is designed to open to any Geocoding service. Based on it,
 + [Mapzen](https://mapzen.com)
 + [TomTom](https://www.tomtom.com)
 + [Yandex.Maps](https://tech.yandex.com/maps/doc/geocoder/desc/concepts/About-docpage/)
++ [French API Gouv](https://adresse.data.gouv.fr/api)
 
 clients are implemented in ~50 LoC each.
 
@@ -42,7 +43,7 @@ import (
 	"github.com/codingsince1985/geo-golang/arcgis"
 	"github.com/codingsince1985/geo-golang/bing"
 	"github.com/codingsince1985/geo-golang/chained"
-  "github.com/codingsince1985/geo-golang/frenchapigouv"
+	"github.com/codingsince1985/geo-golang/frenchapigouv"
 	"github.com/codingsince1985/geo-golang/geocod"
 	"github.com/codingsince1985/geo-golang/google"
 	"github.com/codingsince1985/geo-golang/here"
@@ -59,11 +60,11 @@ import (
 )
 
 const (
-	addr     = "Melbourne VIC"
-	lat, lng = -37.813611, 144.963056
-	radius   = 50
-	zoom     = 18
-  addrFR       = "Champs de Mars Paris"
+	addr         = "Melbourne VIC"
+	lat, lng     = -37.813611, 144.963056
+	radius       = 50
+	zoom         = 18
+	addrFR       = "Champs de Mars Paris"
 	latFR, lngFR = 48.854395, 2.304770
 )
 
@@ -118,7 +119,7 @@ func ExampleGeocoder() {
 	fmt.Println("Yandex")
 	try(yandex.Geocoder(os.Getenv("YANDEX_API_KEY")))
 
-  // To use only with french locations or addresses,
+	// To use only with french locations or addresses,
 	// or values ​​could be estimated and will be false
 	fmt.Println("FrenchAPIGouv")
 	tryOnlyFRData(frenchapigouv.Geocoder())
