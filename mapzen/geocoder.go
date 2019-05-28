@@ -36,7 +36,7 @@ type (
 	}
 )
 
-// Geocode constructs Mapzen geocoder
+// Geocoder constructs Mapzen geocoder
 func Geocoder(key string, baseURLs ...string) geo.Geocoder {
 	return geo.HTTPGeocoder{
 		EndpointBuilder:       baseURL(getUrl(key, baseURLs...)),

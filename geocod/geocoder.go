@@ -29,6 +29,7 @@ type (
 	}
 )
 
+// Geocoder constructs Geocodio geocoder
 func Geocoder(key string, baseURLs ...string) geo.Geocoder {
 	return geo.HTTPGeocoder{
 		EndpointBuilder:       baseURL(getUrl(key, baseURLs...)),
