@@ -40,6 +40,8 @@ func TestReverseGeocode(t *testing.T) {
 	address, err := geocoder.ReverseGeocode(48.859831, 2.328123)
 	assert.Nil(t, err)
 	assert.True(t, strings.HasPrefix(address.FormattedAddress, "5, Quai Anatole France,"))
+	assert.Equal(t, "Île-de-France", address.State)
+	assert.Equal(t, "Paris", address.County)
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {

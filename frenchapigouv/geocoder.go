@@ -107,9 +107,9 @@ func (r *geocodeResponse) parseContext() *context {
 			case 0:
 				c.countyCode = f[i]
 			case 1:
-				c.county = f[i]
+				c.county = strings.TrimSpace(f[i])
 			case 2:
-				c.state = f[i]
+				c.state = strings.TrimSpace(f[i])
 			}
 		}
 	}
