@@ -32,6 +32,14 @@ func TestReverseGeocode(t *testing.T) {
 	addr, err := geocoder.ReverseGeocode(-37.8137433689794, 144.971745104488)
 	assert.NoError(t, err)
 	assert.True(t, strings.HasPrefix(addr.FormattedAddress, "Reserve Bank of Australia"))
+
+	ts2 := testServer(response4)
+	defer ts2.Close()
+
+	geocoder = nominatim.Geocoder(key, ts2.URL+"/")
+	addr, err = geocoder.ReverseGeocode(43.0280986, -78.8136961)
+	assert.NoError(t, err)
+	assert.Equal(t, "Audubon Industrial Park", addr.City)
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
@@ -95,5 +103,30 @@ const (
 }`
 	response3 = `{
    "error":"Unable to geocode"
+}`
+	response4 = `{
+    "place_id": 259174465,
+    "licence": "Data \u00a9 OpenStreetMap contributors, ODbL 1.0. https:\/\/osm.org\/copyright",
+    "osm_type": "way",
+    "osm_id": 672030029,
+    "lat": "43.0275119527027",
+    "lon": "-78.81372135810811",
+    "display_name": "188, Commerce Drive, Audubon Industrial Park, Amherst Town, Erie County, New York, 14228, United States of America",
+    "address": {
+        "house_number": "188",
+        "road": "Commerce Drive",
+        "hamlet": "Audubon Industrial Park",
+        "county": "Erie County",
+        "state": "New York",
+        "postcode": "14228",
+        "country": "United States of America",
+        "country_code": "us"
+    },
+    "boundingbox": [
+        "43.027411952703",
+        "43.027611952703",
+        "-78.813821358108",
+        "-78.813621358108"
+    ]
 }`
 )

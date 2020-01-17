@@ -15,6 +15,7 @@ type Address struct {
 	City          string `json:"city"`
 	Town          string `json:"town"`
 	Village       string `json:"village"`
+	Hamlet        string `json:"hamlet"`
 	County        string `json:"county"`
 	Country       string `json:"country"`
 	CountryCode   string `json:"country_code"`
@@ -33,6 +34,8 @@ func (a Address) Locality() string {
 		locality = a.Town
 	} else if a.Village != "" {
 		locality = a.Village
+	} else if a.Hamlet != "" {
+		locality = a.Hamlet
 	}
 
 	return locality
