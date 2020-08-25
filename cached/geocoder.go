@@ -3,8 +3,8 @@ package cached
 import (
 	"fmt"
 
-	"github.com/codingsince1985/geo-golang"
 	"github.com/patrickmn/go-cache"
+	"github.com/prey/geo-golang"
 )
 
 type cachedGeocoder struct {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	geo "github.com/codingsince1985/geo-golang"
+	geo "github.com/prey/geo-golang"
 )
 
 type (
@@ -57,7 +57,7 @@ func getUrl(key string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "https://api.tomtom.com/search/2/*?key=" + key
+	return "https://api.tomtom.com/search/2/*?language=en-US&key=" + key
 }
 
 func (b baseURL) GeocodeURL(address string) string {

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/bing"
+	"github.com/prey/geo-golang"
+	"github.com/prey/geo-golang/bing"
 	"github.com/stretchr/testify/assert"
 )
 

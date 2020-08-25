@@ -4,7 +4,7 @@ package here
 import (
 	"fmt"
 
-	"github.com/codingsince1985/geo-golang"
+	"github.com/prey/geo-golang"
 )
 
 type (
@@ -66,14 +66,14 @@ func getGeocodeURL(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "http://geocoder.api.here.com/6.2/geocode.json?" + p
+	return "http://geocoder.api.here.com/6.2/geocode.json?language=en-US&" + p
 }
 
 func getReverseGeocodeURL(p string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "http://reverse.geocoder.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&" + p
+	return "http://reverse.geocoder.api.here.com/6.2/reversegeocode.json?mode=retrieveAddresses&language=en-US&" + p
 }
 
 func (b baseURL) GeocodeURL(address string) string { return b.forGeocode + "&searchtext=" + address }

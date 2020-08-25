@@ -1,7 +1,7 @@
 package chained
 
 import (
-	"github.com/codingsince1985/geo-golang"
+	"github.com/prey/geo-golang"
 )
 
 type chainedGeocoder struct{ Geocoders []geo.Geocoder }

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/codingsince1985/geo-golang"
+	"github.com/prey/geo-golang"
 )
 
 type (
@@ -47,7 +47,7 @@ func getURL(token string, baseURLs ...string) string {
 	if len(baseURLs) > 0 {
 		return baseURLs[0]
 	}
-	return "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?limit=1&access_token=" + token
+	return "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?language=en-US&limit=1&access_token=" + token
 }
 
 func (b baseURL) GeocodeURL(address string) string { return strings.Replace(string(b), "*", address, 1) }

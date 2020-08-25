@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/osm"
+	"github.com/prey/geo-golang"
+	"github.com/prey/geo-golang/osm"
 )
 
 type (
@@ -39,11 +39,11 @@ func getURL(baseURLs ...string) string {
 }
 
 func (b baseURL) GeocodeURL(address string) string {
-	return string(b) + fmt.Sprintf("/forward?key=%s&limit=1&q=%s", key, address)
+	return string(b) + fmt.Sprintf("/forward?accept-language=en-EN&key=%s&limit=1&q=%s", key, address)
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
-	return string(b) + fmt.Sprintf("/reverse?key=%s&lat=%f&lon=%f", key, l.Lat, l.Lng)
+	return string(b) + fmt.Sprintf("/reverse?accept-language=en-EN&key=%s&lat=%f&lon=%f", key, l.Lat, l.Lng)
 }
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	geo "github.com/codingsince1985/geo-golang"
+	geo "github.com/prey/geo-golang"
 )
 
 type (

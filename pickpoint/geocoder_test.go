@@ -1,8 +1,8 @@
 package pickpoint_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/pickpoint"
+	"github.com/prey/geo-golang"
+	"github.com/prey/geo-golang/pickpoint"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"

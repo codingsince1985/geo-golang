@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/cached"
-	"github.com/codingsince1985/geo-golang/data"
+	"github.com/prey/geo-golang"
+	"github.com/prey/geo-golang/cached"
+	"github.com/prey/geo-golang/data"
 	"github.com/patrickmn/go-cache"
 	"github.com/stretchr/testify/assert"
 )

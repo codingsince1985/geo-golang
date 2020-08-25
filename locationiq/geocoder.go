@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/codingsince1985/geo-golang"
-	"github.com/codingsince1985/geo-golang/osm"
+	"github.com/prey/geo-golang"
+	"github.com/prey/geo-golang/osm"
 )
 
 type baseURL string
@@ -53,11 +53,11 @@ func Geocoder(k string, z int, baseURLs ...string) geo.Geocoder {
 }
 
 func (b baseURL) GeocodeURL(address string) string {
-	return string(b) + "search.php?key=" + key + "&format=json&limit=1&q=" + address
+	return string(b) + "search.php?accept-language=en-EN&key=" + key + "&format=json&limit=1&q=" + address
 }
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
-	return string(b) + "reverse.php?key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f&zoom=%d", l.Lat, l.Lng, zoom)
+	return string(b) + "reverse.php?accept-language=en-EN&key=" + key + fmt.Sprintf("&format=json&lat=%f&lon=%f&zoom=%d", l.Lat, l.Lng, zoom)
 }
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {

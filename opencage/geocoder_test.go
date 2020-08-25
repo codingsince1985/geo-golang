@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/codingsince1985/geo-golang/opencage"
+	"github.com/prey/geo-golang/opencage"
 	"github.com/stretchr/testify/assert"
 )
 
