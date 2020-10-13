@@ -1,4 +1,4 @@
-// Package here is a geo-golang based HERE geocode/reverse geocode client
+// Package here is a geo-golang based HERE geocode/reverse geocode client for the legacy geocoder API
 package here
 
 import (
