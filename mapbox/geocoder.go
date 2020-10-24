@@ -50,7 +50,9 @@ func getURL(token string, baseURLs ...string) string {
 	return "https://api.mapbox.com/geocoding/v5/mapbox.places/*.json?limit=1&access_token=" + token
 }
 
-func (b baseURL) GeocodeURL(address string) string { return strings.Replace(string(b), "*", address, 1) }
+func (b baseURL) GeocodeURL(address string) string {
+	return strings.Replace(string(b), "*", address, 1)
+}
 
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 	return strings.Replace(string(b), "*", fmt.Sprintf("%+f,%+f", l.Lng, l.Lat), 1)

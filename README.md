@@ -16,7 +16,9 @@ This product is designed to open to any Geocoding service. Based on it,
   - [Nominatim Search](http://open.mapquestapi.com/nominatim/)
   - [Open Geocoding](http://open.mapquestapi.com/geocoding/)
 + [OpenCage](https://opencagedata.com/api)
-+ [HERE](https://developer.here.com/rest-apis/documentation/geocoder)
++ HERE
+  - [Geocoder API](https://developer.here.com/documentation/geocoder/dev_guide/topics/quick-start-geocode.html)
+  - [Geocoding and Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html)
 + [Bing](https://msdn.microsoft.com/en-us/library/ff701715.aspx)
 + [Mapbox](https://www.mapbox.com/developers/api/geocoding/)
 + [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Nominatim)

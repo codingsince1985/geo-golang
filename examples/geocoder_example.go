@@ -51,7 +51,7 @@ func ExampleGeocoder() {
 	fmt.Println("OpenCage Data")
 	try(opencage.Geocoder(os.Getenv("OPENCAGE_API_KEY")))
 
-	fmt.Println("HERE API")
+	fmt.Println("HERE Geocoder API")
 	try(here.Geocoder(os.Getenv("HERE_APP_ID"), os.Getenv("HERE_APP_CODE"), radius))
 
 	fmt.Println("Bing Geocoding API")
@@ -123,7 +123,7 @@ func ExampleGeocoder() {
 	// 	Street:"Postal Lane", HouseNumber:"", Suburb:"Melbourne (3000)", Postcode:"3000", State:"Victoria",
 	// 	StateDistrict:"", County:"City of Melbourne", Country:"Australia", CountryCode:"AU", City:"Melbourne"}
 	//
-	// HERE API
+	// HERE Geocoder API
 	// Melbourne VIC location is (-37.817530, 144.967150)
 	// Address of (-37.813611,144.963056) is 197 Elizabeth St, Melbourne VIC 3000, Australia
 	// Detailed address: &geo.Address{FormattedAddress:"197 Elizabeth St, Melbourne VIC 3000, Australia", Street:"Elizabeth St",
