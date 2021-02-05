@@ -42,6 +42,7 @@ func TestReverseGeocode(t *testing.T) {
 	house := "1109"
 	code := "USA"
 	state := "Virginia"
+	stateCode := "VA"
 	lat := 38.886665
 	lng := -77.094733
 	geocoder := Geocoder(key, ts.URL)
@@ -62,6 +63,9 @@ func TestReverseGeocode(t *testing.T) {
 	}
 	if addr.State != state {
 		t.Fatalf("Got: %v\tExpected: %v\n", addr.State, state)
+	}
+	if addr.StateCode != stateCode {
+		t.Fatalf("Got: %v\tExpected: %v\n", addr.StateCode, stateCode)
 	}
 }
 

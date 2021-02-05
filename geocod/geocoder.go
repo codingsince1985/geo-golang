@@ -3,7 +3,7 @@ package geocod
 import (
 	"fmt"
 	"strings"
-
+	
 	geo "github.com/codingsince1985/geo-golang"
 )
 
@@ -60,7 +60,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Results) == 0 {
 		return nil, nil
 	}
-
+	
 	loc := r.Results[0].Location
 	return &geo.Location{Lat: loc.Lat, Lng: loc.Lng}, nil
 }
@@ -69,7 +69,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if len(r.Results) == 0 {
 		return nil, nil
 	}
-
+	
 	r0 := r.Results[0]
 	c := r0.Components
 	addr := &geo.Address{
@@ -78,8 +78,9 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		HouseNumber:      c.Number,
 		Postcode:         c.Zip,
 		State:            c.State,
+		StateCode:        c.State,
 		CountryCode:      c.Country,
 	}
-
+	
 	return addr, nil
 }

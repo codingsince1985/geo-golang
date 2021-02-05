@@ -4,7 +4,7 @@ package mapzen
 import (
 	"fmt"
 	"strings"
-
+	
 	geo "github.com/codingsince1985/geo-golang"
 )
 
@@ -16,7 +16,7 @@ type (
 				Text string
 			}
 		}
-
+		
 		Features []struct {
 			Geometry struct {
 				Coordinates []float64
@@ -29,6 +29,7 @@ type (
 				Country     string
 				CountryCode string `json:"country_a"`
 				Region      string
+				RegionCode  string `json:"region_a"`
 				County      string
 				Label       string
 			}
@@ -65,12 +66,12 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Features) == 0 {
 		return nil, nil
 	}
-
+	
 	pt := r.Features[0].Geometry.Coordinates
 	if len(pt) == 0 {
 		return nil, nil
 	}
-
+	
 	return &geo.Location{Lat: pt[1], Lng: pt[0]}, nil
 }
 
@@ -78,7 +79,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if len(r.Features) == 0 {
 		return nil, nil
 	}
-
+	
 	props := r.Features[0].Properties
 	addr := &geo.Address{
 		FormattedAddress: props.Label,
@@ -88,6 +89,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		Country:          props.Country,
 		CountryCode:      props.CountryCode,
 		State:            props.Region,
+		StateCode:        props.RegionCode,
 	}
 	return addr, nil
 }

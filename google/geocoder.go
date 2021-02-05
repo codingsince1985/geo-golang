@@ -4,7 +4,7 @@ package google
 
 import (
 	"fmt"
-
+	
 	"github.com/codingsince1985/geo-golang"
 )
 
@@ -67,7 +67,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 	} else if r.Status != statusOK {
 		return nil, fmt.Errorf("geocoding error: %s", r.Status)
 	}
-
+	
 	return &r.Results[0].Geometry.Location, nil
 }
 
@@ -77,13 +77,13 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	} else if r.Status != statusOK {
 		return nil, fmt.Errorf("reverse geocoding error: %s", r.Status)
 	}
-
+	
 	if len(r.Results) == 0 || len(r.Results[0].AddressComponents) == 0 {
 		return nil, nil
 	}
-
+	
 	addr := parseGoogleResult(r)
-
+	
 	return addr, nil
 }
 
@@ -112,6 +112,7 @@ OuterLoop:
 				continue OuterLoop
 			case componentTypeState:
 				addr.State = comp.LongName
+				addr.StateCode = comp.ShortName
 				continue OuterLoop
 			case componentTypeCountry:
 				addr.Country = comp.LongName
@@ -123,6 +124,6 @@ OuterLoop:
 			}
 		}
 	}
-
+	
 	return addr
 }
