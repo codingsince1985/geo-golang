@@ -26,6 +26,7 @@ type Address struct {
 	Suburb           string
 	Postcode         string
 	State            string
+	StateCode        string
 	StateDistrict    string
 	County           string
 	Country          string

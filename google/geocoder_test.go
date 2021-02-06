@@ -33,6 +33,7 @@ func TestReverseGeocode(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, strings.HasPrefix(address.FormattedAddress, "60 Collins St"))
 	assert.True(t, strings.HasPrefix(address.Street, "Collins St"))
+	assert.Equal(t, address.StateCode, "VIC")
 }
 
 func TestReverseGeocodeWithNoResult(t *testing.T) {
