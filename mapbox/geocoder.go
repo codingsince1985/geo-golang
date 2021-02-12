@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	
+
 	"github.com/codingsince1985/geo-golang"
 )
 
@@ -67,7 +67,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 		// no results
 		return nil, nil
 	}
-	
+
 	g := r.Features[0]
 	return &geo.Location{
 		Lat: g.Center[1],
@@ -84,7 +84,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		// no results
 		return nil, nil
 	}
-	
+
 	return parseMapboxResponse(r), nil
 }
 
@@ -107,6 +107,6 @@ func parseMapboxResponse(r *geocodeResponse) *geo.Address {
 			addr.CountryCode = strings.ToUpper(c.ShortCode)
 		}
 	}
-	
+
 	return addr
 }
