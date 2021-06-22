@@ -1,4 +1,4 @@
-module github.com/codingsince1985/geo-golang
+module github.com/loudmaker/geo-golang
 
 go 1.14
 
