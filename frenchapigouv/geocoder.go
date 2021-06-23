@@ -84,8 +84,12 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 	}
 	p := r.Features[0].Properties
 	c := r.parseContext()
+
+	if p.Type == "street" || p.Type == "locality" {
+		p.Street = p.Name
+	}
 	return &geo.Address{
-		FormattedAddress: strings.Join(strings.Fields(strings.TrimSpace(fmt.Sprintf("%s, %s, %s, %s, %s, %s, %s", p.Housenumber, p.Street, p.Postcode, p.City, c.county, c.state, "France"))), " "),
+		FormattedAddress: strings.Join(strings.Fields(strings.Trim(fmt.Sprintf("%s, %s, %s, %s, %s, %s, %s", p.Housenumber, p.Street, p.Postcode, p.City, c.county, c.state, "France"), " ,")), " "),
 		HouseNumber:      p.Housenumber,
 		Street:           p.Street,
 		Postcode:         p.Postcode,
