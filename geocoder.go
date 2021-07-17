@@ -2,7 +2,7 @@
 package geo
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 )
 
@@ -35,7 +35,7 @@ type Address struct {
 }
 
 // Logger is an implementation of StdLogger that geo uses to log its messages.
-var Logger StdLogger = log.New(ioutil.Discard, "[Geo]", log.LstdFlags)
+var Logger StdLogger = log.New(io.Discard, "[Geo]", log.LstdFlags)
 
 // StdLogger is a interface for logging libraries.
 type StdLogger interface {
