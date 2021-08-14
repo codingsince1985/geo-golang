@@ -2,9 +2,8 @@ package baidu
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/codingsince1985/geo-golang"
+	"strings"
 )
 
 var (
@@ -79,15 +78,46 @@ const (
 )
 
 var lang string
+var coordtype string
 
-// Geocoder constructs Google geocoder
-func Geocoder(apiKey string, language string, baseURLs ...string) geo.Geocoder {
+// Geocoder constructs Baidu geocoder
+//
+// language: Baidu Map's API uses Chinese (zh-CN) by default. but it supports language argument to specify which language it
+// will use. If some fields don't have the target language version, it will be filled with Chinese version by default.
+// Acceptable languages arguments are :
+//"el", "gu", "en", "vi", "ca", "it", "iw", "sv", "eu", "ar", "cs", "gl", "id", "es", "en-GB", "ru", "sr", "nl", "pt",
+//"tr", "tl", "lv", "en-AU", "lt", "th", "ro", "fil", "ta", "fr", "bg", "hr", "bn", "de", "hu", "fa", "hi", "pt-BR",
+//"fi", "da", "ja", "te", "pt-PT", "ml", "ko", "kn", "sk", "zh-CN", "pl", "uk", "sl", "mr", "local"
+//
+// "local" is a special argument for language specifying, which means the language it uses depends on your location.
+//
+// coordtype:
+// According to league reasons, Chinese geo service providers uses encrypted coordinate system (GCJ02ll, BD09ll, BD09mc,
+// etc.) other than the World Geodetic System (WGS, especially WGS84ll).
+// Acceptable coordtype arguments are :
+// "bd09ll", "bd09mc", "gcj02ll", "wgs84ll"
+// default: "bd09ll"
+// You can use https://api.map.baidu.com/geoconv/v1/?coords=LONGITUDE,LATITUDE&from=1&to=5&ak=AK to convert from WGS84ll
+// to BD09ll coordination. API document: https://lbsyun.baidu.com/index.php?title=webapi/guide/changeposition
+func Geocoder(apiKey string, language string, coordtype string, baseURLs ...string) geo.Geocoder {
 	if lang != "" {
 		for _, item := range languageList {
 			if language == item {
 				lang = fmt.Sprintf("&language=%s", language)
 			}
 		}
+	}
+	switch coordtype {
+	case "bd09ll":
+		coordtype = "bd09ll"
+	case "bd09mc":
+		coordtype = "bd09mc"
+	case "gcj02ll":
+		coordtype = "gcj02ll"
+	case "wgs84ll":
+		coordtype = "wgs84ll"
+	default:
+		coordtype = "bd09ll"
 	}
 
 	return geo.HTTPGeocoder{
@@ -110,7 +140,7 @@ func (b baseURL) GeocodeURL(address string) string {
 
 // ReverseGeocodeURL https://api.map.baidu.com/reverse_geocoding/v3/?ak=APPKEY&output=json&&coordtype=wgs84ll&location=31.225696563611,121.49884033194
 func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
-	return strings.Replace(string(b), "*", "reverse_geocoding", 1) + fmt.Sprintf("output=json&coordtype=wgs84ll&location=%f,%f", l.Lat, l.Lng) + lang
+	return strings.Replace(string(b), "*", "reverse_geocoding", 1) + fmt.Sprintf("output=json&coordtype=%s&location=%f,%f", coordtype, l.Lat, l.Lng) + lang
 }
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
@@ -153,6 +183,5 @@ func parseBaiduResult(r *geocodeResponse) *geo.Address {
 	if (*addr == geo.Address{}) {
 		return nil
 	}
-
 	return addr
 }
