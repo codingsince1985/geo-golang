@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 	"testing"
-	
+
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/baidu"
 	"github.com/stretchr/testify/assert"
