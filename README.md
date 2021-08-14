@@ -30,6 +30,7 @@ This product is designed to open to any Geocoding service. Based on it,
 + [TomTom](https://www.tomtom.com)
 + [Yandex.Maps](https://tech.yandex.com/maps/doc/geocoder/desc/concepts/About-docpage/)
 + [French API Gouv](https://adresse.data.gouv.fr/api)
++ [Baidu Map](https://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding)
 
 clients are implemented in ~50 LoC each.
 
