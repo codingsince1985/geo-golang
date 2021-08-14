@@ -1,14 +1,15 @@
 package baidu_test
 
 import (
-	"github.com/codingsince1985/geo-golang"
-	"github.com/stretchr/testify/assert"
-	"jeeves/geocoder/baidu"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+	
+	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/baidu"
+	"github.com/stretchr/testify/assert"
 )
 
 var key = os.Getenv("BAIDU_APP_KEY")
