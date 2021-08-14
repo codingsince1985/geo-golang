@@ -6,19 +6,19 @@ import (
 	"os"
 	"strings"
 	"testing"
-
+	
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/baidu"
 	"github.com/stretchr/testify/assert"
 )
 
-var key = os.Getenv("BAIDU_API_KEY")
+var key = os.Getenv("BAIDU_APP_KEY")
 
 func TestGeocode(t *testing.T) {
 	ts := testServer(response1)
 	defer ts.Close()
 
-	geocoder := baidu.Geocoder(key, "en", ts.URL+"/")
+	geocoder := baidu.Geocoder(key, "en", "bd09ll", ts.URL+"/")
 	location, err := geocoder.Geocode("60 Collins St, Melbourne VIC")
 
 	assert.NoError(t, err)
@@ -29,7 +29,7 @@ func TestReverseGeocode(t *testing.T) {
 	ts := testServer(response2)
 	defer ts.Close()
 
-	geocoder := baidu.Geocoder(key, "en", ts.URL+"/")
+	geocoder := baidu.Geocoder(key, "en", "bd09ll", ts.URL+"/")
 	address, err := geocoder.ReverseGeocode(40.03333340036988, 116.29999999999993)
 
 	assert.NoError(t, err)
@@ -41,7 +41,7 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 	ts := testServer(response3)
 	defer ts.Close()
 
-	geocoder := baidu.Geocoder(key, ts.URL+"/")
+	geocoder := baidu.Geocoder(key, "en", "bd09ll", ts.URL+"/")
 	addr, err := geocoder.ReverseGeocode(-37.81375, 164.97176)
 
 	assert.NoError(t, err)
