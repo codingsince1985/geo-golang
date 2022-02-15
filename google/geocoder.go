@@ -63,7 +63,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if r.Status == statusNoResults {
-		return nil, nil
+		return nil, geo.NotFoundError
 	} else if r.Status != statusOK {
 		return nil, fmt.Errorf("geocoding error: %s", r.Status)
 	}
@@ -73,13 +73,13 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Status == statusNoResults {
-		return nil, nil
+		return nil, geo.NotFoundError
 	} else if r.Status != statusOK {
 		return nil, fmt.Errorf("reverse geocoding error: %s", r.Status)
 	}
 
 	if len(r.Results) == 0 || len(r.Results[0].AddressComponents) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	addr := parseGoogleResult(r)

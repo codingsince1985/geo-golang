@@ -64,12 +64,12 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Features) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	pt := r.Features[0].Geometry.Coordinates
 	if len(pt) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	return &geo.Location{Lat: pt[1], Lng: pt[0]}, nil
@@ -77,7 +77,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if len(r.Features) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	props := r.Features[0].Properties

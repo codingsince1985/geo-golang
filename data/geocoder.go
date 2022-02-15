@@ -33,7 +33,7 @@ func (d dataGeocoder) Geocode(address string) (*geo.Location, error) {
 		return &l, nil
 	}
 
-	return nil, nil
+	return nil, geo.NotFoundError
 }
 
 // ReverseGeocode returns address for location
@@ -41,5 +41,5 @@ func (d dataGeocoder) ReverseGeocode(lat, lng float64) (*geo.Address, error) {
 	if address, ok := d.LocationToAddress[geo.Location{Lat: lat, Lng: lng}]; ok {
 		return &address, nil
 	}
-	return nil, nil
+	return nil, geo.NotFoundError
 }

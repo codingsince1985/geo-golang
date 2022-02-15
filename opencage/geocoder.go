@@ -51,7 +51,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 		return nil, fmt.Errorf("geocoding error: %s", r.Status.Message)
 	}
 	if len(r.Results) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	return &geo.Location{
@@ -65,7 +65,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 		return nil, fmt.Errorf("geocoding error: %s", r.Status.Message)
 	}
 	if len(r.Results) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	addr := r.Results[0].Components

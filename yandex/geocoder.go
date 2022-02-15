@@ -93,10 +93,10 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if r.Response.GeoObjectCollection.MetaDataProperty.GeocoderResponseMetaData.Found == "0" {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 	if len(r.Response.GeoObjectCollection.FeatureMember) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 	featureMember := r.Response.GeoObjectCollection.FeatureMember[0]
 	result := &geo.Location{}
@@ -112,10 +112,10 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if r.Response.GeoObjectCollection.MetaDataProperty.GeocoderResponseMetaData.Found == "0" {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 	if len(r.Response.GeoObjectCollection.FeatureMember) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	return parseYandexResult(r.Response.GeoObjectCollection.FeatureMember[0]), nil

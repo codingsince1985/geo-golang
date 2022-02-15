@@ -79,7 +79,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 			Lng: p.Lon,
 		}, nil
 	}
-	return nil, nil
+	return nil, geo.NotFoundError
 }
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
@@ -96,5 +96,5 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 			CountryCode:      a.CountryCode,
 		}, nil
 	}
-	return nil, nil
+	return nil, geo.NotFoundError
 }

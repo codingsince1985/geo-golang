@@ -67,7 +67,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 	// no result
 	if r.Lat == "" || r.Lon == "" {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	return &geo.Location{

@@ -55,7 +55,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Results) == 0 || len(r.Results[0].Locations) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	loc := r.Results[0].Locations[0].LatLng
@@ -67,12 +67,12 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if len(r.Results) == 0 || len(r.Results[0].Locations) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	p := r.Results[0].Locations[0]
 	if p.Street == "" || p.AdminArea5 == "" {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	formattedAddress := p.Street + ", " + p.PostalCode + ", " + p.AdminArea5 + ", " + p.AdminArea3 + ", " + p.AdminArea1

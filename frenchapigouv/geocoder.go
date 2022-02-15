@@ -69,7 +69,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Features) == 0 || len(r.Features[0].Geometry.Coordinates) < 2 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 	p := r.Features[0].Geometry.Coordinates
 	return &geo.Location{
@@ -80,7 +80,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 
 func (r *geocodeResponse) Address() (*geo.Address, error) {
 	if len(r.Features) == 0 || r.Features[0].Properties.Label == "baninfo" {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 	p := r.Features[0].Properties
 	c := r.parseContext()

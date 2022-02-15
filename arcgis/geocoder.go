@@ -67,7 +67,7 @@ func (b baseURL) ReverseGeocodeURL(l geo.Location) string {
 
 func (r *geocodeResponse) Location() (*geo.Location, error) {
 	if len(r.Candidates) == 0 {
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	g := r.Candidates[0].Location

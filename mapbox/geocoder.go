@@ -65,7 +65,7 @@ func (r *geocodeResponse) Location() (*geo.Location, error) {
 			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
 		}
 		// no results
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	g := r.Features[0]
@@ -82,7 +82,7 @@ func (r *geocodeResponse) Address() (*geo.Address, error) {
 			return nil, fmt.Errorf("reverse geocoding error: %s", r.Message)
 		}
 		// no results
-		return nil, nil
+		return nil, geo.NotFoundError
 	}
 
 	return parseMapboxResponse(r), nil

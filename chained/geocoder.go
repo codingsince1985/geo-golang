@@ -20,7 +20,7 @@ func (c chainedGeocoder) Geocode(address string) (*geo.Location, error) {
 		continue
 	}
 	// No geocoders found a result
-	return nil, nil
+	return nil, geo.NotFoundError
 }
 
 // ReverseGeocode returns address for location
@@ -34,5 +34,5 @@ func (c chainedGeocoder) ReverseGeocode(lat, lng float64) (*geo.Address, error) 
 		continue
 	}
 	// No geocoders found a result
-	return nil, nil
+	return nil, geo.NotFoundError
 }
