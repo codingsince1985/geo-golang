@@ -1,14 +1,14 @@
 package openstreetmap_test
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 
 	"github.com/codingsince1985/geo-golang"
 	"github.com/codingsince1985/geo-golang/openstreetmap"
 	"github.com/stretchr/testify/assert"
-	"net/http"
-	"net/http/httptest"
 )
 
 func TestGeocode(t *testing.T) {
@@ -37,6 +37,16 @@ func TestReverseGeocodeWithNoResult(t *testing.T) {
 
 	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
 	//geocoder := openstreetmap.Geocoder()
+	addr, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
+	assert.Nil(t, addr)
+	assert.NotNil(t, err)
+}
+
+func TestReverseGeocodeWithBrokenResponse(t *testing.T) {
+	ts := testServer(response4)
+	defer ts.Close()
+
+	geocoder := openstreetmap.GeocoderWithURL(ts.URL + "/")
 	addr, err := geocoder.ReverseGeocode(-37.8157915, 164.9656171)
 	assert.Nil(t, addr)
 	assert.NotNil(t, err)
@@ -98,5 +108,8 @@ const (
 }`
 	response3 = `{
    "error":"Unable to geocode"
+}`
+	response4 = `{
+   broken response
 }`
 )
