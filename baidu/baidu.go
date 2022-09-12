@@ -85,9 +85,9 @@ var coordtype string
 // language: Baidu Map's API uses Chinese (zh-CN) by default. but it supports language argument to specify which language it
 // will use. If some fields don't have the target language version, it will be filled with Chinese version by default.
 // Acceptable languages arguments are :
-//"el", "gu", "en", "vi", "ca", "it", "iw", "sv", "eu", "ar", "cs", "gl", "id", "es", "en-GB", "ru", "sr", "nl", "pt",
-//"tr", "tl", "lv", "en-AU", "lt", "th", "ro", "fil", "ta", "fr", "bg", "hr", "bn", "de", "hu", "fa", "hi", "pt-BR",
-//"fi", "da", "ja", "te", "pt-PT", "ml", "ko", "kn", "sk", "zh-CN", "pl", "uk", "sl", "mr", "local"
+// "el", "gu", "en", "vi", "ca", "it", "iw", "sv", "eu", "ar", "cs", "gl", "id", "es", "en-GB", "ru", "sr", "nl", "pt",
+// "tr", "tl", "lv", "en-AU", "lt", "th", "ro", "fil", "ta", "fr", "bg", "hr", "bn", "de", "hu", "fa", "hi", "pt-BR",
+// "fi", "da", "ja", "te", "pt-PT", "ml", "ko", "kn", "sk", "zh-CN", "pl", "uk", "sl", "mr", "local"
 //
 // "local" is a special argument for language specifying, which means the language it uses depends on your location.
 //
