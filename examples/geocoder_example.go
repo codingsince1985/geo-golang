@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/codingsince1985/geo-golang"
+	"github.com/codingsince1985/geo-golang/amap"
 	"github.com/codingsince1985/geo-golang/arcgis"
 	"github.com/codingsince1985/geo-golang/baidu"
 	"github.com/codingsince1985/geo-golang/bing"
@@ -26,12 +27,14 @@ import (
 )
 
 const (
-	addr         = "Melbourne VIC"
-	lat, lng     = -37.813611, 144.963056
-	radius       = 50
-	zoom         = 18
-	addrFR       = "Champs de Mars Paris"
-	latFR, lngFR = 48.854395, 2.304770
+	addr             = "Melbourne VIC"
+	lat, lng         = -37.813611, 144.963056
+	radius           = 50
+	zoom             = 18
+	addrFR           = "Champs de Mars Paris"
+	addrAmap         = "北京市海淀区清河街道西二旗西路领秀新硅谷" // China only
+	latFR, lngFR     = 48.854395, 2.304770
+	latAmap, lngAmap = 40.05510, 116.309866
 )
 
 func main() {
@@ -60,6 +63,9 @@ func ExampleGeocoder() {
 
 	fmt.Println("Baidu Geocoding API")
 	try(baidu.Geocoder(os.Getenv("BAIDU_API_KEY"), "en", "bd09ll"))
+
+	fmt.Println("Amap Geocoding API")
+	tryOnlyForAmap(amap.Geocoder(os.Getenv("AMAP_API_KEY"), radius))
 
 	fmt.Println("Mapbox API")
 	try(mapbox.Geocoder(os.Getenv("MAPBOX_API_KEY")))
@@ -145,6 +151,11 @@ func ExampleGeocoder() {
 	// Address of (-37.813611,144.963056) is 341 Little Bourke Street, Melbourne, Victoria, Australia
 	// Detailed address: &geo.Address{FormattedAddress:"341 Little Bourke Street, Melbourne, Victoria, Australia", Street:"Little Bourke Street", HouseNumber:"341", Suburb:"", Postcode:"", State:"Victoria", StateCode:"", StateDistrict:"", County:"", Country:"Australia", CountryCode:"AUS", City:"Melbourne"}
 	//
+	// Amap Geocoding API
+	// 北京市海淀区清河街道西二旗西路领秀新硅谷 location is (40.05510, 116.309866)
+	// Address of (40.05510, 116.309866) is 北京市海淀区清河街道领秀新硅谷领秀新硅谷B区
+	// Detailed address: &geo.Address{FormattedAddress:"北京市海淀区清河街道领秀新硅谷领秀新硅谷B区", Street:"西二旗西路", HouseNumber:"2号楼", Suburb:"海 淀区", Postcode:"", State:"北京市", StateCode:"", StateDistrict:"", County:"", Country:"中国", CountryCode:"", City:""}
+	//
 	// Mapbox API
 	// Melbourne VIC location is (-37.814200, 144.963200)
 	// Address of (-37.813611,144.963056) is Elwood Park Playground, Melbourne, Victoria 3000, Australia
@@ -222,6 +233,23 @@ func try(geocoder geo.Geocoder) {
 		fmt.Println("got <nil> location")
 	}
 	address, _ := geocoder.ReverseGeocode(lat, lng)
+	if address != nil {
+		fmt.Printf("Address of (%.6f,%.6f) is %s\n", lat, lng, address.FormattedAddress)
+		fmt.Printf("Detailed address: %#v\n", address)
+	} else {
+		fmt.Println("got <nil> address")
+	}
+	fmt.Print("\n")
+}
+
+func tryOnlyForAmap(geocoder geo.Geocoder) {
+	location, _ := geocoder.Geocode(addrAmap)
+	if location != nil {
+		fmt.Printf("%s location is (%.6f, %.6f)\n", addr, location.Lat, location.Lng)
+	} else {
+		fmt.Println("got <nil> location")
+	}
+	address, _ := geocoder.ReverseGeocode(latAmap, lngAmap)
 	if address != nil {
 		fmt.Printf("Address of (%.6f,%.6f) is %s\n", lat, lng, address.FormattedAddress)
 		fmt.Printf("Detailed address: %#v\n", address)
