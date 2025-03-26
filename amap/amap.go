@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	baseURL string
+	baseURL         string
 	geocodeResponse struct {
 		XMLName  xml.Name `xml:"response"`
 		Status   int      `xml:"status"`

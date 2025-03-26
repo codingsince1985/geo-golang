@@ -41,7 +41,7 @@ type HTTPGeocoder struct {
 	ResponseUnmarshaler
 }
 
-func (g HTTPGeocoder) GeocodeWithContext(ctx context.Context, address string) (*Location, error) {
+func (g HTTPGeocoder) geocodeWithContext(ctx context.Context, address string) (*Location, error) {
 	responseParser := g.ResponseParserFactory()
 	var responseUnmarshaler ResponseUnmarshaler = &JSONUnmarshaler{}
 	if g.ResponseUnmarshaler != nil {
@@ -82,7 +82,7 @@ func (g HTTPGeocoder) Geocode(address string) (*Location, error) {
 	ctx, cancel := context.WithTimeout(context.TODO(), DefaultTimeout)
 	defer cancel()
 
-	return g.GeocodeWithContext(ctx, address)
+	return g.geocodeWithContext(ctx, address)
 }
 
 // ReverseGeocode returns address for location
