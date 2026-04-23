@@ -101,7 +101,7 @@ func ExampleGeocoder() {
 	try(baidu.Geocoder(os.Getenv("BAIDU_API_KEY")))
 
 	fmt.Println("Amap Geocoding API")
-	try(amap.Geocoder(os.Getenv("BAIDU_API_KEY")))
+	try(amap.Geocoder(os.Getenv("AMAP_APP_KEY")))
 
 	fmt.Println("Mapbox API")
 	try(mapbox.Geocoder(os.Getenv("MAPBOX_API_KEY")))
